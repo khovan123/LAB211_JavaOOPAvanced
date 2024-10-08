@@ -1,6 +1,8 @@
 
 package repository;
 
+import repository.interfaces.ICoachRepository;
+
 public class CoachRepository implements ICoachRepository{
 
     @Override

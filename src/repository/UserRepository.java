@@ -1,6 +1,8 @@
 
 package repository;
 
+import repository.interfaces.IUserRepository;
+
 public class UserRepository implements IUserRepository{
 
     @Override

@@ -1,6 +1,8 @@
 
 package repository;
 
+import repository.interfaces.ICourseRepository;
+
 public class CourseRepository implements ICourseRepository{
 
     @Override

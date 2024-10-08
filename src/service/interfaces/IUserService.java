@@ -1,8 +1,9 @@
-package service;
+package service.interfaces;
 
 import java.util.function.Predicate;
-import model.Course;
-import model.User;
+import model.main.Course;
+import model.sub.PracticeDay;
+import model.main.User;
 
 public interface IUserService extends Service<User> {
 
@@ -23,10 +24,14 @@ public interface IUserService extends Service<User> {
 
     @Override
     User filter(String entry, String regex);
-
-    void buy(Course course);
     
-    
-//    void updateSchedule();
+    void searchCourse(Predicate<Course> p);
 
+    void buyCourse(Course course);
+    
+    void displaySchedule(Course course);
+    
+    void displayCourse(Course course);
+    
+    void updateSchedule(Course course, PracticeDay practiceDay);
 }
