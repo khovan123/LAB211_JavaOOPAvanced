@@ -1,8 +1,9 @@
 
-package service;
+package service.interfaces;
 
 import java.util.function.Predicate;
-import model.Course;
+import model.main.Course;
+import model.sub.Workout;
 
 public interface ICourseService extends Service<Course>{
     @Override
@@ -22,4 +23,15 @@ public interface ICourseService extends Service<Course>{
 
     @Override
     Course filter(String entry, String regex);
+    
+    void addWorkout(Workout workout);
+    
+    void updateWorkout(Workout workout);
+    
+    void deleteWorkout(Workout workout);
+    
+    Workout searchWorkout(Predicate<Workout> p);
+    
+    
+    
 }

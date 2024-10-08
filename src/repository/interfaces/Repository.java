@@ -1,4 +1,4 @@
-package repository;
+package repository.interfaces;
 
 public interface Repository<T, C> {
 

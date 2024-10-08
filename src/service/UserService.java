@@ -1,9 +1,10 @@
 package service;
 
-import java.util.Date;
+import service.interfaces.IUserService;
 import java.util.function.Predicate;
-import model.Course;
-import model.User;
+import model.main.Course;
+import model.sub.PracticeDay;
+import model.main.User;
 
 public class UserService implements IUserService {
 
@@ -38,7 +39,27 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void buy(Course course) {
+    public void searchCourse(Predicate<Course> p) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void buyCourse(Course course) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void displaySchedule(Course course) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void displayCourse(Course course) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void updateSchedule(Course course, PracticeDay practiceDay) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
