@@ -1,6 +1,7 @@
 package service;
 
 import java.util.function.Predicate;
+import model.Course;
 import model.User;
 
 public interface IUserService extends Service<User> {
@@ -15,8 +16,17 @@ public interface IUserService extends Service<User> {
     void delete(String id);
 
     @Override
+    void update(User user);
+
+    @Override
     User search(Predicate<User> p);
 
     @Override
     User filter(String entry, String regex);
+
+    void buy(Course course);
+    
+    
+//    void updateSchedule();
+
 }

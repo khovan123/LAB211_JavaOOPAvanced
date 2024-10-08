@@ -10,6 +10,8 @@ public interface Service<T> {
     
     void delete(String id);
     
+    void update(T entry);
+    
     T search(Predicate<T> p);
 
     T filter(String entry, String regex);
