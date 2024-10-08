@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
-public interface IGeneralUtils {
+public interface IGlobalUtils {
 
     final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     final Scanner sc = new Scanner(System.in);
