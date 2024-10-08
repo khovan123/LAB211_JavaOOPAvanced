@@ -1,8 +1,16 @@
 package service;
 
+import java.util.function.Predicate;
+
 public interface Service<T> {
 
     void display();
+
+    void add(T entry);
     
-    T filter(String input, String regex);
+    void delete(String id);
+    
+    T search(Predicate<T> p);
+
+    T filter(String entry, String regex);
 }

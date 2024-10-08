@@ -1,6 +1,6 @@
 
 package repository;
 
-public class ICoachRepository {
+public interface ICoachRepository extends Repository<Object, Object>{
 
 }

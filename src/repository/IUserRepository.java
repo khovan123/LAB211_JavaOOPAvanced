@@ -1,6 +1,6 @@
 
 package repository;
 
-public class IUserRepository {
+public interface IUserRepository extends Repository<Object, Object>{
 
 }

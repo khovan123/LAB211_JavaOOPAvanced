@@ -1,6 +1,6 @@
 
 package repository;
 
-public class ICourseRepository {
+public interface ICourseRepository extends Repository<Object, Object>{
 
 }
