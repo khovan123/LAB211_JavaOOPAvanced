@@ -18,3 +18,30 @@
 - Please git remote with branch which I specificly assign for you
 - Do not merge any thing in your github
 - Write better commit
+
+## 3. Point to write commit
+*Good*
+- feat: improve performance with lazy load implementation for images
+- chore: update npm dependency to latest version
+- Fix bug preventing users from submitting the subscribe form
+- Update incorrect client phone number within footer body per client request
+
+*Bad*
+- fixed bug on landing page
+- Changed style
+- oops
+- I think I fixed it this time?
+- empty commit messages
+
+**Rule**
+- Feat– feature
+
+- Fix– bug fixes
+
+- Docs– changes to the documentation like README
+
+- Style– style or formatting change 
+
+- Perf – improves code performance
+
+- Test– test a feature
