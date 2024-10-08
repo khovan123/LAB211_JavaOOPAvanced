@@ -3,7 +3,7 @@ package utils;
 
 import java.util.Date;
 
-public class GeneralUtils implements IGeneralUtils{
+public class GlobalUtils implements IGlobalUtils{
 
     @Override
     public String getValue(String label, String messageError) {
