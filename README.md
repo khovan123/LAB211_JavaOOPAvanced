@@ -19,7 +19,11 @@
 - Do not merge any thing in your github
 - Write better commit
 
-## 3. Point to write commit
+## 3. Diagram & Task
+- At link: https://drive.google.com/file/d/1ytzVqHMEek7cAJG8Nthq8oWRanF-G7Pw/view?usp=sharing. Please fill in the box which classes are assigned for you
+- At Jira website, contact: minhpnq1807@gmail to invite to our project
+
+## 4. Point to write commit
 *Good*
 - feat: improve performance with lazy load implementation for images
 - chore: update npm dependency to latest version
