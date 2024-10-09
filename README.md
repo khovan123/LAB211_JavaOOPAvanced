@@ -13,6 +13,9 @@
 - Right Click on your project -> Git -> Add
 - Right Click on your project -> Git -> Commnit -> Write your commit
 - Right Click on your project -> Git -> Remote -> Push -> Select Configured Git Repository Location / Specify Git Repository Location (Remote Name: name of your branch, Repository URL: https://github.com/khovan123/LAB211_JavaOOPAvanced.git, User: name of your branch, Password: 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) -> Next -> Apply all
+
+### 1.5. Pull
+- Right Click on your project -> Git -> Remote -> Pull -> Select Configured Git Repository Location / Specify Git Repository Location (Remote Name: name of your branch, Repository URL: https://github.com/khovan123/LAB211_JavaOOPAvanced.git, User: name of your branch, Password: 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) -> Next -> master -> Finish
           
 ## 2. Rule
 - Please git remote with branch which I specificly assign for you
