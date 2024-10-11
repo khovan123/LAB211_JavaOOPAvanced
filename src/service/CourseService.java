@@ -1,31 +1,61 @@
 
 package service;
 
+import repository.CourseRepository;
 import service.interfaces.ICourseService;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
+
 import model.main.Course;
 import model.sub.Workout;
 
-public class CourseService implements ICourseService{
+public class CourseService implements ICourseService {
+    private final CourseRepository courseRepository;
+    private final List<Course> courseList;
+
+    public CourseService() {
+        courseRepository = new CourseRepository();
+        courseList = new ArrayList<>(courseRepository.readFile());
+    }
 
     @Override
     public void display() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (courseList.isEmpty()){
+            System.out.println("-> The List Is Empty !!");
+        } else{
+            for (Course course : courseList){
+                System.out.println(course);
+            }
+        }
     }
 
     @Override
     public void add(Course entry) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        courseList.add(entry);
+        System.out.println("-> Course Add Successfully.");
+        courseRepository.readFile();
     }
 
     @Override
     public void delete(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean removed = courseList.removeIf(course -> course.getCourseId().equalsIgnoreCase(id));
+        if (removed){
+            System.out.println("-> Course With ID " + id + " Have Been Remove");
+            courseRepository.writeFile(courseList);
+        }else {
+            System.out.println("-> Course With ID " + id + " Not Found");
+        }
     }
 
     @Override
     public Course search(Predicate<Course> p) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (Course course : courseList){
+            if (p.test(course))
+                return course;
+        }
+        return null;
     }
 
     @Override
@@ -34,8 +64,16 @@ public class CourseService implements ICourseService{
     }
 
     @Override
-    public void update(Course course) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void update(Course updatedCourse) {
+        for (int i = 0; i < courseList.size(); i++) {
+            Course c = courseList.get(i);
+            if (c.getCourseId().equalsIgnoreCase(updatedCourse.getCourseId())){
+                courseList.set(i, updatedCourse);
+                System.out.println("-> Course With Course ID" + updatedCourse.getCourseId() + " Have Been Updated!!");
+                return;
+            }
+        }
+        System.out.println("-> Course With Course ID" + updatedCourse.getCourseId() + " Have Been Updated!!");
     }
 
     @Override

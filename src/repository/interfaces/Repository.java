@@ -4,7 +4,7 @@ public interface Repository<T, C> {
 
     final String path = "";
 
-    C readfile();
+    C readFile();
 
     void writeFile(C c);
 }

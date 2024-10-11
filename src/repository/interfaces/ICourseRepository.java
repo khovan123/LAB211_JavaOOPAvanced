@@ -1,6 +1,10 @@
 
 package repository.interfaces;
 
-public interface ICourseRepository extends Repository<Object, Object>{
+import model.main.Course;
+
+import java.util.List;
+
+public interface ICourseRepository extends Repository<Course, List<Course>>{
 
 }
