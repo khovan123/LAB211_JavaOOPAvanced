@@ -13,12 +13,14 @@
 - Right Click on your project -> Git -> Add
 - Right Click on your project -> Git -> Commnit -> Write your commit
 - Right Click on your project -> Git -> Remote -> Push -> Select Configured Git Repository Location / Specify Git Repository Location (Remote Name: name of your branch, Repository URL: https://github.com/khovan123/LAB211_JavaOOPAvanced.git, User: name of your branch, Password: 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) -> Next -> Apply all
+  
   *Tips*:
   - Please pull new code before push your code
   - If you have some problem which can not solve -> You can copy your code to another platform -> Delete folder project -> Git clone -> Paste code again -> Push one more time
 
 ### 1.5. Pull
 - Right Click on your project -> Git -> Remote -> Pull -> Select Configured Git Repository Location / Specify Git Repository Location (Remote Name: name of your branch, Repository URL: https://github.com/khovan123/LAB211_JavaOOPAvanced.git, User: name of your branch, Password: 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) -> Next -> master -> Finish
+  
   *Tips*: Before coding, please pull new code!!!
           
 ## 2. Rule
