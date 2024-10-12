@@ -1,35 +1,50 @@
-
 package service;
 
+import java.util.ArrayList;
+import java.util.List;
 import service.interfaces.IScheduleService;
 import java.util.function.Predicate;
 import model.sub.PracticeDay;
 
-public class ScheduleService implements IScheduleService{
+public class ScheduleService implements IScheduleService {
+
+    List<PracticeDay> practiceDays = new ArrayList<>();
 
     @Override
     public void displaySchedule() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (practiceDays.isEmpty()) {
+            return;
+        } else {
+            for (PracticeDay practiceDay : practiceDays) {
+                System.out.println(practiceDay);
+            }
+        }
     }
 
     @Override
     public void addPracticeDay(PracticeDay entry) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        practiceDays.add(entry);
+        System.out.println("Added successful!");
     }
 
     @Override
     public void deletePracticeDay(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
     }
 
     @Override
     public void updatePracticeDay(PracticeDay practiceDay) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
     }
 
     @Override
     public PracticeDay searchPracticeDay(Predicate<PracticeDay> p) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for(PracticeDay practiceDay : practiceDays){
+            if (p.test(practiceDay)){
+                return practiceDay;
+            }
+        }
+        return null;
     }
 
 }
