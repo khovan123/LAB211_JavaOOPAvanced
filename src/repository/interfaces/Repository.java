@@ -7,4 +7,7 @@ public interface Repository<T, C> {
     C readfile();
 
     void writeFile(C c);
+
+    T filter(String entry, String regex);
+
 }
