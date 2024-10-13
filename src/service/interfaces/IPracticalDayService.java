@@ -1,26 +1,30 @@
-
 package service.interfaces;
 
+import exception.EmptyDataException;
+import exception.EventException;
+import exception.InvalidDataException;
+import exception.NotFoundException;
 import java.util.function.Predicate;
 import model.PracticalDay;
 
-public interface IPracticalDayService extends Service<PracticalDay>{
-    @Override
-    void display();
+public interface IPracticalDayService extends Service<PracticalDay> {
 
     @Override
-    void add(PracticalDay entry);
+    void display() throws EmptyDataException;
 
     @Override
-    void delete(String id);
+    void add(PracticalDay entry) throws EventException;
 
     @Override
-    void update(PracticalDay entry);
+    void delete(String id) throws EventException, NotFoundException;
 
     @Override
-    PracticalDay search(Predicate<PracticalDay> p);
+    void update(PracticalDay entry) throws EventException, NotFoundException;
 
     @Override
-    PracticalDay filter(String entry, String regex);
+    PracticalDay search(Predicate<PracticalDay> p) throws NotFoundException;
+
+    @Override
+    PracticalDay filter(String entry, String regex) throws InvalidDataException;
 
 }
