@@ -2,7 +2,7 @@
 package service.interfaces;
 
 import java.util.function.Predicate;
-import model.Course;
+import model.main.Course;
 import model.Workout;
 
 public interface ICourseSegmentService extends Service<Course>{

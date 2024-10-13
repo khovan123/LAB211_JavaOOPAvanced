@@ -3,6 +3,7 @@ package service;
 
 import repository.CourseRepository;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
@@ -11,14 +12,17 @@ import model.main.Course;
 
 import model.Workout;
 import service.interfaces.ICourseSegmentService;
+import utils.GlobalUtils;
 
-public class CourseSegmentService implements ICourseSegmentService{
+public class CourseSegmentService implements ICourseSegmentService {
     private final CourseRepository courseRepository;
     private final ArrayList<Course> courseList;
+    private final GlobalUtils globalUtils;
 
     public CourseSegmentService() {
         courseRepository = new CourseRepository();
         courseList = (ArrayList<Course>) courseRepository.readFile();
+        globalUtils = new GlobalUtils();
     }
 
     @Override
@@ -37,10 +41,6 @@ public class CourseSegmentService implements ICourseSegmentService{
     }
 
     @Override
-    public void add(model.Course entry) {
-
-    }
-
     public void add(Course entry) {
         try {
             courseList.add(entry);
@@ -50,6 +50,7 @@ public class CourseSegmentService implements ICourseSegmentService{
             System.out.println("-> Error While Add Course - " + e.getMessage());
         }
     }
+
 
     @Override
     public void delete(String id) {
@@ -66,36 +67,79 @@ public class CourseSegmentService implements ICourseSegmentService{
         }
     }
 
-    @Override
-    public void update(model.Course course) {
-
-    }
-
-    @Override
-    public model.Course search(Predicate<model.Course> p) {
-        return null;
-    }
-
-    @Override
-    public model.Course filter(String entry, String regex) {
-        return null;
-    }
-
-
     public void update(Course updatedCourse) {
         try {
-            for (int i = 0; i < courseList.size(); i++) {
-                Course c = courseList.get(i);
-                if (c.getCourseId().equalsIgnoreCase(updatedCourse.getCourseId())) {
-                    courseList.set(i, updatedCourse);
-                    System.out.println("-> Course With Course ID" + updatedCourse.getCourseId() + " Have Been Updated!!");
-                    return;
+            Field[] courseField = updatedCourse.getClass().getDeclaredFields();
+            int totalField = courseField.length;
+            boolean isUpdate = true;
+
+            while (isUpdate) {
+                System.out.println("---- CUSTOMIZE COURSE ----");
+                for (int i = 0; i < courseField.length; i++) {
+                    System.out.println((i + 1) + ". " + courseField[i].getName());
+                }
+                System.out.println((courseField.length + 1) + ". Finish Customize");
+
+                int choice = globalUtils.getInteger("Enter Your Choice", "-> Invalid Input, Try Again");
+
+                if (choice == totalField) {
+                    isUpdate = false;
+                    System.out.println("-> Finish Customize");
+                    continue;
+                }
+
+                if (choice < 1 || choice > totalField) {
+                    System.out.println("-> Invalid Option, Please Try Again");
+                    continue;
+                }
+
+                Field selectedField = courseField[choice - 1];
+                selectedField.setAccessible(true);
+
+                try {
+                    Object currentValue = selectedField.get(updatedCourse);
+                    System.out.println("Current Value Of - " + selectedField.getName() + " - " + currentValue);
+                    String newValue = globalUtils.getValue("Enter New Value" + selectedField.getName(), "Invalid Input, Try Again.");
+
+                    if (selectedField.getType() == String.class) {
+                        selectedField.set(updatedCourse, newValue);
+                    } else if (selectedField.getType() == int.class) {
+                        selectedField.set(updatedCourse, Integer.parseInt(newValue));
+                    } else if (selectedField.getType() == boolean.class) {
+                        selectedField.set(updatedCourse, Boolean.parseBoolean(newValue));
+                    } else if (selectedField.getType() == double.class) {
+                        selectedField.set(updatedCourse, Double.parseDouble(newValue));
+                    } else {
+                        System.out.println("Unsupported field type: " + selectedField.getType());
+                    }
+                    System.out.println("Updated " + selectedField.getName() + " to " + newValue + " successfully.");
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
                 }
             }
-            System.out.println("-> Course With Course ID" + updatedCourse.getCourseId() + " Have Been Updated!!");
         } catch (Exception e) {
-            System.out.println("-> Error While Updating Course - " + e.getMessage());
+            System.out.println("-> Error While Updating Course " + e.getMessage());
         }
+    }
+
+    @Override
+    public Course search(Predicate<Course> p) {
+        try {
+            for (Course course : courseList) {
+                if (p.test(course)) {
+                    return course;
+                }
+            }
+        } catch (Exception e){
+            System.out.println("-> Error While Searching - " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    @Override
+    public Course filter(String entry, String regex) {
+        return null;
     }
 
     @Override
