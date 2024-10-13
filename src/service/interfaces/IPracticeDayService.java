@@ -2,11 +2,13 @@
 package service.interfaces;
 
 import java.util.function.Predicate;
+
+import exception.NotFoundException;
 import model.sub.PracticeDay;
 
 public interface IPracticeDayService extends Service<PracticeDay>{
     @Override
-    void display();
+    void display() throws NotFoundException;
 
     @Override
     void add(PracticeDay entry);
@@ -18,7 +20,7 @@ public interface IPracticeDayService extends Service<PracticeDay>{
     void update(PracticeDay entry);
 
     @Override
-    PracticeDay search(Predicate<PracticeDay> p);
+    PracticeDay search(Predicate<PracticeDay> p) throws NotFoundException;
 
     @Override
     PracticeDay filter(String entry, String regex);

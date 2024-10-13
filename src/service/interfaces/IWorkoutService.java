@@ -1,12 +1,14 @@
 package service.interfaces;
 
 import java.util.function.Predicate;
+
+import exception.NotFoundException;
 import model.sub.Workout;
 
 public interface IWorkoutService extends Service<Workout> {
 
     @Override
-    void display();
+    void display() throws NotFoundException;
 
     @Override
     void add(Workout entry);
@@ -18,7 +20,7 @@ public interface IWorkoutService extends Service<Workout> {
     void update(Workout entry);
 
     @Override
-    Workout search(Predicate<Workout> p);
+    Workout search(Predicate<Workout> p) throws NotFoundException;
 
     @Override
     Workout filter(String entry, String regex);

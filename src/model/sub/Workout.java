@@ -79,4 +79,8 @@ public class Workout {
         this.done = done;
     }
 
+    @Override
+    public String toString(){
+        return String.format("%-15s | %-20s | %-25s | %-8d rep| %-8d sets| %-8d min| %s", workoutId, workoutName, description, repetition, sets, duration, done ? "✔" : "✘");
+    }
 }

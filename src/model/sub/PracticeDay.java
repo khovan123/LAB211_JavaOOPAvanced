@@ -1,24 +1,26 @@
 
 package model.sub;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import service.WorkoutService;
+import utils.GlobalUtils;
 
 public class PracticeDay {
     private String practiceDayId;
-    private Date date;
+    private Date praticeDate;
     private Nutrition nutrition;
     private WorkoutService workoutService;
 
     public PracticeDay() {
     }
 
-    public PracticeDay(String practiceDayId, Date date, Nutrition nutrition, List<Workout> workouts) {
+    public PracticeDay(String practiceDayId, String practiceDate, Nutrition nutrition, List<Workout> workoutList) throws ParseException {
         this.practiceDayId = practiceDayId;
-        this.date = date;
+        this.setPracticeDate(practiceDate);
         this.nutrition = nutrition;
-        for(Workout workout: workouts){
+        for(Workout workout: workoutList){
             this.workoutService.add(workout);
         }
     }
@@ -31,12 +33,12 @@ public class PracticeDay {
         this.practiceDayId = practiceDayId;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getPracticeDate() {
+        return praticeDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setPracticeDate(String practiceDate) throws ParseException {
+        this.praticeDate = GlobalUtils.getDate(practiceDate);
     }
 
     public Nutrition getNutrition() {
@@ -49,6 +51,11 @@ public class PracticeDay {
 
     public WorkoutService getWorkoutService() {
         return workoutService;
-    }   
+    }
+
+    @Override
+    public String toString(){
+        return String.format("%-15s | %-15s | %-15s | %-15s", practiceDayId, GlobalUtils.getDateString(praticeDate), nutrition.getCalories(), workoutService);
+    }
 
 }

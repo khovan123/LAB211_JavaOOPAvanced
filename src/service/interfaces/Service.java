@@ -1,10 +1,12 @@
 package service.interfaces;
 
+import exception.NotFoundException;
+
 import java.util.function.Predicate;
 
 public interface Service<T> {
 
-    void display();
+    void display() throws NotFoundException;
 
     void add(T entry);
     
@@ -12,7 +14,7 @@ public interface Service<T> {
     
     void update(T entry);
     
-    T search(Predicate<T> p);
+    T search(Predicate<T> p) throws NotFoundException;
 
     T filter(String entry, String regex);
 }
