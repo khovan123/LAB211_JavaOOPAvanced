@@ -5,7 +5,12 @@ import view.Menu;
 public class FitnessCourseManagement extends Menu<String> {
 
     static String title = "FITNESS COURSE";
-    static String[] menuOptions = {};
+    static String[] menuOptions = {
+    "User",//userService
+    "Coach",//coachService
+    "Course",//courseService
+    "Booking"
+    };
     
     public FitnessCourseManagement(){
         this(title,menuOptions);

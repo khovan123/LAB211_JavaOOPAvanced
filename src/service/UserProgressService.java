@@ -3,7 +3,7 @@ package service;
 
 import service.interfaces.IUserProgressService;
 import java.util.function.Predicate;
-import model.sub.PracticeDay;
+import model.PracticalDay;
 
 public class UserProgressService implements IUserProgressService{
 
@@ -13,7 +13,7 @@ public class UserProgressService implements IUserProgressService{
     }
 
     @Override
-    public void addPracticeDay(PracticeDay practiceDay) {
+    public void addPracticeDay(PracticalDay practiceDay) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -23,12 +23,12 @@ public class UserProgressService implements IUserProgressService{
     }
 
     @Override
-    public void updateSchedule(PracticeDay practiceDay) {
+    public void updateSchedule(PracticalDay practiceDay) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public PracticeDay searchPracticeDay(Predicate<PracticeDay> p) {
+    public PracticalDay searchPracticeDay(Predicate<PracticalDay> p) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

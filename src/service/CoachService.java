@@ -3,10 +3,10 @@ package service;
 
 import service.interfaces.ICoachService;
 import java.util.function.Predicate;
-import model.main.Coach;
-import model.main.Course;
-import model.sub.PracticeDay;
-import model.main.User;
+import model.Coach;
+import model.Course;
+import model.PracticalDay;
+import model.User;
 
 public class CoachService implements ICoachService{
 
@@ -61,7 +61,7 @@ public class CoachService implements ICoachService{
     }
 
     @Override
-    public void updateSchedule(Course course, PracticeDay practiceDay) {
+    public void updateSchedule(Course course, PracticalDay practiceDay) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
