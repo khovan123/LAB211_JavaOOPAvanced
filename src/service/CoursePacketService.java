@@ -1,28 +1,19 @@
 
-package repository;
+package service;
 
 import java.util.function.Predicate;
-import repository.interfaces.ICoachRepository;
+import model.main.CoursePacket;
+import service.interfaces.ICoursePacketService;
 
-public class CoachRepository implements ICoachRepository{
+public class CoursePacketService implements ICoursePacketService{
 
     @Override
-    public Object readFile() {
+    public void display() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void writeFile(Object c) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Object filter(String entry, String regex) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void add(Object entry) {
+    public void add(CoursePacket entry) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -32,7 +23,17 @@ public class CoachRepository implements ICoachRepository{
     }
 
     @Override
-    public Object search(Predicate<Object> p) {
+    public void update(CoursePacket entry) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public CoursePacket search(Predicate<CoursePacket> p) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public CoursePacket filter(String entry, String regex) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 import model.main.Course;
 import model.sub.Workout;
 
-public interface ICourseService extends Service<Course>{
+public interface ICourseSegmentService extends Service<Course>{
     @Override
     void display();
 
