@@ -1,13 +1,32 @@
-
 package model.main;
 
-import service.CourseService;
-import service.UserService;
-
 public class Coach {
-    String coachId;
-    String coachName;
-    CourseService courseService;
-    UserService userService;
+
+    private String coachId;
+    private String coachName;
+
+    public Coach() {
+    }
+
+    public Coach(String coachId, String coachName) {
+        this.coachId = coachId;
+        this.coachName = coachName;
+    }
+
+    public String getCoachId() {
+        return coachId;
+    }
+
+    public void setCoachId(String coachId) {
+        this.coachId = coachId;
+    }
+
+    public String getCoachName() {
+        return coachName;
+    }
+
+    public void setCoachName(String coachName) {
+        this.coachName = coachName;
+    }
 
 }
