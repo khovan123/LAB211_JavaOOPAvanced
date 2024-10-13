@@ -1,11 +1,12 @@
 package model;
 
+import exception.InvalidDataException;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import service.WorkoutService;
 
-public class PracticalDay implements Comparator<PracticalDay>{
+public class PracticalDay implements Comparator<PracticalDay> {
 
     private String practiceDayId;
     private Date date;
@@ -72,6 +73,14 @@ public class PracticalDay implements Comparator<PracticalDay>{
     public int compare(PracticalDay o1, PracticalDay o2) {
         //compare 2 date
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public String getInfo() {
+        return String.format("", "");
+    }
+
+    public void runValidate() throws InvalidDataException {
+
     }
 
 }
