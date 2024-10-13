@@ -2,10 +2,10 @@
 package service.interfaces;
 
 import java.util.function.Predicate;
-import model.main.Coach;
-import model.main.Course;
-import model.sub.PracticeDay;
-import model.main.User;
+import model.Coach;
+import model.Course;
+import model.PracticalDay;
+import model.User;
 
 public interface ICoachService extends  Service<Coach>{
     @Override
@@ -34,7 +34,7 @@ public interface ICoachService extends  Service<Coach>{
     
     Course searchCourse(Predicate<Course> p);
     
-    void updateSchedule(Course course, PracticeDay practiceDay);
+    void updateSchedule(Course course, PracticalDay practiceDay);
     
     void deleteUser(String id);
     

@@ -2,18 +2,18 @@
 package service.interfaces;
 
 import java.util.function.Predicate;
-import model.sub.PracticeDay;
+import model.PracticalDay;
 
 public interface IUserProgressService{
     
     void displaySchedule();
 
-    void addPracticeDay(PracticeDay practiceDay);
+    void addPracticeDay(PracticalDay practiceDay);
     
     void deletePracticeDay(String id);
     
-    void updateSchedule(PracticeDay practiceDay);
+    void updateSchedule(PracticalDay practiceDay);
     
-    PracticeDay searchPracticeDay(Predicate<PracticeDay> p);
+    PracticalDay searchPracticeDay(Predicate<PracticalDay> p);
     
 }

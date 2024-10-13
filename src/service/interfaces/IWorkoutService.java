@@ -1,7 +1,7 @@
 package service.interfaces;
 
 import java.util.function.Predicate;
-import model.sub.Workout;
+import model.Workout;
 
 public interface IWorkoutService extends Service<Workout> {
 

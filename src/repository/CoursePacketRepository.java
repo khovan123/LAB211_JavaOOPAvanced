@@ -7,19 +7,22 @@ import exception.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import model.Coach;
-import repository.interfaces.ICoachRepository;
+import model.CoursePacket;
+import repository.interfaces.ICoursePacketRepository;
 
-public class CoachRepository implements ICoachRepository {
+public class CoursePacketRepository implements ICoursePacketRepository {
 
-    private static List<Coach> coachs = new ArrayList<>();
+    private static List<CoursePacket> coursePackets = new ArrayList<>();
+    private static CourseSegmentRepository courseSegmentRepository = new CourseSegmentRepository();
+    private static UserRepository userRepository = new UserRepository();
+    private static UserProgressRepository userProgressRepository = new UserProgressRepository();
 
     static {
 
     }
-
-    public List<Coach> getCoachs() {
-        return coachs;
+    
+    public List<CoursePacket> getCoursePackets(){
+        return coursePackets;
     }
 
     @Override
@@ -28,17 +31,20 @@ public class CoachRepository implements ICoachRepository {
     }
 
     @Override
-    public List<Coach> readFile() throws IOException {
+    public List<CoursePacket> readFile() throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void writeFile(List<Coach> coachs) throws IOException {
+    public void writeFile(List<CoursePacket> entry) throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void add(Coach coach) throws EventException {
+    public void add(CoursePacket coursePacket) throws EventException {
+        //check userId in coursePackets contains in userRepository
+        //check id in userProgressRepository contains in coursePackets
+        //check courseSegmentId in coursePackets contains in courseSegmentRepository
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -48,12 +54,12 @@ public class CoachRepository implements ICoachRepository {
     }
 
     @Override
-    public Coach search(Predicate<Coach> p) throws NotFoundException {
+    public CoursePacket search(Predicate<CoursePacket> p) throws NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public Coach filter(String entry, String regex) throws InvalidDataException {
+    public CoursePacket filter(String entry, String regex) throws InvalidDataException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

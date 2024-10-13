@@ -4,47 +4,42 @@ import java.util.ArrayList;
 import java.util.List;
 import service.interfaces.IScheduleService;
 import java.util.function.Predicate;
-import model.sub.PracticeDay;
+import model.PracticalDay;
 
 public class ScheduleService implements IScheduleService {
 
-    List<PracticeDay> practiceDays = new ArrayList<>();
+    List<PracticalDay> practicalDays = new ArrayList<>();
 
     @Override
     public void displaySchedule() {
-        if (practiceDays.isEmpty()) {
+        if (practicalDays.isEmpty()) {
             return;
         } else {
-            for (PracticeDay practiceDay : practiceDays) {
-                System.out.println(practiceDay);
+            for (PracticalDay practicalDay : practicalDays) {
+                System.out.println(practicalDay);
             }
         }
     }
 
     @Override
-    public void addPracticeDay(PracticeDay entry) {
-        practiceDays.add(entry);
+    public void addPracticeDay(PracticalDay entry) {
+        practicalDays.add(entry);
         System.out.println("Added successful!");
     }
 
     @Override
     public void deletePracticeDay(String id) {
-        
+        practicalDays.removeIf(practicalDay -> practicalDay.getPracticeDayId().equals(id));
+        System.out.println("Deleted successfully!");
     }
 
     @Override
-    public void updatePracticeDay(PracticeDay practiceDay) {
-
+    public void updatePracticeDay(PracticalDay practiceDay) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public PracticeDay searchPracticeDay(Predicate<PracticeDay> p) {
-        for(PracticeDay practiceDay : practiceDays){
-            if (p.test(practiceDay)){
-                return practiceDay;
-            }
-        }
-        return null;
+    public PracticalDay searchPracticeDay(Predicate<PracticalDay> p) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
 }

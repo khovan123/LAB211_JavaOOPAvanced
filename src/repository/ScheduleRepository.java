@@ -7,38 +7,42 @@ import exception.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import model.Coach;
-import repository.interfaces.ICoachRepository;
+import model.Schedule;
+import repository.interfaces.IScheduleRepository;
 
-public class CoachRepository implements ICoachRepository {
+public class ScheduleRepository implements IScheduleRepository {
+    //no path, just handle practicalRepository
 
-    private static List<Coach> coachs = new ArrayList<>();
-
-    static {
-
+    private static List<Schedule> schedules = new ArrayList<>();
+    private static PracticalDayRepository praciPracticalDayRepository = new PracticalDayRepository();
+    
+    static{
+        
     }
 
-    public List<Coach> getCoachs() {
-        return coachs;
+    public List<Schedule> getSchedules (){
+        return schedules;
     }
-
+    
     @Override
     public void addFromDatabase() throws EventException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public List<Coach> readFile() throws IOException {
+    public List<Schedule> readFile() throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void writeFile(List<Coach> coachs) throws IOException {
+    public void writeFile(List<Schedule> entry) throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void add(Coach coach) throws EventException {
+    public void add(Schedule schedule) throws EventException {
+        //new Schedule
+        //add schedules which have same scheduleId
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -48,12 +52,12 @@ public class CoachRepository implements ICoachRepository {
     }
 
     @Override
-    public Coach search(Predicate<Coach> p) throws NotFoundException {
+    public Schedule search(Predicate<Schedule> p) throws NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public Coach filter(String entry, String regex) throws InvalidDataException {
+    public Schedule filter(String entry, String regex) throws InvalidDataException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

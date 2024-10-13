@@ -1,12 +1,12 @@
 
 package service;
 
-import service.interfaces.ICourseService;
 import java.util.function.Predicate;
-import model.main.Course;
-import model.sub.Workout;
+import model.Course;
+import model.Workout;
+import service.interfaces.ICourseSegmentService;
 
-public class CourseService implements ICourseService{
+public class CourseSegmentService implements ICourseSegmentService{
 
     @Override
     public void display() {
