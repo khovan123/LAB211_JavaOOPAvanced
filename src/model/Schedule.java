@@ -6,6 +6,18 @@ public class Schedule {
     private String userProgressId;
     private PracticalDayService practiceDayService;
 
+    public Schedule(String userProgressId, PracticalDayService practiceDayService) {
+        this.userProgressId = userProgressId;
+        this.practiceDayService = practiceDayService;
+    }
+    public String getUserProgressId() {
+        return userProgressId;
+    }
+
+    public void setUserProgressId(String userProgressId) {
+        this.userProgressId = userProgressId;
+    }
+
     public String getScheduleId() {
         return userProgressId;
     }
