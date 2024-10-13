@@ -19,6 +19,15 @@ public class Course {
         UserId = userId;
     }
 
+    public Course(String courseId, String courseName, String coachId, String userId, WorkoutService workoutService, UserProgressService userProgressService) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.coachId = coachId;
+        UserId = userId;
+        this.workoutService = workoutService;
+        this.userProgressService = userProgressService;
+    }
+
     public String getCourseId() {
         return courseId;
     }

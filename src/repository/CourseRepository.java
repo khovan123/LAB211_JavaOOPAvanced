@@ -9,6 +9,8 @@ import java.util.List;
 
 public class CourseRepository implements ICourseRepository{
 
+    // May method ni phai co data moi viet duoc
+
     @Override
     public List<Course> readFile() {
         return new ArrayList<>();
@@ -16,6 +18,5 @@ public class CourseRepository implements ICourseRepository{
 
     @Override
     public void writeFile(List<Course> courses) {
-
     }
 }
