@@ -1,4 +1,4 @@
-package model.main;
+package model;
 
 public class Coach {
 

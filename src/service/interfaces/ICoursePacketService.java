@@ -1,7 +1,7 @@
 
 package service.interfaces;
 
-import model.main.CoursePacket;
+import model.CoursePacket;
 
 
 public interface ICoursePacketService extends Service<CoursePacket>{

@@ -1,5 +1,5 @@
 
-package model.sub;
+package model;
 
 public class Nutrition {
     private String nutritionId;

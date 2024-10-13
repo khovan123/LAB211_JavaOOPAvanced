@@ -2,7 +2,7 @@
 package service;
 
 import java.util.function.Predicate;
-import model.main.CoursePacket;
+import model.CoursePacket;
 import service.interfaces.ICoursePacketService;
 
 public class CoursePacketService implements ICoursePacketService{

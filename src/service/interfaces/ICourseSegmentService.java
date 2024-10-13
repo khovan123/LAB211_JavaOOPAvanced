@@ -2,8 +2,8 @@
 package service.interfaces;
 
 import java.util.function.Predicate;
-import model.main.Course;
-import model.sub.Workout;
+import model.Course;
+import model.Workout;
 
 public interface ICourseSegmentService extends Service<Course>{
     @Override
