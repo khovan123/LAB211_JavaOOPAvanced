@@ -16,7 +16,7 @@ public class UserProgressRepository implements IUserProgressRepository{
 
     private static List<UserProgress> userProgresses = new ArrayList<>();
     private static ScheduleRepository scheduleRepository = new ScheduleRepository();
-    
+    //generate with id: CP-YYYY in scheduleRepository
     static{
         
     }
