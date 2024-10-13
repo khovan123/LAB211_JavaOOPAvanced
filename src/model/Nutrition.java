@@ -1,7 +1,9 @@
-
 package model;
 
+import exception.InvalidDataException;
+
 public class Nutrition {
+
     private String nutritionId;
     private double calories;
 
@@ -27,5 +29,13 @@ public class Nutrition {
 
     public void setCalories(double calories) {
         this.calories = calories;
+    }
+
+    public String getInfo() {
+        return String.format("", "");
+    }
+
+    public void runValidate() throws InvalidDataException {
+
     }
 }

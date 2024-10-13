@@ -1,5 +1,7 @@
 package model;
 
+import exception.InvalidDataException;
+
 public class User {
 
     private String userId;
@@ -27,5 +29,13 @@ public class User {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getInfo() {
+        return String.format("", "");
+    }
+
+    public void runValidate() throws InvalidDataException {
+
     }
 }
