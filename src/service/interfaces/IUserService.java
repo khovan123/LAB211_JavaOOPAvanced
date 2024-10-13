@@ -1,9 +1,9 @@
 package service.interfaces;
 
 import java.util.function.Predicate;
-import model.main.Course;
-import model.sub.PracticeDay;
-import model.main.User;
+import model.Course;
+import model.PracticalDay;
+import model.User;
 
 public interface IUserService extends Service<User> {
 
@@ -33,5 +33,5 @@ public interface IUserService extends Service<User> {
     
     void displayCourse(Course course);
     
-    void updateSchedule(Course course, PracticeDay practiceDay);
+    void updateSchedule(Course course, PracticalDay practiceDay);
 }

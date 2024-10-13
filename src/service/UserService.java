@@ -2,9 +2,9 @@ package service;
 
 import service.interfaces.IUserService;
 import java.util.function.Predicate;
-import model.main.Course;
-import model.sub.PracticeDay;
-import model.main.User;
+import model.Course;
+import model.PracticalDay;
+import model.User;
 
 public class UserService implements IUserService {
 
@@ -59,7 +59,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void updateSchedule(Course course, PracticeDay practiceDay) {
+    public void updateSchedule(Course course, PracticalDay practiceDay) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

@@ -1,4 +1,4 @@
-package model.sub;
+package model;
 
 public class Workout {
 
@@ -9,11 +9,12 @@ public class Workout {
     private int sets;
     private int duration;
     private boolean done;
+    private String courseSegmentId;
 
     public Workout() {
     }
 
-    public Workout(String workoutId, String workoutName, String description, int repetition, int sets, int duration, boolean done) {
+    public Workout(String workoutId, String workoutName, String description, int repetition, int sets, int duration, boolean done, String courseSegmentId) {
         this.workoutId = workoutId;
         this.workoutName = workoutName;
         this.description = description;
@@ -21,6 +22,7 @@ public class Workout {
         this.sets = sets;
         this.duration = duration;
         this.done = done;
+        this.courseSegmentId = courseSegmentId;
     }
 
     public String getWorkoutId() {
@@ -77,6 +79,14 @@ public class Workout {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public String getCourseSegmentId() {
+        return courseSegmentId;
+    }
+
+    public void setCourseSegmentId(String courseSegmentId) {
+        this.courseSegmentId = courseSegmentId;
     }
 
 }

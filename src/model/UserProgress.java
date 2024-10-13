@@ -1,4 +1,4 @@
-package model.sub;
+package model;
 
 import service.ScheduleService;
 

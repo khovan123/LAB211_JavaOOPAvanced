@@ -1,9 +1,9 @@
-package model.main;
+package model;
 
 import java.util.List;
-import model.sub.Workout;
 import service.WorkoutService;
 
+//this class store default course data, can not be change when coursepacket data change
 public class CourseSegment extends Course {
     
     WorkoutService workoutService; //all workout, to know what you do in course

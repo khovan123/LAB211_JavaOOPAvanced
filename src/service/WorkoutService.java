@@ -3,7 +3,7 @@ package service;
 
 import service.interfaces.IWorkoutService;
 import java.util.function.Predicate;
-import model.sub.Workout;
+import model.Workout;
 
 public class WorkoutService implements IWorkoutService{
 
