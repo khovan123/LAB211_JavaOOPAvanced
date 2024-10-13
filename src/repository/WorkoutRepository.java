@@ -13,12 +13,13 @@ import repository.interfaces.IWorkoutRepository;
 public class WorkoutRepository implements IWorkoutRepository {
 
     private static List<Workout> workouts = new ArrayList<>();
+    //data sample: WK-YYYY, Leg Day, Do not off, 2, 4, 2, true, CS-YYYY
 
     static {
 
     }
-    
-    public List<Workout> getWorkouts(){
+
+    public List<Workout> getWorkouts() {
         return workouts;
     }
 

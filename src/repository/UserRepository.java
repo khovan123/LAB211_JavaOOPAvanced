@@ -13,7 +13,7 @@ import repository.interfaces.IUserRepository;
 public class UserRepository implements IUserRepository {
 
     private static List<User> users = new ArrayList<>();
-
+    //data sample: US-YYYY, Jonas Leonard
     static {
 
     }
