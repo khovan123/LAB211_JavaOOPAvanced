@@ -2,8 +2,10 @@
 package repository;
 
 import exception.EventException;
+import exception.IOException;
+import exception.InvalidDataException;
 import exception.NotFoundException;
-import model.main.Course;
+import model.Course;
 import repository.interfaces.ICourseRepository;
 
 import java.util.ArrayList;
@@ -13,24 +15,15 @@ import java.util.function.Predicate;
 
 public class CourseRepository implements ICourseRepository{
 
+
     @Override
     public void addFromDatabase() throws EventException {
 
     }
 
     @Override
-    public List<Course> readFile() {
+    public List<Course> readFile() throws IOException {
         return new ArrayList<>();
-    }
-
-    @Override
-    public void writeFile(List<Course> courses) {
-
-    }
-
-    @Override
-    public void add(Course entry) throws EventException {
-
     }
 
     @Override
@@ -39,13 +32,22 @@ public class CourseRepository implements ICourseRepository{
     }
 
     @Override
+    public Course filter(String entry, String regex) throws InvalidDataException {
+        return null;
+    }
+
+    @Override
     public Course search(Predicate<Course> p) throws NotFoundException {
         return null;
     }
 
     @Override
-    public Course filter(String entry, String regex) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void add(Course entry) throws EventException {
+
     }
 
+    @Override
+    public void writeFile(List<Course> entry) throws IOException {
+
+    }
 }

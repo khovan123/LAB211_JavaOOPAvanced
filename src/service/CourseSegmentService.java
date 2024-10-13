@@ -1,53 +1,55 @@
 
 package service;
 
-import repository.CourseRepository;
+import exception.IOException;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
-import model.main.Course;
+import model.CourseSegment;
 
 
 import model.Workout;
+import repository.CourseSegmentRepository;
 import service.interfaces.ICourseSegmentService;
 import utils.GlobalUtils;
 
 public class CourseSegmentService implements ICourseSegmentService {
-    private final CourseRepository courseRepository;
-    private final ArrayList<Course> courseList;
+    private final CourseSegmentRepository courseSegmentRepository;
+
+    private final ArrayList<CourseSegment> courseSegments;
     private final GlobalUtils globalUtils;
 
-    public CourseSegmentService() {
-        courseRepository = new CourseRepository();
-        courseList = (ArrayList<Course>) courseRepository.readFile();
+    public CourseSegmentService() throws IOException {
+        courseSegmentRepository = new CourseSegmentRepository();
+        courseSegments = (ArrayList<CourseSegment>) courseSegmentRepository.readFile();
         globalUtils = new GlobalUtils();
     }
 
     @Override
     public void display() {
         try {
-            if (courseList.isEmpty()) {
+            if (courseSegments.isEmpty()) {
                 System.out.println("-> The List Is Empty !!");
             } else {
-                for (Course course : courseList) {
+                for (CourseSegment course : courseSegments) {
                     System.out.println(course);
                 }
             }
         } catch (Exception e) {
-            System.out.println("-> Error While Display Course List - " + e.getMessage());
+            System.out.println("-> Error While Display CourseSegment List - " + e.getMessage());
         }
     }
 
     @Override
-    public void add(Course entry) {
+    public void add(CourseSegment entry) {
         try {
-            courseList.add(entry);
-            System.out.println("-> Course Add Successfully.");
-            courseRepository.writeFile(courseList); // Save
+            courseSegments.add(entry);
+            System.out.println("-> CourseSegment Add Successfully.");
+            courseSegmentRepository.writeFile(courseSegments); // Save
         } catch (Exception e) {
-            System.out.println("-> Error While Add Course - " + e.getMessage());
+            System.out.println("-> Error While Add CourseSegment - " + e.getMessage());
         }
     }
 
@@ -55,26 +57,26 @@ public class CourseSegmentService implements ICourseSegmentService {
     @Override
     public void delete(String id) {
         try {
-            boolean removed = courseList.removeIf(course -> course.getCourseId().equalsIgnoreCase(id));
+            boolean removed = courseSegments.removeIf(course -> course.getCourseId().equalsIgnoreCase(id));
             if (removed) {
-                System.out.println("-> Course With ID " + id + " Have Been Remove");
-                courseRepository.writeFile(courseList);
+                System.out.println("-> CourseSegment With ID " + id + " Have Been Remove");
+                courseSegmentRepository.writeFile(courseSegments);
             } else {
-                System.out.println("-> Course With ID " + id + " Not Found");
+                System.out.println("-> CourseSegment With ID " + id + " Not Found");
             }
         } catch (Exception e) {
-            System.out.println("-> Error While Delete Course - " + e.getMessage());
+            System.out.println("-> Error While Delete CourseSegment - " + e.getMessage());
         }
     }
 
-    public void update(Course updatedCourse) {
+    public void update(CourseSegment updatedCourse) {
         try {
             Field[] courseField = updatedCourse.getClass().getDeclaredFields();
             int totalField = courseField.length;
             boolean isUpdate = true;
 
             while (isUpdate) {
-                System.out.println("---- CUSTOMIZE COURSE ----");
+                System.out.println("---- CUSTOMIZE COURSE SEGMENT ----");
                 for (int i = 0; i < courseField.length; i++) {
                     System.out.println((i + 1) + ". " + courseField[i].getName());
                 }
@@ -118,14 +120,14 @@ public class CourseSegmentService implements ICourseSegmentService {
                 }
             }
         } catch (Exception e) {
-            System.out.println("-> Error While Updating Course " + e.getMessage());
+            System.out.println("-> Error While Updating CourseSegment " + e.getMessage());
         }
     }
 
     @Override
-    public Course search(Predicate<Course> p) {
+    public CourseSegment search(Predicate<CourseSegment> p) {
         try {
-            for (Course course : courseList) {
+            for (CourseSegment course : courseSegments) {
                 if (p.test(course)) {
                     return course;
                 }
@@ -138,7 +140,7 @@ public class CourseSegmentService implements ICourseSegmentService {
     }
 
     @Override
-    public Course filter(String entry, String regex) {
+    public CourseSegment filter(String entry, String regex) {
         return null;
     }
 

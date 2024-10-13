@@ -5,28 +5,29 @@ import exception.EventException;
 import exception.InvalidDataException;
 import exception.NotFoundException;
 import java.util.function.Predicate;
-import model.main.Course;
+import model.Course;
+import model.CourseSegment;
 import model.Workout;
 
-public interface ICourseSegmentService extends Service<Course> {
+public interface ICourseSegmentService extends Service<CourseSegment> {
 
     @Override
     void display() throws EmptyDataException;
 
     @Override
-    void add(Course entry) throws EventException;
+    void add(CourseSegment entry) throws EventException;
 
     @Override
     void delete(String id) throws EventException, NotFoundException;
 
     @Override
-    void update(Course entry) throws EventException, NotFoundException;
+    void update(CourseSegment entry) throws EventException, NotFoundException;
 
     @Override
-    Course search(Predicate<Course> p) throws NotFoundException;
+    CourseSegment search(Predicate<CourseSegment> p) throws NotFoundException;
 
     @Override
-    Course filter(String entry, String regex) throws InvalidDataException;
+    CourseSegment filter(String entry, String regex) throws InvalidDataException;
 
     void addWorkout(Workout workout);
 

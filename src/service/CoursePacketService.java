@@ -70,7 +70,7 @@ public class CoursePacketService implements ICoursePacketService {
             boolean isUpdate = true;
 
             while (isUpdate) {
-                System.out.println("---- CUSTOMIZE COURSE ----");
+                System.out.println("---- CUSTOMIZE COURSE PACKET ----");
                 for (int i = 0; i < courseField.length; i++) {
                     System.out.println((i + 1) + ". " + courseField[i].getName());
                 }
