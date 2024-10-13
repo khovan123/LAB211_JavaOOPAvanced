@@ -1,5 +1,7 @@
 package model;
 
+import exception.InvalidDataException;
+
 public class Workout {
 
     private String workoutId;
@@ -87,6 +89,14 @@ public class Workout {
 
     public void setCourseSegmentId(String courseSegmentId) {
         this.courseSegmentId = courseSegmentId;
+    }
+
+    public String getInfo() {
+        return String.format("", "");
+    }
+
+    public void runValidate() throws InvalidDataException {
+
     }
 
 }

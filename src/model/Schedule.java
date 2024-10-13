@@ -1,8 +1,10 @@
 package model;
 
+import exception.InvalidDataException;
 import service.PracticalDayService;
 
 public class Schedule {
+
     private String userProgressId;
     private PracticalDayService practiceDayService;
 
@@ -16,6 +18,14 @@ public class Schedule {
 
     public PracticalDayService getPracticeDayService() {
         return practiceDayService;
+    }
+
+    public String getInfo() {
+        return String.format("", "");
+    }
+
+    public void runValidate() throws InvalidDataException {
+
     }
 
 }

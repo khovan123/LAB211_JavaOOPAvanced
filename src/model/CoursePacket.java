@@ -1,5 +1,6 @@
 package model;
 
+import exception.InvalidDataException;
 import service.UserProgressService;
 
 //this class store coursepacket data, it can change by some action but dont effect on coursesegment
@@ -67,4 +68,11 @@ public class CoursePacket {
         this.courseSegmentId = courseSegmentId;
     }
 
+    public String getInfo() {
+        return String.format("", "");
+    }
+
+    public void runValidate() throws InvalidDataException {
+
+    }
 }
