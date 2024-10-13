@@ -31,7 +31,5 @@ public interface ICourseService extends Service<Course>{
     void deleteWorkout(Workout workout);
     
     Workout searchWorkout(Predicate<Workout> p);
-    
-    
-    
+
 }

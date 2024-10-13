@@ -5,7 +5,6 @@ import repository.CourseRepository;
 import service.interfaces.ICourseService;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Predicate;
 
 import model.main.Course;
@@ -13,47 +12,63 @@ import model.sub.Workout;
 
 public class CourseService implements ICourseService {
     private final CourseRepository courseRepository;
-    private final List<Course> courseList;
+    private final ArrayList<Course> courseList;
 
     public CourseService() {
         courseRepository = new CourseRepository();
-        courseList = new ArrayList<>(courseRepository.readFile());
+        courseList = (ArrayList<Course>) courseRepository.readFile();
     }
 
     @Override
     public void display() {
-        if (courseList.isEmpty()){
-            System.out.println("-> The List Is Empty !!");
-        } else{
-            for (Course course : courseList){
-                System.out.println(course);
+        try {
+            if (courseList.isEmpty()) {
+                System.out.println("-> The List Is Empty !!");
+            } else {
+                for (Course course : courseList) {
+                    System.out.println(course);
+                }
             }
+        } catch (Exception e) {
+            System.out.println("-> Error While Display Course List - " + e.getMessage());
         }
     }
 
     @Override
     public void add(Course entry) {
-        courseList.add(entry);
-        System.out.println("-> Course Add Successfully.");
-        courseRepository.readFile();
+        try {
+            courseList.add(entry);
+            System.out.println("-> Course Add Successfully.");
+            courseRepository.writeFile(courseList); // Save
+        } catch (Exception e) {
+            System.out.println("-> Error While Add Course - " + e.getMessage());
+        }
     }
 
     @Override
     public void delete(String id) {
-        boolean removed = courseList.removeIf(course -> course.getCourseId().equalsIgnoreCase(id));
-        if (removed){
-            System.out.println("-> Course With ID " + id + " Have Been Remove");
-            courseRepository.writeFile(courseList);
-        }else {
-            System.out.println("-> Course With ID " + id + " Not Found");
+        try {
+            boolean removed = courseList.removeIf(course -> course.getCourseId().equalsIgnoreCase(id));
+            if (removed) {
+                System.out.println("-> Course With ID " + id + " Have Been Remove");
+                courseRepository.writeFile(courseList);
+            } else {
+                System.out.println("-> Course With ID " + id + " Not Found");
+            }
+        } catch (Exception e) {
+            System.out.println("-> Error While Delete Course - " + e.getMessage());
         }
     }
 
     @Override
     public Course search(Predicate<Course> p) {
-        for (Course course : courseList){
-            if (p.test(course))
-                return course;
+        try {
+            for (Course course : courseList) {
+                if (p.test(course))
+                    return course;
+            }
+        } catch (Exception e) {
+            System.out.println("-> Error While Searching Course - " + e.getMessage());
         }
         return null;
     }
@@ -65,15 +80,19 @@ public class CourseService implements ICourseService {
 
     @Override
     public void update(Course updatedCourse) {
-        for (int i = 0; i < courseList.size(); i++) {
-            Course c = courseList.get(i);
-            if (c.getCourseId().equalsIgnoreCase(updatedCourse.getCourseId())){
-                courseList.set(i, updatedCourse);
-                System.out.println("-> Course With Course ID" + updatedCourse.getCourseId() + " Have Been Updated!!");
-                return;
+        try {
+            for (int i = 0; i < courseList.size(); i++) {
+                Course c = courseList.get(i);
+                if (c.getCourseId().equalsIgnoreCase(updatedCourse.getCourseId())) {
+                    courseList.set(i, updatedCourse);
+                    System.out.println("-> Course With Course ID" + updatedCourse.getCourseId() + " Have Been Updated!!");
+                    return;
+                }
             }
+            System.out.println("-> Course With Course ID" + updatedCourse.getCourseId() + " Have Been Updated!!");
+        } catch (Exception e) {
+            System.out.println("-> Error While Updating Course - " + e.getMessage());
         }
-        System.out.println("-> Course With Course ID" + updatedCourse.getCourseId() + " Have Been Updated!!");
     }
 
     @Override

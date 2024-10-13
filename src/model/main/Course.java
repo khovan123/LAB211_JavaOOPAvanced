@@ -12,12 +12,6 @@ public class Course {
     WorkoutService workoutService; //all workout, to know what you do in course
     UserProgressService userProgressService;
 
-    public Course(String courseId, String courseName, String coachId, String userId) {
-        this.courseId = courseId;
-        this.courseName = courseName;
-        this.coachId = coachId;
-        UserId = userId;
-    }
 
     public Course(String courseId, String courseName, String coachId, String userId, WorkoutService workoutService, UserProgressService userProgressService) {
         this.courseId = courseId;
@@ -76,15 +70,8 @@ public class Course {
         this.userProgressService = userProgressService;
     }
 
-    @Override
-    public String toString() {
-        return "Course{" +
-                "courseId='" + courseId + '\'' +
-                ", courseName='" + courseName + '\'' +
-                ", coachId='" + coachId + '\'' +
-                ", UserId='" + UserId + '\'' +
-                ", workoutService=" + workoutService +
-                ", userProgressService=" + userProgressService +
-                '}';
+    public String getInfo() {
+        return String.format("| %10s | %12s | %7s | %7s | %15s | %15s |",
+                this.courseId, this.courseName, this.coachId, this.UserId, this.workoutService, this.userProgressService);
     }
 }

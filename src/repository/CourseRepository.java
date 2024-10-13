@@ -7,9 +7,8 @@ import repository.interfaces.ICourseRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseRepository implements ICourseRepository{
 
-    // May method ni phai co data moi viet duoc
+public class CourseRepository implements ICourseRepository{
 
     @Override
     public List<Course> readFile() {
@@ -18,5 +17,12 @@ public class CourseRepository implements ICourseRepository{
 
     @Override
     public void writeFile(List<Course> courses) {
+
     }
+
+    @Override
+    public Course filter(String entry, String regex) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }
