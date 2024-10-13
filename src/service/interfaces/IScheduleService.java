@@ -1,18 +1,31 @@
 package service.interfaces;
 
+import exception.EmptyDataException;
+import exception.EventException;
+import exception.InvalidDataException;
+import exception.NotFoundException;
 import java.util.function.Predicate;
-import model.PracticalDay;
+import model.Schedule;
 
-public interface IScheduleService {
+public interface IScheduleService extends Service<Schedule> {
 
-    void displaySchedule();
+    @Override
 
-    void addPracticeDay(PracticalDay entry);
+    void display() throws EmptyDataException;
 
-    void deletePracticeDay(String id);
+    @Override
+    void add(Schedule schedule) throws EventException;
 
-    void updatePracticeDay(PracticalDay practiceDay);
+    @Override
+    void delete(String id) throws EventException, NotFoundException;
 
-    PracticalDay searchPracticeDay(Predicate<PracticalDay> p);
+    @Override
+    void update(Schedule schedule) throws EventException, NotFoundException;
+
+    @Override
+    Schedule search(Predicate<Schedule> p) throws NotFoundException;
+
+    @Override
+    Schedule filter(String entry, String regex) throws InvalidDataException;
 
 }
