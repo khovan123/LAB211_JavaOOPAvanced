@@ -1,5 +1,6 @@
+package model;
 
-package model.sub;
+import exception.InvalidDataException;
 
 import utils.GlobalUtils;
 
@@ -7,6 +8,7 @@ import java.text.ParseException;
 import java.util.Date;
 
 public class Nutrition {
+
     private String nutritionId;
     private double calories;
 
@@ -37,5 +39,13 @@ public class Nutrition {
     @Override
     public String toString() {
         return String.format("%-15s | %-15.0s", nutritionId, calories);
+    }
+
+    public String getInfo() {
+        return String.format("", "");
+    }
+
+    public void runValidate() throws InvalidDataException {
+
     }
 }

@@ -1,4 +1,6 @@
-package model.main;
+package model;
+
+import exception.InvalidDataException;
 
 public class Course {
 
@@ -39,4 +41,11 @@ public class Course {
         this.coachId = coachId;
     }
 
+    public String getInfo() {
+        return String.format("", "");
+    }
+
+    public void runValidate() throws InvalidDataException {
+
+    }
 }

@@ -1,4 +1,6 @@
-package model.sub;
+package model;
+
+import exception.InvalidDataException;
 
 public class Workout {
 
@@ -9,11 +11,12 @@ public class Workout {
     private int sets;
     private int duration;
     private boolean done;
+    private String courseSegmentId;
 
     public Workout() {
     }
 
-    public Workout(String workoutId, String workoutName, String description, int repetition, int sets, int duration, boolean done) {
+    public Workout(String workoutId, String workoutName, String description, int repetition, int sets, int duration, boolean done, String courseSegmentId) {
         this.workoutId = workoutId;
         this.workoutName = workoutName;
         this.description = description;
@@ -21,6 +24,7 @@ public class Workout {
         this.sets = sets;
         this.duration = duration;
         this.done = done;
+        this.courseSegmentId = courseSegmentId;
     }
 
     public String getWorkoutId() {
@@ -79,8 +83,19 @@ public class Workout {
         this.done = done;
     }
 
-    @Override
-    public String toString(){
+    public String getCourseSegmentId() {
+        return courseSegmentId;
+    }
+
+    public void setCourseSegmentId(String courseSegmentId) {
+        this.courseSegmentId = courseSegmentId;
+    }
+
+    public String getInfo() {
         return String.format("%-15s | %-20s | %-25s | %-8d rep| %-8d sets| %-8d min| %s", workoutId, workoutName, description, repetition, sets, duration, done ? "✔" : "✘");
+    }
+
+    public void runValidate() throws InvalidDataException {
+
     }
 }

@@ -1,14 +1,14 @@
 
 package service;
 
+import exception.EmptyDataException;
 import exception.NotFoundException;
 import service.interfaces.IWorkoutService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import model.sub.Workout;
+import model.Workout;
 
 public class WorkoutService implements IWorkoutService {
 
@@ -23,9 +23,9 @@ public class WorkoutService implements IWorkoutService {
     }
 
     @Override
-    public void display() throws NotFoundException {
+    public void display() throws EmptyDataException {
         if (workoutList.isEmpty())  {
-            throw new NotFoundException(ANSI_RED + "No workout found!!!" + ANSI_RESET);
+            throw new EmptyDataException(ANSI_RED + "No workout found!!!" + ANSI_RESET);
         } else {
             for (Workout workout : workoutList){
                 System.out.println(workout);

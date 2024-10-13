@@ -6,9 +6,9 @@ import exception.InvalidDataException;
 import exception.NotFoundException;
 import java.util.List;
 import java.util.function.Predicate;
-import model.User;
+import model.Workout;
 
-public interface IUserRepository extends Repository<User, List<User>> {
+public interface IWorkoutRepository extends Repository<Workout, List<Workout>> {
 
     final String path = "";
 
@@ -16,20 +16,20 @@ public interface IUserRepository extends Repository<User, List<User>> {
     void addFromDatabase() throws EventException;
 
     @Override
-    List<User> readFile() throws IOException;
+    List<Workout> readFile() throws IOException;
 
     @Override
-    void writeFile(List<User> entry) throws IOException;
+    void writeFile(List<Workout> workouts) throws IOException;
 
     @Override
-    void add(User entry) throws EventException;
+    void add(Workout workout) throws EventException;
 
     @Override
     void delete(String id) throws EventException;
 
     @Override
-    User search(Predicate<User> p) throws NotFoundException;
+    Workout search(Predicate<Workout> p) throws NotFoundException;
 
     @Override
-    User filter(String entry, String regex) throws InvalidDataException;
+    Workout filter(String entry, String regex) throws InvalidDataException;
 }

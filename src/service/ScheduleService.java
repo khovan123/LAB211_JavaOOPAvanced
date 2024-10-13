@@ -3,7 +3,7 @@ package service;
 
 import service.interfaces.IScheduleService;
 import java.util.function.Predicate;
-import model.sub.PracticeDay;
+import model.PracticalDay;
 
 public class ScheduleService implements IScheduleService{
 
@@ -13,7 +13,7 @@ public class ScheduleService implements IScheduleService{
     }
 
     @Override
-    public void addPracticeDay(PracticeDay entry) {
+    public void addPracticeDay(PracticalDay entry) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -23,12 +23,12 @@ public class ScheduleService implements IScheduleService{
     }
 
     @Override
-    public void updatePracticeDay(PracticeDay practiceDay) {
+    public void updatePracticeDay(PracticalDay practiceDay) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public PracticeDay searchPracticeDay(Predicate<PracticeDay> p) {
+    public PracticalDay searchPracticeDay(Predicate<PracticalDay> p) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

@@ -1,60 +1,61 @@
 
-package service;
+package repository;
 
+import exception.EventException;
+import exception.IOException;
+import exception.InvalidDataException;
+import exception.NotFoundException;
+import java.util.TreeSet;
 import java.util.function.Predicate;
-import model.Course;
-import model.Workout;
-import service.interfaces.ICourseSegmentService;
+import model.PracticalDay;
+import repository.interfaces.IPracticalDayRepository;
 
-public class CourseSegmentService implements ICourseSegmentService{
+public class PracticalDayRepository implements IPracticalDayRepository{
+    
+    private static TreeSet<PracticalDay> practicalDays = new TreeSet<>();
+    private static WorkoutRepository workoutRepository = new WorkoutRepository();
+    
+    static{
+        
+    }
+    
+    public TreeSet<PracticalDay> getPracticalDays(){
+        return practicalDays;
+    }
 
     @Override
-    public void display() {
+    public void addFromDatabase() throws EventException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void add(Course entry) {
+    public TreeSet<PracticalDay> readFile() throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void delete(String id) {
+    public void writeFile(TreeSet<PracticalDay> praciDays) throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public Course search(Predicate<Course> p) {
+    public void add(PracticalDay practicalDay) throws EventException {
+        //check id in workoutRepository contains in practicalDays
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public Course filter(String entry, String regex) {
+    public void delete(String id) throws EventException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void update(Course course) {
+    public PracticalDay search(Predicate<PracticalDay> p) throws NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void addWorkout(Workout workout) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void updateWorkout(Workout workout) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void deleteWorkout(Workout workout) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Workout searchWorkout(Predicate<Workout> p) {
+    public PracticalDay filter(String entry, String regex) throws InvalidDataException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

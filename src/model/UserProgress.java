@@ -1,5 +1,6 @@
-package model.sub;
+package model;
 
+import exception.InvalidDataException;
 import service.ScheduleService;
 
 public class UserProgress {
@@ -26,5 +27,13 @@ public class UserProgress {
 
     public ScheduleService getScheduleService() {
         return scheduleService;
+    }
+
+    public String getInfo() {
+        return String.format("", "");
+    }
+
+    public void runValidate() throws InvalidDataException {
+
     }
 }

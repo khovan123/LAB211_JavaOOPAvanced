@@ -1,38 +1,59 @@
-
 package repository;
 
+import exception.EventException;
+import exception.IOException;
+import exception.InvalidDataException;
+import exception.NotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
-import repository.interfaces.ICourseRepository;
+import model.Workout;
+import repository.interfaces.IWorkoutRepository;
 
-public class CourseRepository implements ICourseRepository{
+public class WorkoutRepository implements IWorkoutRepository {
+
+    private static List<Workout> workouts = new ArrayList<>();
+
+    static {
+
+    }
+    
+    public List<Workout> getWorkouts(){
+        return workouts;
+    }
 
     @Override
-    public Object readFile() {
+    public void addFromDatabase() throws EventException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void writeFile(Object c) {
+    public List<Workout> readFile() throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public Object filter(String entry, String regex) {
+    public void writeFile(List<Workout> workouts) throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void add(Object entry) {
+    public void add(Workout workout) throws EventException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(String id) throws EventException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public Object search(Predicate<Object> p) {
+    public Workout search(Predicate<Workout> p) throws NotFoundException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Workout filter(String entry, String regex) throws InvalidDataException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

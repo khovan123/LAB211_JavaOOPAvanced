@@ -1,11 +1,15 @@
-package model.main;
+package model;
 
+import exception.InvalidDataException;
 import service.UserProgressService;
 
+//this class store coursepacket data, it can change by some action but dont effect on coursesegment
+//please use key "new" to create courseSegment in this class, aim to create new address to store data
 public class CoursePacket {
 
     private String coursePacketId;
     private String userId;
+    private String courseSegmentId;
     private CourseSegment courseSegment;
     private UserProgressService userProgressService;
 
@@ -13,9 +17,17 @@ public class CoursePacket {
         this.userProgressService = new UserProgressService();
     }
 
-    public CoursePacket(String coursePacketId, String userId, CourseSegment courseSegment) {
+    public CoursePacket(String coursePacketId, String userId, String courseSegmentId) {
         this.coursePacketId = coursePacketId;
         this.userId = userId;
+        this.courseSegmentId = courseSegmentId;
+        this.userProgressService = new UserProgressService();
+    }
+
+    public CoursePacket(String coursePacketId, String userId, String courseSegmentId, CourseSegment courseSegment) {
+        this.coursePacketId = coursePacketId;
+        this.userId = userId;
+        this.courseSegmentId = courseSegmentId;
         this.courseSegment = courseSegment;
         this.userProgressService = new UserProgressService();
     }
@@ -48,4 +60,19 @@ public class CoursePacket {
         return userProgressService;
     }
 
+    public String getCourseSegmentId() {
+        return courseSegmentId;
+    }
+
+    public void setCourseSegmentId(String courseSegmentId) {
+        this.courseSegmentId = courseSegmentId;
+    }
+
+    public String getInfo() {
+        return String.format("", "");
+    }
+
+    public void runValidate() throws InvalidDataException {
+
+    }
 }
