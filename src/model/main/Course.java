@@ -12,14 +12,11 @@ public class Course {
     WorkoutService workoutService; //all workout, to know what you do in course
     UserProgressService userProgressService;
 
-
-    public Course(String courseId, String courseName, String coachId, String userId, WorkoutService workoutService, UserProgressService userProgressService) {
+    public Course(String courseId, String courseName, String coachId, String userId) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.coachId = coachId;
         UserId = userId;
-        this.workoutService = workoutService;
-        this.userProgressService = userProgressService;
     }
 
     public String getCourseId() {
