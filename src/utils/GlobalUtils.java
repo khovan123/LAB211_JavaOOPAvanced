@@ -1,4 +1,3 @@
-
 package utils;
 
 import java.text.ParseException;
@@ -7,19 +6,27 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.function.Predicate;
 
-public class GlobalUtils{
-
-    //ANSI Color Codes
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_RED = "\u001B[31m";
-
+public class GlobalUtils {
+    static Scanner sc = new Scanner(System.in);
     static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-    public String getValue(String label, String messageError) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public static String getValue(String label, String messageError) {
+        String value = "";
+        boolean valid = false;
+        do {
+            System.out.print(label);
+            value = sc.nextLine().trim();
+            if (!value.isEmpty()) {
+                valid = true;
+            } else {
+                System.out.println(messageError);
+            }
+        } while (!valid);
+        return null;
+
     }
 
-    public String getDouble(String label, String messageError) {
+    public static String getDouble(String label, String messageError) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -35,15 +42,15 @@ public class GlobalUtils{
         return sdf.format(date);
     }
 
-    public String getInteger(String label, String messageError) {
+    public static String getInteger(String label, String messageError) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public String dateFormat(Date date) {
+    public static String dateFormat(Date date) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public Date dateParse(String string) {
+    public static Date dateParse(String string) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
