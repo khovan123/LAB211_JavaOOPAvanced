@@ -1,6 +1,5 @@
 package service;
 
-import java.util.List;
 import exception.EmptyDataException;
 import exception.EventException;
 import exception.InvalidDataException;
@@ -10,51 +9,41 @@ import java.util.function.Predicate;
 import model.UserProgress;
 
 public class UserProgressService implements IUserProgressService {
-
-    private List<PracticalDay> practiceDays;
-
+    
+    static{
+        
+    }
+    
     @Override
-    public void displaySchedule() {
-        if (practiceDays.isEmpty()) {
-            System.out.println("No practice days scheduled.");
-        } else {
-            for (PracticalDay day : practiceDays) {
-                System.out.println(day);
-            }
-        }
+    public void display() throws EmptyDataException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void addPracticeDay(PracticalDay practiceDay) {
-        practiceDays.add(practiceDay);
-        System.out.println("Practice day added: " + practiceDay);
+    public void add(UserProgress userProgress) throws EventException {
+        //generate new UserProgress with id = 
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void deletePracticeDay(String id) {
-        boolean rm = practiceDays.removeIf(day -> day.getPracticeDayId().equals(id));
-        if (rm) {
-            System.out.println("Practice day with ID " + id + " was removed.");
-        } else {
-            System.out.println("Practice day with ID " + id + " not found.");
-        }
+    public void delete(String id) throws EventException, NotFoundException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void updateSchedule(PracticalDay practiceDay) {
-        for (int i = 0; i < practiceDays.size(); i++) {
-            if (practiceDays.get(i).getPracticeDayId().equals(practiceDay.getPracticeDayId())) {
-                practiceDays.set(i, practiceDay);
-                System.out.println("Practice day with ID " + practiceDay.getPracticeDayId()+ " was updated.");
-                return;
-            }
-        }
-        System.out.println("Practice day with ID " + practiceDay.getPracticeDayId()+ " not found.");
+    public void update(UserProgress userProgress) throws EventException, NotFoundException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public PracticalDay searchPracticeDay(Predicate<PracticalDay> p) {
-        return practiceDays.stream().filter(p).findFirst().orElse(null);
+    public UserProgress search(Predicate<UserProgress> p) throws NotFoundException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-  
+
+    @Override
+    public UserProgress filter(String entry, String regex) throws InvalidDataException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+      
 }
