@@ -1,9 +1,13 @@
 package service;
 
 import java.util.List;
+import exception.EmptyDataException;
+import exception.EventException;
+import exception.InvalidDataException;
+import exception.NotFoundException;
 import service.interfaces.IUserProgressService;
 import java.util.function.Predicate;
-import model.PracticalDay;
+import model.UserProgress;
 
 public class UserProgressService implements IUserProgressService {
 
@@ -52,5 +56,5 @@ public class UserProgressService implements IUserProgressService {
     public PracticalDay searchPracticeDay(Predicate<PracticalDay> p) {
         return practiceDays.stream().filter(p).findFirst().orElse(null);
     }
-
+  
 }

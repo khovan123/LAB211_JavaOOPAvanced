@@ -14,8 +14,8 @@ public class ScheduleRepository implements IScheduleRepository {
     //no path, just handle practicalRepository
 
     private static List<Schedule> schedules = new ArrayList<>();
-    private static PracticalDayRepository praciPracticalDayRepository = new PracticalDayRepository();
-    
+    private static PracticalDayRepository practicalDayRepository = new PracticalDayRepository();
+    //generate Schdule with id of CP-YYYY in practicalDayRepository
     static{
         
     }

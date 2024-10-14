@@ -15,6 +15,7 @@ public class CourseSegmentRepository implements ICourseSegmentRepository {
     private static List<CourseSegment> courseSegments = new ArrayList<>();
     private static WorkoutRepository workoutRepository = new WorkoutRepository();
     private static CoachRepository coachRepository = new CoachRepository();
+    //data sample: CS-YYYY, 30 days full body master, CA-YYYY 
 
     static {
 

@@ -15,6 +15,8 @@ public class PracticalDayRepository implements IPracticalDayRepository{
     private static TreeSet<PracticalDay> practicalDays = new TreeSet<>();
     private static WorkoutRepository workoutRepository = new WorkoutRepository();
     
+    //data sample: PD-YYYY, 14/10/2024, 18, CP-YYYY
+    
     static{
         
     }

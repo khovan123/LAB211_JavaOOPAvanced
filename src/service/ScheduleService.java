@@ -2,9 +2,12 @@ package service;
 
 import java.util.ArrayList;
 import java.util.List;
+import exception.EmptyDataException;
+import exception.EventException;
+import exception.InvalidDataException;
+import exception.NotFoundException;
 import service.interfaces.IScheduleService;
 import java.util.function.Predicate;
-import model.PracticalDay;
 
 public class ScheduleService implements IScheduleService {
 

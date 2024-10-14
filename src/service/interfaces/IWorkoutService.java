@@ -13,13 +13,13 @@ public interface IWorkoutService extends Service<Workout> {
    void display() throws EmptyDataException;
 
    @Override
-    void add(Workout entry) throws EventException;
+    void add(Workout workout) throws EventException;
     
    @Override
     void delete(String id) throws EventException, NotFoundException;
     
    @Override
-    void update(Workout entry) throws EventException, NotFoundException;
+    void update(Workout workout) throws EventException, NotFoundException;
     
    @Override
     Workout search(Predicate<Workout> p) throws NotFoundException;

@@ -6,7 +6,7 @@ import service.PracticalDayService;
 public class Schedule {
 
     private String userProgressId;
-    private PracticalDayService practiceDayService;
+    private PracticalDayService practicalDayService;
 
     public Schedule(String userProgressId, PracticalDayService practiceDayService) {
         this.userProgressId = userProgressId;
@@ -29,7 +29,7 @@ public class Schedule {
     }
 
     public PracticalDayService getPracticeDayService() {
-        return practiceDayService;
+        return practicalDayService;
     }
 
     public String getInfo() {
