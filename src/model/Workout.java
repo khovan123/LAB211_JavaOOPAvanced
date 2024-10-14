@@ -92,11 +92,10 @@ public class Workout {
     }
 
     public String getInfo() {
-        return String.format("", "");
+        return String.format("%-15s | %-20s | %-25s | %-8d rep| %-8d sets| %-8d min| %s", workoutId, workoutName, description, repetition, sets, duration, done ? "✔" : "✘");
     }
 
     public void runValidate() throws InvalidDataException {
 
     }
-
 }
