@@ -25,6 +25,10 @@ public class CourseSegmentRepository implements ICourseSegmentRepository {
         return courseSegments;
     }
 
+    public static void setCourseSegments(List<CourseSegment> courseSegments) {
+        CourseSegmentRepository.courseSegments = courseSegments;
+    }
+
     @Override
     public void addFromDatabase() throws EventException {
         try {

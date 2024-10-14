@@ -14,11 +14,16 @@ import java.util.function.Predicate;
 
 
 public class CourseRepository implements ICourseRepository{
-    private final List<Course> courses;
+    private static List<Course> courses =  new ArrayList<>();
 
-    public CourseRepository() throws IOException {
-        courses = readFile();
-        // them tam de may method duoi han chay
+    public CourseRepository() {}
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public static void setCourses(List<Course> courses) {
+        CourseRepository.courses = courses;
     }
 
     @Override

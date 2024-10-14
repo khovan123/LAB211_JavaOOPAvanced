@@ -6,11 +6,10 @@ import exception.InvalidDataException;
 import exception.NotFoundException;
 import service.interfaces.IScheduleService;
 import java.util.function.Predicate;
-
 import model.Schedule;
 
 public class ScheduleService implements IScheduleService {
-
+    
     @Override
     public void display() throws EmptyDataException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -41,4 +40,5 @@ public class ScheduleService implements IScheduleService {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    
 }

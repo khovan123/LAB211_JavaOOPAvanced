@@ -18,7 +18,7 @@ public class CoursePacketService implements ICoursePacketService {
 
     public CoursePacketService() throws IOException {
         coursePacketRepository = new CoursePacketRepository();
-        coursePacketList = (ArrayList<CoursePacket>) coursePacketRepository.readFile();
+        coursePacketList = coursePacketRepository.getCoursePackets();
         globalUtils = new GlobalUtils();
     }
 
@@ -136,7 +136,6 @@ public class CoursePacketService implements ICoursePacketService {
     public CoursePacket filter(String entry, String regex) {
         try {
             for (CoursePacket course : coursePacketList) {
-
                 if (course.getCoursePacketId().matches(regex)) {
                     return course;
                 }

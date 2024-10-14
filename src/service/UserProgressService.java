@@ -9,7 +9,11 @@ import java.util.function.Predicate;
 import model.UserProgress;
 
 public class UserProgressService implements IUserProgressService {
-
+    
+    static{
+        
+    }
+    
     @Override
     public void display() throws EmptyDataException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -17,6 +21,7 @@ public class UserProgressService implements IUserProgressService {
 
     @Override
     public void add(UserProgress userProgress) throws EventException {
+        //generate new UserProgress with id = 
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -26,7 +31,7 @@ public class UserProgressService implements IUserProgressService {
     }
 
     @Override
-    public void update(UserProgress entry) throws EventException, NotFoundException {
+    public void update(UserProgress userProgress) throws EventException, NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -40,4 +45,5 @@ public class UserProgressService implements IUserProgressService {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+      
 }

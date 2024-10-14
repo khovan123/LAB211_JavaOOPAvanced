@@ -24,6 +24,10 @@ public class CoursePacketRepository implements ICoursePacketRepository {
         return coursePackets;
     }
 
+    public static void setCoursePackets(List<CoursePacket> coursePackets) {
+        CoursePacketRepository.coursePackets = coursePackets;
+    }
+
     @Override
     public void addFromDatabase() throws EventException {
 

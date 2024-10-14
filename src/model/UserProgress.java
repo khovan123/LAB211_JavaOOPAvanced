@@ -30,10 +30,12 @@ public class UserProgress {
     }
 
     public String getInfo() {
-        return String.format("", "");
+        return String.format("User ID: %s, Schedule Service: %s", getUserId(), scheduleService.toString());
     }
 
     public void runValidate() throws InvalidDataException {
-
+        if (coursePacketId == null || coursePacketId.isEmpty()) {
+            throw new InvalidDataException("Course Packet ID cannot be null or empty.");
+        }
     }
 }
