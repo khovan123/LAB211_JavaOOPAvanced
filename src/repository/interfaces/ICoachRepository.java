@@ -1,6 +1,8 @@
 
 package repository.interfaces;
-
-public interface ICoachRepository extends Repository<Object, Object>{
+import java.util.ArrayList;
+import model.main.Coach;
+public interface ICoachRepository extends Repository<Coach, ArrayList<Coach>>{
+String coachPath ="/data/coach.csv";
 
 }
