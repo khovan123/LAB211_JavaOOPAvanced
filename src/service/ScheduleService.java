@@ -1,35 +1,44 @@
-
 package service;
 
+import exception.EmptyDataException;
+import exception.EventException;
+import exception.InvalidDataException;
+import exception.NotFoundException;
 import service.interfaces.IScheduleService;
 import java.util.function.Predicate;
-import model.sub.PracticeDay;
+import model.Schedule;
 
-public class ScheduleService implements IScheduleService{
-
+public class ScheduleService implements IScheduleService {
+    
     @Override
-    public void displaySchedule() {
+    public void display() throws EmptyDataException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void addPracticeDay(PracticeDay entry) {
+    public void add(Schedule schedule) throws EventException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void deletePracticeDay(String id) {
+    public void delete(String id) throws EventException, NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void updatePracticeDay(PracticeDay practiceDay) {
+    public void update(Schedule schedule) throws EventException, NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public PracticeDay searchPracticeDay(Predicate<PracticeDay> p) {
+    public Schedule search(Predicate<Schedule> p) throws NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    @Override
+    public Schedule filter(String entry, String regex) throws InvalidDataException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    
 }
