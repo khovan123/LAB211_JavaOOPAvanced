@@ -8,9 +8,9 @@ public class Schedule {
     private String userProgressId;
     private PracticalDayService practicalDayService;
 
-    public Schedule(String userProgressId, PracticalDayService practiceDayService) {
+    public Schedule(String userProgressId, PracticalDayService practicalDayService) {
         this.userProgressId = userProgressId;
-        this.practiceDayService = practiceDayService;
+        this.practicalDayService = practicalDayService;
     }
     public String getUserProgressId() {
         return userProgressId;
@@ -28,12 +28,12 @@ public class Schedule {
         this.userProgressId = userProgressId;
     }
 
-    public PracticalDayService getPracticeDayService() {
+    public PracticalDayService getPracticalDayService() {
         return practicalDayService;
     }
 
     public String getInfo() {
-        return String.format("User Progress ID: %s, Practical Day Service: %s",userProgressId, practiceDayService.toString());
+        return String.format("User Progress ID: %s, Practical Day Service: %s",userProgressId);
     }
 
     public void runValidate() throws InvalidDataException {

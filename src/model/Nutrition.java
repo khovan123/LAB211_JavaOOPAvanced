@@ -2,13 +2,10 @@ package model;
 
 import exception.InvalidDataException;
 
-import utils.GlobalUtils;
-
-import java.text.ParseException;
-import java.util.Date;
 
 public class Nutrition {
-
+    
+    private String nutritionId;
     private String practiceDayId;
     private double calories;
 

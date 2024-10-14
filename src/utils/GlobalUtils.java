@@ -1,5 +1,6 @@
 package utils;
 
+import exception.InvalidDataException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,21 +8,17 @@ import java.util.Scanner;
 import java.util.function.Predicate;
 
 public class GlobalUtils {
+
     static Scanner sc = new Scanner(System.in);
     static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     public static String getValue(String label, String messageError) {
-        String value = "";
-        boolean valid = false;
-        do {
+        try {
             System.out.print(label);
-            value = sc.nextLine().trim();
-            if (!value.isEmpty()) {
-                valid = true;
-            } else {
-                System.out.println(messageError);
-            }
-        } while (!valid);
+            return sc.nextLine().trim();
+        } catch (Exception e) {
+            getValue(label, messageError);
+        }
         return null;
 
     }
@@ -30,11 +27,11 @@ public class GlobalUtils {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public static Date getDate(String date) throws ParseException {
+    public static Date getDate(String date) throws InvalidDataException {
         try {
             return sdf.parse(date);
         } catch (ParseException e) {
-            throw new ParseException(e.getMessage(), e.getErrorOffset());
+            throw new InvalidDataException("Date must be dd/MM/yyyy");
         }
     }
 
@@ -56,12 +53,13 @@ public class GlobalUtils {
 
     /**
      * Prompts the user for input and validates it using a provided predicate.
-     * If the input is invalid, an error message is displayed.
-     * The user is repeatedly prompted until valid input is received.
+     * If the input is invalid, an error message is displayed. The user is
+     * repeatedly prompted until valid input is received.
      *
      * @param inputPrompt The message to display when asking for input.
      * @param errorPrompt The message to display when the input is invalid.
-     * @param validator   A predicate that defines the validation logic for the input.
+     * @param validator A predicate that defines the validation logic for the
+     * input.
      * @return The validated input string that meets the validation criteria.
      */
     public static String getValidatedInput(String inputPrompt, String errorPrompt, Predicate<String> validator) {
@@ -71,7 +69,7 @@ public class GlobalUtils {
             System.out.print(inputPrompt);
             input = scanner.nextLine();
             if (!validator.test(input)) {
-                System.out.println(ANSI_RED + errorPrompt + ANSI_RESET);
+                System.out.println(errorPrompt);
             }
         } while (!validator.test(input));
         return input;

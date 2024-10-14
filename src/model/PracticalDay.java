@@ -2,7 +2,6 @@ package model;
 
 import exception.InvalidDataException;
 
-import java.text.ParseException;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -21,14 +20,14 @@ public class PracticalDay implements Comparator<PracticalDay> {
     public PracticalDay() {
     }
 
-    public PracticalDay(String practicalDayId, String practiceDate, Nutrition nutrition, String scheduleId) throws ParseException {
+    public PracticalDay(String practicalDayId, String practiceDate, Nutrition nutrition, String scheduleId) throws InvalidDataException {
         this.practicalDayId = practicalDayId;
         this.setPracticeDate(practiceDate);
         this.nutrition = nutrition;
         this.scheduleId = scheduleId;
     }
 
-    public PracticalDay(String practicalDayId, String practiceDate, Nutrition nutrition, List<Workout> workoutList, String scheduleId) throws ParseException {
+    public PracticalDay(String practicalDayId, String practiceDate, Nutrition nutrition, List<Workout> workoutList, String scheduleId) throws InvalidDataException {
         this.practicalDayId = practicalDayId;
         this.setPracticeDate(practiceDate);
         this.nutrition = nutrition;
@@ -49,7 +48,7 @@ public class PracticalDay implements Comparator<PracticalDay> {
         return practiceDate;
     }
 
-    public void setPracticeDate(String practiceDate) throws ParseException {
+    public void setPracticeDate(String practiceDate) throws InvalidDataException {
         this.practiceDate = GlobalUtils.getDate(practiceDate);
     }
 
