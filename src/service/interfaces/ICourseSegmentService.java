@@ -14,13 +14,13 @@ public interface ICourseSegmentService extends Service<Course> {
     void display() throws EmptyDataException;
 
     @Override
-    void add(Course entry) throws EventException;
+    void add(Course course) throws EventException;
 
     @Override
     void delete(String id) throws EventException, NotFoundException;
 
     @Override
-    void update(Course entry) throws EventException, NotFoundException;
+    void update(Course course) throws EventException, NotFoundException;
 
     @Override
     Course search(Predicate<Course> p) throws NotFoundException;

@@ -9,23 +9,23 @@ import java.util.Date;
 
 public class Nutrition {
 
-    private String nutritionId;
+    private String practiceDayId;
     private double calories;
 
     public Nutrition() {
     }
-
+  
     public Nutrition(String nutritionId, String calories) {
         this.nutritionId = nutritionId;
         this.setCalories(calories);
     }
 
     public String getNutritionId() {
-        return nutritionId;
+        return practiceDayId;
     }
 
-    public void setNutritionId(String nutritionId) {
-        this.nutritionId = nutritionId;
+    public void setNutritionId(String practiceDayId) {
+        this.practiceDayId = practiceDayId;
     }
 
     public double getCalories() {

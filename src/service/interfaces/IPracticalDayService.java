@@ -13,13 +13,13 @@ public interface IPracticalDayService extends Service<PracticalDay> {
     void display() throws EmptyDataException;
 
     @Override
-    void add(PracticalDay entry) throws EventException;
+    void add(PracticalDay practicalDay) throws EventException;
 
     @Override
     void delete(String id) throws EventException, NotFoundException;
 
     @Override
-    void update(PracticalDay entry) throws EventException, NotFoundException;
+    void update(PracticalDay practicalDay) throws EventException, NotFoundException;
 
     @Override
     PracticalDay search(Predicate<PracticalDay> p) throws NotFoundException;

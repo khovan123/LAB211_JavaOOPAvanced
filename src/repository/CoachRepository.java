@@ -13,7 +13,7 @@ import repository.interfaces.ICoachRepository;
 public class CoachRepository implements ICoachRepository {
 
     private static List<Coach> coachs = new ArrayList<>();
-
+    //data sample: CA-YYYY, Cris Rona
     static {
 
     }

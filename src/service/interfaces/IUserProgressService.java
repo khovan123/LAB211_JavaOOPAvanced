@@ -1,19 +1,31 @@
 
 package service.interfaces;
 
+import exception.EmptyDataException;
+import exception.EventException;
+import exception.InvalidDataException;
+import exception.NotFoundException;
 import java.util.function.Predicate;
-import model.PracticalDay;
+import model.UserProgress;
 
-public interface IUserProgressService{
+public interface IUserProgressService extends Service<UserProgress>{
     
-    void displaySchedule();
+    @Override
+    void display() throws EmptyDataException;
 
-    void addPracticeDay(PracticalDay practiceDay);
+    @Override
+    void add(UserProgress userProgress) throws EventException;
     
-    void deletePracticeDay(String id);
+    @Override
+    void delete(String id) throws EventException, NotFoundException;
     
-    void updateSchedule(PracticalDay practiceDay);
+    @Override
+    void update(UserProgress userProgress) throws EventException, NotFoundException;
     
-    PracticalDay searchPracticeDay(Predicate<PracticalDay> p);
+    @Override
+    UserProgress search(Predicate<UserProgress> p) throws NotFoundException;
+
+    @Override
+    UserProgress filter(String entry, String regex) throws InvalidDataException;
     
 }

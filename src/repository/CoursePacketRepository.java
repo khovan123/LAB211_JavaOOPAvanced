@@ -16,12 +16,13 @@ public class CoursePacketRepository implements ICoursePacketRepository {
     private static CourseSegmentRepository courseSegmentRepository = new CourseSegmentRepository();
     private static UserRepository userRepository = new UserRepository();
     private static UserProgressRepository userProgressRepository = new UserProgressRepository();
+    //data sample: CP-YYYY, US-YYYY, CS-YYYY
 
     static {
 
     }
-    
-    public List<CoursePacket> getCoursePackets(){
+
+    public List<CoursePacket> getCoursePackets() {
         return coursePackets;
     }
 
