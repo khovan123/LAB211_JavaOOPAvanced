@@ -21,32 +21,19 @@ public class PracticalDayService implements IPracticalDayService {
 
     @Override
     public void display() throws EmptyDataException {
-        if (practicalDayRepository.getPracticalDays().isEmpty()) {
-            throw new EmptyDataException("Practical days empty!");
-        } else {
-            for (PracticalDay practicalDay : practicalDayRepository.getPracticalDays()) {
-                System.out.println(practicalDay.getInfo());
-            }
+        for (PracticalDay practicalDay : practicalDayRepository.getPracticalDays()) {
+            System.out.println(practicalDay.getInfo());
         }
     }
 
     @Override
     public void add(PracticalDay practiceDay) throws EventException {
-        try {
-            practicalDayRepository.add(practiceDay);
-        } catch (EventException e) {
-            throw new EventException("Failed to add practical day: " + e.getMessage());
-        }
+        practicalDayRepository.add(practiceDay);
     }
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
-        try {
-            practicalDayRepository.delete(id);
-            System.out.println("Delete practical day with id: " + id + " successfully!");
-        } catch (EventException e) {
-            throw new EventException("An error occurred while deleting Practical Day with ID: " + id + ". " + e.getMessage());
-        }
+        practicalDayRepository.delete(id);
     }
 
     @Override
