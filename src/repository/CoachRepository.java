@@ -4,13 +4,18 @@ import exception.EventException;
 import exception.IOException;
 import exception.InvalidDataException;
 import exception.NotFoundException;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import model.Coach;
 import repository.interfaces.ICoachRepository;
+//dat dep trai
 
-<<<<<<< HEAD
 public class CoachRepository implements ICoachRepository{
     protected ArrayList<Coach> coachList = new ArrayList<>();
 
@@ -35,7 +40,7 @@ public class CoachRepository implements ICoachRepository{
             e.printStackTrace();
             return null;
         }
-=======
+
 public class CoachRepository implements ICoachRepository {
 
     private static List<Coach> coachs = new ArrayList<>();
@@ -51,7 +56,7 @@ public class CoachRepository implements ICoachRepository {
     @Override
     public void addFromDatabase() throws EventException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
->>>>>>> e532ad77b3b75a540bc9966cc858d1dec80820d8
+
     }
 
 
@@ -62,7 +67,6 @@ public class CoachRepository implements ICoachRepository {
 
 
     @Override
-<<<<<<< HEAD
     public void writeFile(ArrayList <Coach> coachs) {
         try (BufferedWriter output = new BufferedWriter(new FileWriter(path + employeePath, true)))
         { for (Coach coach : coachs){
