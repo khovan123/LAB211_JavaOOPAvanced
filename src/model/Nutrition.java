@@ -4,23 +4,23 @@ import exception.InvalidDataException;
 
 public class Nutrition {
 
-    private String nutritionId;
+    private String practiceDayId;
     private double calories;
 
     public Nutrition() {
     }
 
-    public Nutrition(String nutritionId, double calories) {
-        this.nutritionId = nutritionId;
+    public Nutrition(String practiceDayId, double calories) {
+        this.practiceDayId = practiceDayId;
         this.calories = calories;
     }
 
     public String getNutritionId() {
-        return nutritionId;
+        return practiceDayId;
     }
 
-    public void setNutritionId(String nutritionId) {
-        this.nutritionId = nutritionId;
+    public void setNutritionId(String practiceDayId) {
+        this.practiceDayId = practiceDayId;
     }
 
     public double getCalories() {

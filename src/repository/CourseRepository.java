@@ -14,36 +14,69 @@ import java.util.function.Predicate;
 
 
 public class CourseRepository implements ICourseRepository{
+    private final List<Course> courses;
 
+    public CourseRepository() throws IOException {
+        courses = readFile();
+        // them tam de may method duoi han chay
+    }
 
     @Override
     public void addFromDatabase() throws EventException {
 
     }
 
-    @Override
     public List<Course> readFile() throws IOException {
         return new ArrayList<>();
     }
 
     @Override
     public void delete(String id) throws EventException {
-
+        try {
+            boolean removed = courses.removeIf(course -> course.getCourseId().equals(id));
+            if (removed) {
+                System.out.println("-> Course with ID " + id + " has been removed.");
+            } else {
+                System.out.println("-> Course with ID " + id + " not found.");
+            }
+        } catch (Exception e) {
+            System.out.println("-> Error while deleting course ID - " + id + ": " + e.getMessage());
+        }
     }
 
     @Override
     public Course filter(String entry, String regex) throws InvalidDataException {
-        return null;
+        for (Course course : courses) {
+            if (course.getCourseId().matches(regex)) {
+                return course;
+            }
+        }
+        throw new InvalidDataException("No course found matching the criteria.");
     }
 
     @Override
     public Course search(Predicate<Course> p) throws NotFoundException {
+        try {
+            for (Course course : courses) {
+                if (p.test(course)) {
+                    return course;
+                }
+            }
+            throw new NotFoundException("-> Course not found.");
+        } catch (Exception e) {
+            System.out.println("-> Error while searching for course: " + e.getMessage());
+        }
         return null;
     }
 
     @Override
     public void add(Course entry) throws EventException {
-
+        try {
+            courses.add(entry);
+            System.out.println("-> Course added successfully.");
+        } catch (Exception e) {
+            System.out.println("-> Error while adding course: " + e.getMessage());
+        }
     }
 
     @Override
