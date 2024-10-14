@@ -29,17 +29,34 @@ public class ScheduleService implements IScheduleService {
 
     @Override
     public void deletePracticeDay(String id) {
-        practicalDays.removeIf(practicalDay -> practicalDay.getPracticeDayId().equals(id));
-        System.out.println("Deleted successfully!");
+        boolean removed = practicalDays.removeIf(practicalDay -> practicalDay.getPracticeDayId().equals(id));
+        if (removed) {
+            System.out.println("Deleted successfully!");
+        } else {
+            System.out.println("Practice day not found.");
+        }
     }
 
     @Override
     public void updatePracticeDay(PracticalDay practiceDay) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (int i = 0; i < practicalDays.size(); i++) {
+            if (practicalDays.get(i).getPracticeDayId().equals(practiceDay.getPracticeDayId())) {
+                practicalDays.set(i, practiceDay);
+                System.out.println("Updated successfully!");
+                return;
+            }
+        }
+        System.out.println("Practice day not found.");
     }
 
     @Override
     public PracticalDay searchPracticeDay(Predicate<PracticalDay> p) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (PracticalDay practicalDay : practicalDays) {
+            if (p.test(practicalDay)) {
+                return practicalDay;
+            }
+        }
+        System.out.println("No matching practical day found.");
+        return null;
     }
 }

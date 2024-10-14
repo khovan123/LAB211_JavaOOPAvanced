@@ -33,11 +33,13 @@ public class Schedule {
     }
 
     public String getInfo() {
-        return String.format("", "");
+        return String.format("User Progress ID: %s, Practical Day Service: %s",userProgressId, practiceDayService.toString());
     }
 
     public void runValidate() throws InvalidDataException {
-
+        if (userProgressId == null || userProgressId.isEmpty()) {
+            throw new InvalidDataException("User Progress ID cannot be null or empty.");
+        }
     }
 
 }
