@@ -110,7 +110,17 @@ public class CourseSegmentRepository implements ICourseSegmentRepository {
 
     @Override
     public CourseSegment filter(String entry, String regex) throws InvalidDataException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            for (CourseSegment course : courseSegments) {
+                if (course.getCourseId().matches(regex)) {
+                    return course;
+                }
+            }
+        } catch (Exception e) {
+            throw new InvalidDataException("-> Error while filtering courses: " + e.getMessage());
+        }
+        return null;
     }
+
 
 }

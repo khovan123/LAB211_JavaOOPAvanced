@@ -51,7 +51,7 @@ public class CourseRepository implements ICourseRepository{
                 return course;
             }
         }
-        throw new InvalidDataException("No course found matching the criteria.");
+        throw new InvalidDataException("-> No course found matching the criteria.");
     }
 
     @Override

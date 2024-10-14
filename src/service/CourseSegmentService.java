@@ -148,8 +148,18 @@ public class CourseSegmentService implements ICourseSegmentService {
 
     @Override
     public Course filter(String entry, String regex) {
+        try {
+            for (Course course : courses) {
+                if (course.getCourseId().matches(regex)) {
+                    return course;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("-> Error while filtering courses: " + e.getMessage());
+        }
         return null;
     }
+
 
     @Override
     public void addWorkout(Workout workout) {

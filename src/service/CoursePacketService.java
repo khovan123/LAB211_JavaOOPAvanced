@@ -134,6 +134,17 @@ public class CoursePacketService implements ICoursePacketService {
 
     @Override
     public CoursePacket filter(String entry, String regex) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            for (CoursePacket course : coursePacketList) {
+
+                if (course.getCoursePacketId().matches(regex)) {
+                    return course;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("-> Error while filtering courses: " + e.getMessage());
+        }
+        return null;
     }
+
 }

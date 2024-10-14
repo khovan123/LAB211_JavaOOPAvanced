@@ -115,6 +115,16 @@ public class CoursePacketRepository implements ICoursePacketRepository {
 
     @Override
     public CoursePacket filter(String entry, String regex) throws InvalidDataException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            for (CoursePacket coursePacket : coursePackets) {
+                if (coursePacket.getCoursePacketId().matches(regex)) {
+                    return coursePacket;
+                }
+            }
+        } catch (Exception e) {
+            throw new InvalidDataException("Error while filtering CoursePackets: " + e.getMessage());
+        }
+        return null;
     }
+
 }
