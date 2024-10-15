@@ -3,6 +3,7 @@ package service;
 
 import exception.EmptyDataException;
 import exception.EventException;
+import exception.InvalidDataException;
 import exception.NotFoundException;
 import repository.CoachRepository;
 import repository.CoursePacketRepository;
@@ -32,7 +33,7 @@ public class CoachService implements ICoachService{
     }
 
     @Override
-    public void add(Coach coach) throws EventException {
+    public void add(Coach coach) throws EventException, InvalidDataException {
      coachRepository.add(coach);
 
     }

@@ -16,7 +16,7 @@ public interface ICoachService extends Service<Coach> {
     void display() throws EmptyDataException;
 
     @Override
-    void add(Coach entry) throws EventException;
+    void add(Coach entry) throws EventException, InvalidDataException;
 
     @Override
     void delete(String id) throws EventException, NotFoundException;
