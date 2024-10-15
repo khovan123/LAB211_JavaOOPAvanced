@@ -39,7 +39,7 @@ public class GlobalUtils {
         return sdf.format(date);
     }
 
-    public static String getInteger(String label, String messageError) {
+    public static int getInteger(String label, String messageError) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

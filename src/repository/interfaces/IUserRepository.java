@@ -10,7 +10,7 @@ import model.User;
 
 public interface IUserRepository extends Repository<User, List<User>> {
 
-    final String path = "";
+    final String userPath = "";
 
     @Override
     void addFromDatabase() throws EventException;
@@ -19,7 +19,7 @@ public interface IUserRepository extends Repository<User, List<User>> {
     List<User> readFile() throws IOException;
 
     @Override
-    void writeFile(List<User> entry) throws IOException;
+    void writeFile(List<User> entry) throws IOException, java.io.IOException;
 
     @Override
     void add(User entry) throws EventException;

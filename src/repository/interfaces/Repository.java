@@ -12,11 +12,11 @@ public interface Repository<T, C> {
 
     void addFromDatabase() throws EventException;
 
-    C readFile() throws IOException;
+    C readFile() throws IOException, java.io.IOException;
 
-    void writeFile(C entry) throws IOException;
+    void writeFile(C entry) throws IOException, java.io.IOException;
 
-    void add(T entry) throws EventException;
+    void add(T entry) throws EventException, InvalidDataException;
 
     void delete(String id) throws EventException;
 

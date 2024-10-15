@@ -1,54 +1,36 @@
-
 package service;
 
 import exception.EmptyDataException;
+import exception.EventException;
 import exception.NotFoundException;
 import service.interfaces.IWorkoutService;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Predicate;
 
 import model.Workout;
+import repository.WorkoutRepository;
 
 public class WorkoutService implements IWorkoutService {
 
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_fg_GREEN = "\u001B[32m";
-
-    private List<Workout> workoutList;
+    private static WorkoutRepository workoutRepository = new WorkoutRepository();
 
     public WorkoutService() {
-        this.workoutList = new ArrayList<>();
     }
 
     @Override
     public void display() throws EmptyDataException {
-        if (workoutList.isEmpty())  {
-            throw new EmptyDataException(ANSI_RED + "No workout found!!!" + ANSI_RESET);
-        } else {
-            for (Workout workout : workoutList){
-                System.out.println(workout);
-            }
+        for (Workout workout : workoutRepository.getWorkouts()) {
+            System.out.println(workout.getInfo());
         }
     }
 
     @Override
-    public void add(Workout workout) {
-        try {
-            workoutList.add(workout);
-        } catch (Exception e){
-            System.out.println(ANSI_RED + e.getMessage() +ANSI_RESET);
-        }
+    public void add(Workout workout) throws EventException {
+        workoutRepository.add(workout);
     }
 
     @Override
-    public void delete(String id) {
-        try{
-            workoutList.remove(this.search(p -> p.getWorkoutId().equalsIgnoreCase(id)));
-        } catch (NotFoundException e){
-            System.out.println(ANSI_RED + e.getMessage() + " with id: " + id + ANSI_RESET);
-        }
+    public void delete(String id) throws EventException {
+        workoutRepository.delete(id);
     }
 
     @Override
@@ -58,12 +40,7 @@ public class WorkoutService implements IWorkoutService {
 
     @Override
     public Workout search(Predicate<Workout> p) throws NotFoundException {
-        for(Workout workout : workoutList){
-            if(p.test(workout)){
-                return workout;
-            }
-        }
-        throw new NotFoundException(ANSI_RED + "Not found any workout!!!" +ANSI_RESET);
+       return workoutRepository.search(p);
     }
 
     @Override
