@@ -10,9 +10,10 @@ public class Coach {
     public Coach() {
     }
 
-    public Coach(String coachId, String coachName) {
+    public Coach(String coachId, String coachName) throws InvalidDataException {
         this.coachId = coachId;
         this.coachName = coachName;
+        this.runValidate();
     }
 
     public String getCoachId() {
