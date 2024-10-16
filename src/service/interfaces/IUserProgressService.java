@@ -25,7 +25,6 @@ public interface IUserProgressService extends Service<UserProgress>{
     @Override
     UserProgress search(Predicate<UserProgress> p) throws NotFoundException;
 
-    @Override
-    UserProgress filter(String entry, String regex) throws InvalidDataException;
+    
     
 }

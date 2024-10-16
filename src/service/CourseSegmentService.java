@@ -102,10 +102,7 @@ public class CourseSegmentService implements ICourseSegmentService {
         return courseSegmentRepository.search(p);
     }
 
-    @Override
-    public CourseSegment filter(String entry, String regex) throws InvalidDataException {
-        throw new InvalidDataException();
-    }
+   
 
     @Override
     public void addWorkout(Workout workout) {

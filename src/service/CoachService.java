@@ -1,4 +1,3 @@
-
 package service;
 
 import service.interfaces.ICoachService;
@@ -8,7 +7,7 @@ import model.Course;
 import model.PracticalDay;
 import model.User;
 
-public class CoachService implements ICoachService{
+public class CoachService implements ICoachService {
 
     @Override
     public void display() {
@@ -27,11 +26,6 @@ public class CoachService implements ICoachService{
 
     @Override
     public Coach search(Predicate<Coach> p) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Coach filter(String entry, String regex) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

@@ -26,8 +26,7 @@ public interface IUserService extends Service<User> {
     @Override
     User search(Predicate<User> p) throws NotFoundException;
 
-    @Override
-    User filter(String entry, String regex) throws InvalidDataException;
+    
 
     void searchCourse(Predicate<Course> p);
 

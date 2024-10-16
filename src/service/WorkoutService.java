@@ -53,9 +53,6 @@ public class WorkoutService implements IWorkoutService {
        return workoutRepository.search(p);
     }
 
-    @Override
-    public Workout filter(String entry, String regex) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    
 
 }

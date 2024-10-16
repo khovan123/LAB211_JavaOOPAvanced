@@ -12,8 +12,7 @@ public interface ICoursePacketRepository extends Repository<CoursePacket, List<C
 
     final String path = "";
 
-    @Override
-    void addFromDatabase() throws EventException;
+  
 
     @Override
     List<CoursePacket> readFile() throws IOException;
@@ -21,15 +20,5 @@ public interface ICoursePacketRepository extends Repository<CoursePacket, List<C
     @Override
     void writeFile(List<CoursePacket> entry) throws IOException;
 
-    @Override
-    void add(CoursePacket coursePacket) throws EventException;
-
-    @Override
-    void delete(String id) throws EventException;
-
-    @Override
-    CoursePacket search(Predicate<CoursePacket> p) throws NotFoundException;
-
-    @Override
-    CoursePacket filter(String entry, String regex) throws InvalidDataException;
+    
 }
