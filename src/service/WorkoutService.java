@@ -3,6 +3,7 @@ package service;
 import exception.EmptyDataException;
 import exception.EventException;
 import exception.NotFoundException;
+import java.util.List;
 import service.interfaces.IWorkoutService;
 import java.util.function.Predicate;
 
@@ -14,6 +15,15 @@ public class WorkoutService implements IWorkoutService {
     private static WorkoutRepository workoutRepository = new WorkoutRepository();
 
     public WorkoutService() {
+    }
+    
+    public WorkoutService(List<Workout> workouts){
+        for(Workout workout: workouts){
+            try {
+                this.add(workout);
+            } catch (EventException ex) {
+            }
+        }
     }
 
     @Override

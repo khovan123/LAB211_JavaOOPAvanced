@@ -18,6 +18,7 @@ public class PracticalDay implements Comparator<PracticalDay> {
     private String scheduleId;
 
     public PracticalDay() {
+        this.workoutService = new WorkoutService();
     }
 
     public PracticalDay(String practicalDayId, String practiceDate, Nutrition nutrition, String scheduleId) throws InvalidDataException {
@@ -25,15 +26,16 @@ public class PracticalDay implements Comparator<PracticalDay> {
         this.setPracticeDate(practiceDate);
         this.nutrition = nutrition;
         this.scheduleId = scheduleId;
+        this.workoutService = new WorkoutService();
     }
 
     public PracticalDay(String practicalDayId, String practiceDate, Nutrition nutrition, List<Workout> workoutList, String scheduleId) throws InvalidDataException {
         this.practicalDayId = practicalDayId;
         this.setPracticeDate(practiceDate);
         this.nutrition = nutrition;
-        for (Workout workout : workoutList) {
-            this.workoutService.add(workout);
-        }
+        this.workoutService = new WorkoutService(workoutList);
+        this.scheduleId = scheduleId;
+
     }
 
     public String getPracticeDayId() {
@@ -79,7 +81,7 @@ public class PracticalDay implements Comparator<PracticalDay> {
     }
 
     public String getInfo() {
-        return String.format("%-15s | %-15s | %-15s | %-15s", practicalDayId, GlobalUtils.getDateString(practiceDate), nutrition.getCalories(), workoutService);
+        return String.format("");
     }
 
     public void runValipraticeDate() throws InvalidDataException {
