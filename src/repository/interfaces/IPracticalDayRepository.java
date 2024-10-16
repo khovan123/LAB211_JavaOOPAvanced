@@ -12,24 +12,12 @@ public interface IPracticalDayRepository extends Repository<PracticalDay, TreeSe
 
     final String path = "";
 
-    @Override
-    void addFromDatabase() throws EventException;
-
+    
     @Override
     TreeSet<PracticalDay> readFile() throws IOException;
 
     @Override
     void writeFile(TreeSet<PracticalDay> praciDays) throws IOException;
 
-    @Override
-    void add(PracticalDay practicalDay) throws EventException;
-
-    @Override
-    void delete(String id) throws EventException;
-
-    @Override
-    PracticalDay search(Predicate<PracticalDay> p) throws NotFoundException;
-
-    @Override
-    PracticalDay filter(String entry, String regex) throws InvalidDataException;
+    
 }

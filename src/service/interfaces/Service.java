@@ -18,5 +18,4 @@ public interface Service<T> {
     
     T search(Predicate<T> p) throws NotFoundException;
 
-    T filter(String entry, String regex) throws InvalidDataException;
 }

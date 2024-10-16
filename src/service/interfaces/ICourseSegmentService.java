@@ -25,8 +25,7 @@ public interface ICourseSegmentService extends Service<CourseSegment> {
     @Override
     CourseSegment search(Predicate<CourseSegment> p) throws NotFoundException;
 
-    @Override
-    CourseSegment filter(String entry, String regex) throws InvalidDataException;
+   
 
     void addWorkout(Workout workout);
 

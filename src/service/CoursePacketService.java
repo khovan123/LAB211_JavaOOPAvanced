@@ -47,10 +47,5 @@ public class CoursePacketService implements ICoursePacketService {
         return coursePacketRepository.search(p);
     }
 
-    @Override
-    public CoursePacket filter(String entry, String regex) throws InvalidDataException {
-//
-        throw new InvalidDataException();
-    }
 
 }
