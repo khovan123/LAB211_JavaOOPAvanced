@@ -24,7 +24,5 @@ public interface IWorkoutService extends Service<Workout> {
    @Override
     Workout search(Predicate<Workout> p) throws NotFoundException;
 
-   @Override
-    Workout filter(String entry, String regex) throws InvalidDataException;
-    
+  
 }

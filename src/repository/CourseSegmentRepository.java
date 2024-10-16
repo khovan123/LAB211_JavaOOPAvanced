@@ -29,7 +29,6 @@ public class CourseSegmentRepository implements ICourseSegmentRepository {
         CourseSegmentRepository.courseSegments = courseSegments;
     }
 
-    @Override
     public void addFromDatabase() throws EventException {
         try {
             throw new UnsupportedOperationException("Not supported yet.");

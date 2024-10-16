@@ -24,7 +24,4 @@ public interface IPracticalDayService extends Service<PracticalDay> {
     @Override
     PracticalDay search(Predicate<PracticalDay> p) throws NotFoundException;
 
-    @Override
-    PracticalDay filter(String entry, String regex) throws InvalidDataException;
-
 }

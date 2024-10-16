@@ -20,12 +20,7 @@ public class CoursePacketService implements ICoursePacketService {
 
     @Override
     public void display() {
-        try {
 
-        } catch (Exception e)
-        {
-            System.out.println("-> Error While Display Course Packet List.");
-        }
         for (CoursePacket course : coursePacketRepository.getCoursePackets()) {
             System.out.println(course);
         }
@@ -52,9 +47,5 @@ public class CoursePacketService implements ICoursePacketService {
         return coursePacketRepository.search(p);
     }
 
-    @Override
-    public CoursePacket filter(String entry, String regex) throws InvalidDataException {
-        throw new InvalidDataException();
-    }
 
 }

@@ -21,10 +21,7 @@ public class CourseSegment extends Course {
 
     public CourseSegment(String courseId, String courseName, String coachId, List<Workout> workouts) {
         super(courseId, courseName, coachId);
-        this.workoutService = new WorkoutService();
-        for (Workout workout : workouts) {
-            this.workoutService.add(workout);
-        }
+        this.workoutService = new WorkoutService(workouts);
     }
 
     public CourseSegment(CourseSegment courseSegment) {
@@ -35,10 +32,12 @@ public class CourseSegment extends Course {
         return workoutService;
     }
 
+    @Override
     public String getInfo() {
         return String.format("", "");
     }
 
+    @Override
     public void runValidate() throws InvalidDataException {
 
     }
