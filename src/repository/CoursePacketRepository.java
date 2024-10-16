@@ -48,18 +48,17 @@ public class CoursePacketRepository implements ICoursePacketRepository {
     public void add(CoursePacket coursePacket) throws EventException {
         try {
             // Check if the user ID exists in the user repository
-            if (!userRepository.getUsers().stream().anyMatch(user -> user.getUserId().equals(coursePacket.getUserId()))) {
+            if (!userRepository.getUsers().contains(coursePacket.getUserId())) {
                 throw new InvalidDataException("-> User ID Does Not Exist: " + coursePacket.getUserId());
             }
 
             // Check if the course segment ID exists in the course segment repository
-            if (!courseSegmentRepository.getCourseSegments().stream().anyMatch(courseSegment -> courseSegment.getCourseId().equals(coursePacket.getCourseSegmentId()))) {
+            if (!courseSegmentRepository.getCourseSegments().contains(coursePacket.getCourseSegmentId())) {
                 throw new InvalidDataException("-> Course Segment ID Does Not Exist: " + coursePacket.getCourseSegmentId());
             }
 
             // Check if the course packet ID already exists in the user progress repository
-            if (userProgressRepository.getUserProgresses().stream().anyMatch(userProgress ->
-                    userProgress.getUserId().equals(coursePacket.getCoursePacketId()))) {
+            if (userProgressRepository.getUserProgresses().contains(coursePacket.getUserProgressService())) {
                 throw new InvalidDataException("-> Course Packet ID Already Exists: " + coursePacket.getCoursePacketId());
             }
 
