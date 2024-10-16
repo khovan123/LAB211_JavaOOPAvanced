@@ -20,7 +20,12 @@ public class CoursePacketService implements ICoursePacketService {
 
     @Override
     public void display() {
+        try {
 
+        } catch (Exception e)
+        {
+            System.out.println("-> Error While Display Course Packet List.");
+        }
         for (CoursePacket course : coursePacketRepository.getCoursePackets()) {
             System.out.println(course);
         }
