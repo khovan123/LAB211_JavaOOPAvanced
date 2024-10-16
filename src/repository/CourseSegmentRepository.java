@@ -29,13 +29,6 @@ public class CourseSegmentRepository implements ICourseSegmentRepository {
         CourseSegmentRepository.courseSegments = courseSegments;
     }
 
-    public void addFromDatabase() throws EventException {
-        try {
-            throw new UnsupportedOperationException("Not supported yet.");
-        } catch (Exception e) {
-            System.out.println("-> Error While Adding From Database - " + e.getMessage());
-        }
-    }
 
     @Override
     public List<CourseSegment> readFile() throws IOException {
@@ -57,8 +50,5 @@ public class CourseSegmentRepository implements ICourseSegmentRepository {
             System.out.println("-> Error While Writing File - " + e.getMessage());
         }
     }
-
-
-
 
 }

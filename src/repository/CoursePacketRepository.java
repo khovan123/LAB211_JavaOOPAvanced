@@ -29,11 +29,6 @@ public class CoursePacketRepository implements ICoursePacketRepository {
     }
 
     @Override
-    public void addFromDatabase() throws EventException {
-
-    }
-
-    @Override
     public List<CoursePacket> readFile() throws IOException {
 
         return new ArrayList<>();
@@ -43,7 +38,5 @@ public class CoursePacketRepository implements ICoursePacketRepository {
     public void writeFile(List<CoursePacket> entry) throws IOException {
 
     }
-
-
 
 }
