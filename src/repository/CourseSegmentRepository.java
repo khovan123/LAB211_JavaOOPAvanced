@@ -21,23 +21,6 @@ public class CourseSegmentRepository implements ICourseSegmentRepository {
 
     }
 
-    public List<CourseSegment> getCourseSegments() {
-        return courseSegments;
-    }
-
-    public static void setCourseSegments(List<CourseSegment> courseSegments) {
-        CourseSegmentRepository.courseSegments = courseSegments;
-    }
-
-    @Override
-    public void addFromDatabase() throws EventException {
-        try {
-            throw new UnsupportedOperationException("Not supported yet.");
-        } catch (Exception e) {
-            System.out.println("-> Error While Adding From Database - " + e.getMessage());
-        }
-    }
-
     @Override
     public List<CourseSegment> readFile() throws IOException {
         try {
@@ -58,73 +41,5 @@ public class CourseSegmentRepository implements ICourseSegmentRepository {
             System.out.println("-> Error While Writing File - " + e.getMessage());
         }
     }
-
-    @Override
-    public void add(CourseSegment courseSegment) throws EventException {
-        try {
-            // Check coachId in courseSegments contains in coachRepository
-            if (!coachRepository.getCoachList().stream().anyMatch(coach -> coach.getCoachId().equals(courseSegment.getCoachId()))) {
-                throw new InvalidDataException("-> Coach ID Does Not Exist - " + courseSegment.getCoachId());
-            }
-
-            // Check courseSegmentId in workoutRepository contains in courseSegments
-            if (!workoutRepository.getWorkouts().stream().anyMatch(workout -> workout.getWorkoutId().equals(courseSegment.getCourseId()))) {
-                System.out.println("-> Workout ID Does Not Exist - " + courseSegment.getCourseId());
-            }
-
-            if (!courseSegment.getCourseId().matches("CS-\\d{4}")) {
-                System.out.println("-> Invalid Course Segment ID Format: " + courseSegment.getCourseId());
-            }
-
-            courseSegments.add(courseSegment);
-            System.out.println("-> Course Added Successfully.");
-        } catch (Exception e) {
-            System.out.println("-> Error While Adding Course Segment - " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void delete(String id) throws EventException {
-        try {
-            boolean removed = courseSegments.removeIf(courseSegment -> courseSegment.getCourseId().equalsIgnoreCase(id));
-            if (removed) {
-                System.out.println("-> Course Segment With ID " + id + " Has Been Removed");
-            } else {
-                System.out.println("-> Course Segment With ID " + id + " Not Found");
-            }
-        } catch (Exception e) {
-            System.out.println("-> Error While Deleting ID - " + id + " " + e.getMessage());
-        }
-    }
-
-    @Override
-    public CourseSegment search(Predicate<CourseSegment> predicate) throws NotFoundException {
-        try {
-            for (CourseSegment courseSegment : courseSegments) {
-                if (predicate.test(courseSegment)) {
-                    return courseSegment;
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("-> Error While Searching Course Segment - " + e.getMessage());
-        }
-        return null;
-    }
-
-
-    @Override
-    public CourseSegment filter(String entry, String regex) throws InvalidDataException {
-        try {
-            for (CourseSegment course : courseSegments) {
-                if (course.getCourseId().matches(regex)) {
-                    return course;
-                }
-            }
-        } catch (Exception e) {
-            throw new InvalidDataException("-> Error while filtering courses: " + e.getMessage());
-        }
-        return null;
-    }
-
 
 }
