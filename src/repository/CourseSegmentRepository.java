@@ -63,7 +63,7 @@ public class CourseSegmentRepository implements ICourseSegmentRepository {
     public void add(CourseSegment courseSegment) throws EventException {
         try {
             // Check coachId in courseSegments contains in coachRepository
-            if (!coachRepository.getCoachs().stream().anyMatch(coach -> coach.getCoachId().equals(courseSegment.getCoachId()))) {
+            if (!coachRepository.getCoachList().stream().anyMatch(coach -> coach.getCoachId().equals(courseSegment.getCoachId()))) {
                 throw new InvalidDataException("-> Coach ID Does Not Exist - " + courseSegment.getCoachId());
             }
 

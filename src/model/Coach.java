@@ -20,24 +20,30 @@ public class Coach {
         return coachId;
     }
 
-    public void setCoachId(String coachId) {
+    public void setCoachId(String coachId) throws InvalidDataException {
         this.coachId = coachId;
+        this.runValidate();
     }
 
     public String getCoachName() {
         return coachName;
     }
 
-    public void setCoachName(String coachName) {
+    public void setCoachName(String coachName) throws InvalidDataException {
         this.coachName = coachName;
-    }
-    
-    public String getInfo(){
-        return String.format("", "");
-    }
-    
-    public void runValidate()throws InvalidDataException{
-        
+        this.runValidate();
     }
 
+    public String getInfo() {
+        return String.format("Coach ID: %s, Coach Name: %s", coachId, coachName);
+    }
+
+    public void runValidate() throws InvalidDataException {
+        if (coachId == null || coachId.isEmpty()) {
+            throw new InvalidDataException("Coach ID is invalid");
+        }
+        if (coachName == null || coachName.isEmpty()) {
+            throw new InvalidDataException("Coach Name is invalid");
+        }
+    }
 }
