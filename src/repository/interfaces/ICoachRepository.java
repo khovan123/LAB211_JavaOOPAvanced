@@ -15,10 +15,12 @@ public interface ICoachRepository extends Repository<Coach, List<Coach>> {
     final String coachPath = "/data/coach.csv"; // Define coach file path
 
     @Override
-    List<Coach> readFile() throws IOException, java.io.IOException;
+    List<Coach> readFile() throws IOException;
+
 
     @Override
     void writeFile(List<Coach> coachs) throws IOException, java.io.IOException;
+
 
     @Override
     void add(Coach coach) throws EventException, InvalidDataException;

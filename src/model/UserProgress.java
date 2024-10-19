@@ -30,7 +30,7 @@ public class UserProgress {
     }
 
     public String getInfo() {
-        return String.format("User ID: %s, Schedule Service: %s", getUserId(), scheduleService.toString());
+        return String.format("");
     }
 
     public void runValidate() throws InvalidDataException {

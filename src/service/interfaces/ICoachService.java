@@ -27,8 +27,7 @@ public interface ICoachService extends Service<Coach> {
     @Override
     Coach search(Predicate<Coach> p) throws NotFoundException;
 
-    @Override
-    Coach filter(String entry, String regex) throws InvalidDataException;
+   
 
     void addCourse(Course course) throws EventException;
 

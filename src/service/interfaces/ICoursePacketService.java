@@ -24,7 +24,6 @@ public interface ICoursePacketService extends Service<CoursePacket> {
     @Override
     CoursePacket search(Predicate<CoursePacket> p) throws NotFoundException;
 
-    @Override
-    CoursePacket filter(String entry, String regex) throws InvalidDataException;
+  
 
 }
