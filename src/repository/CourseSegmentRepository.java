@@ -21,15 +21,6 @@ public class CourseSegmentRepository implements ICourseSegmentRepository {
 
     }
 
-    public List<CourseSegment> getCourseSegments() {
-        return courseSegments;
-    }
-
-    public static void setCourseSegments(List<CourseSegment> courseSegments) {
-        CourseSegmentRepository.courseSegments = courseSegments;
-    }
-
-
     @Override
     public List<CourseSegment> readFile() throws IOException {
         try {

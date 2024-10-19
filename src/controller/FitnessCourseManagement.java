@@ -125,6 +125,7 @@ public class FitnessCourseManagement extends Menu<String> {
     public static void main(String[] args) {
         FitnessCourseManagement fitnessCourseManagement = new FitnessCourseManagement();
         fitnessCourseManagement.run();
+
     }
 
 }
