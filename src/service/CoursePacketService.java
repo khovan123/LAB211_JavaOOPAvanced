@@ -55,16 +55,16 @@ public class CoursePacketService implements ICoursePacketService {
     public void add(CoursePacket coursePacket) throws EventException {
         try {
             for (CoursePacket coursePacket1 : coursePacketList) {
-                if (!coursePacket1.getCoursePacketId().equalsIgnoreCase(coursePacket.getCoursePacketId())) {
-                    coursePacketList.add(coursePacket);
-                } else {
+                if (coursePacket1.getCoursePacketId().equalsIgnoreCase(coursePacket.getCoursePacketId())) {
                     throw new InvalidDataException(coursePacket.getCoursePacketId() + " Was Existed");
                 }
             }
+            coursePacketList.add(coursePacket);
         } catch (Exception e) {
             throw new EventException("-> Error While Adding Course Packet - " + e.getMessage());
         }
     }
+
 
     @Override
     public void delete(String id) throws EventException {
