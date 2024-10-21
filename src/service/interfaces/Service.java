@@ -2,6 +2,7 @@ package service.interfaces;
 
 import exception.EmptyDataException;
 import exception.EventException;
+import exception.InvalidDataException;
 import exception.NotFoundException;
 import java.util.function.Predicate;
 
