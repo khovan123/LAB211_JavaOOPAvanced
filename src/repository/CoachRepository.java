@@ -1,23 +1,49 @@
 package repository;
 
-import exception.IOException;
-import java.util.List;
+import exception.EventException;
+import exception.InvalidDataException;
+import exception.NotFoundException;
 import model.Coach;
 import repository.interfaces.ICoachRepository;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.function.Predicate;
 
 public class CoachRepository implements ICoachRepository {
 
     @Override
     public List<Coach> readFile() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ArrayList<Coach> coachList = new ArrayList<>();
+        String line;
+        coachList.clear();
+        try (BufferedReader input = new BufferedReader(new FileReader(path + coachPath))) {
+            while ((line = input.readLine()) != null) {
+                String[] data = line.split(",");
+                if (data.length >= 2) {
+                    coachList.add(new Coach(data[0], data[1]));
+                }
+            }
+        } catch (FileNotFoundException e) {
+            throw new IOException("File not found: " + coachPath, e);
+        } catch (Exception e) {
+            throw new IOException("Error reading the file: " + coachPath, e);
+        }
+        return coachList;
     }
 
     @Override
     public void writeFile(List<Coach> coachs) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try (BufferedWriter output = new BufferedWriter(new FileWriter(path + coachPath))) {
+            for (Coach coach : coachs) {
+                output.write(coach.getCoachId() + "," + coach.getCoachName());
+                output.newLine();
+            }
+        } catch (IOException e) {
+            throw new IOException("Error writing to the file: " + coachPath, e);
+        }
     }
-
     //data sample: CA-YYYY, Cris Rona
-    
-
 }

@@ -7,22 +7,37 @@ import model.User;
 
 public interface ICoachService extends Service<Coach> {
 
-    void addCourse(Course course);
+    @Override
+    void display() throws EmptyDataException;
 
-    void deleteCourse(String id);
+    @Override
+    void add(Coach entry) throws EventException, InvalidDataException;
+
+    @Override
+    void delete(String id) throws EventException, NotFoundException;
+
+    @Override
+    void update(Coach entry) throws EventException, NotFoundException;
+
+    @Override
+    Coach search(Predicate<Coach> p) throws NotFoundException;
+
+    void addCourse(Course course) throws EventException;
+
+    void deleteCourse(String id) throws EventException;
 
     void updateCourse(Course course);
 
-    Course searchCourse(Predicate<Course> p);
+    Course searchCourse(Predicate<Course> p) throws NotFoundException;
 
     void updateSchedule(Course course, PracticalDay practiceDay);
 
-    void deleteUser(String id);
+    void deleteUser(String id) throws EventException;
 
-    User searchUser(Predicate<User> user);
+    User searchUser(Predicate<User> user) throws NotFoundException;
 
     void updateUser(User user);
 
-    void addUser(User user);
+    void addUser(User user) throws EventException;
 
 }
