@@ -1,6 +1,7 @@
 package service;
 
 import exception.EventException;
+
 import java.util.function.Predicate;
 
 import exception.IOException;
@@ -19,21 +20,42 @@ public class CoursePacketService implements ICoursePacketService {
 
     @Override
     public void display() {
-
-        for (CoursePacket course : coursePacketRepository.getCoursePackets()) {
-            System.out.println(course);
+        try {
+            for (CoursePacket course : coursePacketRepository.getCoursePackets()) {
+                System.out.println(course);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("-> Error Occur While Displaying Course Packet: " + e.getMessage());
         }
 
     }
 
     @Override
     public void add(CoursePacket coursePacket) throws EventException {
-        coursePacketRepository.add(coursePacket);
+        if (!coursePacket.getCoursePacketId().matches("CP-\\d{4}")) {
+            throw new EventException("-> Invalid Course Packet ID Format: " + coursePacket.getCoursePacketId());
+        }
+        try {
+
+            coursePacketRepository.getCoursePackets().add(coursePacket);
+            System.out.println("-> Course Packet Added Successfully.");
+        } catch (Exception e) {
+            throw new EventException("-> Error While Adding Course Packet - " + e.getMessage());
+        }
     }
 
     @Override
     public void delete(String id) throws EventException {
-        coursePacketRepository.delete(id);
+        try {
+            boolean removed = coursePacketRepository.getCoursePackets().removeIf(coursePacket -> coursePacket.getCoursePacketId().equalsIgnoreCase(id));
+            if (!removed) {
+                throw new NotFoundException("-> Course Packet with ID " + id + " not found.");
+            }
+            System.out.println("-> Course Packet with ID " + id + " has been removed.");
+
+        } catch (Exception e) {
+            throw new EventException("-> An error occurred while deleting the Course Packet " + e.getMessage());
+        }
     }
 
     @Override
@@ -43,13 +65,17 @@ public class CoursePacketService implements ICoursePacketService {
 
     @Override
     public CoursePacket search(Predicate<CoursePacket> p) throws NotFoundException {
-        return coursePacketRepository.search(p);
+        for (CoursePacket coursePacket : coursePacketRepository.getCoursePackets()) {
+            if (p.test(coursePacket)) {
+                return coursePacket;
+            }
+        }
+        throw new NotFoundException("-> Course Packet not found matching the given criteria.");
     }
 
     @Override
     public CoursePacket findById(String id) throws NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
 
 }

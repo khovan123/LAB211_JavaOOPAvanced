@@ -9,7 +9,7 @@ public interface Service<T> {
 
     void display() throws EmptyDataException;
 
-    void add(T entry) throws EventException;
+    void add(T entry) throws EventException, InvalidDataException;
     
     void delete(String id) throws EventException, NotFoundException;
     
