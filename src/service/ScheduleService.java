@@ -2,15 +2,20 @@ package service;
 
 import exception.EmptyDataException;
 import exception.EventException;
+import exception.IOException;
 import exception.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import service.interfaces.IScheduleService;
 import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Schedule;
+import repository.ScheduleRepository;
 
 public class ScheduleService implements IScheduleService {
 
+    ScheduleRepository scheduleRepository = new ScheduleRepository();
     List<Schedule> scheduleList = new ArrayList<>();
 
     @Override
@@ -26,27 +31,61 @@ public class ScheduleService implements IScheduleService {
 
     @Override
     public void add(Schedule schedule) throws EventException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (schedule == null) {
+            throw new EventException("Error schedule.");
+        }
     }
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Schedule deleteSchedule = findById(id);
+        if(deleteSchedule==null){
+            throw new NotFoundException("Can not found schedule.");
+        }
+        scheduleList.remove(deleteSchedule);
+        System.out.println("Schedule deleted successfully.");
     }
 
     @Override
     public void update(Schedule schedule) throws EventException, NotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean found = false;
+
+        for (int i = 0; i < scheduleList.size(); i++) {
+            if (scheduleList.get(i).getScheduleId().equals(schedule.getScheduleId())) {
+                scheduleList.set(i, schedule);
+                try {
+                    scheduleRepository.writeFile(scheduleList);
+                } catch (IOException ex) {
+                    Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("Customer updated successfully!!!");
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            throw new NotFoundException("Customer not found with ID: " + schedule.getScheduleId());
+        }
     }
 
     @Override
     public Schedule search(Predicate<Schedule> p) throws NotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (Schedule schedule : scheduleList) {
+            if (p.test(schedule)) {
+                return schedule;
+            }
+        }
+        throw new NotFoundException("Can not found schedule.");
     }
 
     @Override
     public Schedule findById(String id) throws NotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (Schedule s : scheduleList) {
+            if (s.getScheduleId().equals(id)) {
+                return s;
+            }
+        }
+        return null;
     }
 
 }
