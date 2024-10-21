@@ -5,6 +5,8 @@ import exception.IOException;
 import exception.InvalidDataException;
 import exception.NotFoundException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 import model.CourseSegment;
@@ -15,6 +17,7 @@ import service.interfaces.ICourseSegmentService;
 public class CourseSegmentService implements ICourseSegmentService {
 
     private static CourseSegmentRepository courseSegmentRepository;
+    private static List<CourseSegment> courseSegmentList = new ArrayList<>();
 
     public CourseSegmentService() throws IOException {
         courseSegmentRepository = new CourseSegmentRepository();
@@ -23,40 +26,55 @@ public class CourseSegmentService implements ICourseSegmentService {
     @Override
     public void display() {
         try {
-            for (CourseSegment courseSegment : courseSegmentRepository.getCourseSegments()) {
-                System.out.println(courseSegment.getInfo());
+            if (!courseSegmentList.isEmpty()) {
+                for (CourseSegment courseSegment : courseSegmentList) {
+                    System.out.println(courseSegment.getInfo());
+                }
+            } else {
+                System.out.println("-> List Is Empty.");
             }
         } catch (Exception e) {
             throw new RuntimeException("-> Error Occur While Displaying Course Segment: " + e.getMessage());
         }
+    }
 
+    public void addCourseSegmentFromRepository() throws IOException {
+        try {
+            for (CourseSegment courseSegment : courseSegmentRepository.readFile()) {
+                add(courseSegment);
+            }
+        }catch (IOException e){
+            throw new IOException("-> Error While Reading File");
+        } catch (Exception e){
+            throw new RuntimeException("-> Error While Adding Course Segment From Repository - " + e.getMessage());
+        }
     }
 
     @Override
-    public void add(CourseSegment courseSegment) throws EventException {
-        if (!courseSegment.getCourseId().matches("CS-\\d{4}")) {
-            throw new EventException("-> Invalid Course Segment ID Format: " + courseSegment.getCourseId() + " - Must Be CS-YYYY");
-        }
+    public void add(CourseSegment courseSegment) {
         try {
-            courseSegmentRepository.getCourseSegments().add(courseSegment);
-            System.out.println("-> Course Added Successfully.");
+            if (!courseSegment.getCourseId().isEmpty()) {
+                courseSegmentList.add(courseSegment);
+            } else {
+                throw new InvalidDataException(courseSegment.getCourseId() + " Was Existed !!");
+            }
         } catch (Exception e) {
-            throw new EventException("-> Error While Adding Course Segment - " + e.getMessage());
+            throw new RuntimeException("An error occurred: " + e.getMessage());
         }
     }
+
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
         try {
-            boolean removed = courseSegmentRepository.getCourseSegments().removeIf(courseSegment -> courseSegment.getCourseId().equalsIgnoreCase(id));
-
-            if (!removed) {
-                throw new NotFoundException("-> Course Segment with ID " + id + " not found.");
+            for (CourseSegment courseSegment : courseSegmentList) {
+                if (courseSegment.getCourseId().equalsIgnoreCase(id)) {
+                    courseSegmentList.remove(courseSegment);
+                }
             }
-            System.out.println("-> Course Segment with ID " + id + " has been removed.");
-
-        } catch (Exception e) {
-            throw new EventException("-> An error occurred while deleting the Course Segment " + e.getMessage());
+            // cho catch ni bi loi chi k fix duoc coi voi na
+        } catch (NotFoundException e) {
+            throw new NotFoundException(e.getMessage());
         }
     }
 
@@ -123,12 +141,12 @@ public class CourseSegmentService implements ICourseSegmentService {
 
     @Override
     public CourseSegment search(Predicate<CourseSegment> p) throws NotFoundException {
-        for (CourseSegment courseSegment : courseSegmentRepository.getCourseSegments()) {
+        for (CourseSegment courseSegment : courseSegmentList) {
             if (p.test(courseSegment)) {
                 return courseSegment;
             }
         }
-        throw new NotFoundException("-> Course Segment not found matching the given criteria.");
+        throw new NotFoundException("-> Not Found Any Course Segment.");
     }
 
 
