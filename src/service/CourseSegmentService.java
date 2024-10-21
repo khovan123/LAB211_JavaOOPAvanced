@@ -65,20 +65,18 @@ public class CourseSegmentService implements ICourseSegmentService {
 
 
     @Override
-    public void delete(String id) throws EventException, NotFoundException {
+    public void delete(String id) throws EventException {
         try {
-            for (CourseSegment courseSegment : courseSegmentList) {
-                if (courseSegment.getCourseId().equalsIgnoreCase(id)) {
-                    courseSegmentList.remove(courseSegment);
-                }
+            boolean removed = courseSegmentList.removeIf(courseSegment -> courseSegment.getCourseId().equalsIgnoreCase(id));
+            if (!removed) {
+                throw new NotFoundException("-> Course Segment with ID " + id + " not found.");
             }
-            // cho catch ni bi loi chi k fix duoc coi voi na
-        } catch (NotFoundException e) {
-            throw new NotFoundException(e.getMessage());
+            System.out.println("-> Course Segment with ID " + id + " has been removed.");
+        } catch (Exception e) {
+            throw new EventException("-> An error occurred while deleting the Course Segment: " + e.getMessage());
         }
     }
-
-
+    
     @Override
     public void update(CourseSegment courseSegment) throws EventException, NotFoundException {
 //        --do not write this code--
@@ -148,7 +146,6 @@ public class CourseSegmentService implements ICourseSegmentService {
         }
         throw new NotFoundException("-> Not Found Any Course Segment.");
     }
-
 
     @Override
     public void addWorkout(Workout workout) {
