@@ -10,7 +10,7 @@ public interface Service<T> {
 
     void display() throws EmptyDataException;
 
-    void add(T entry) throws EventException;
+    void add(T entry) throws EventException, InvalidDataException;
     
     void delete(String id) throws EventException, NotFoundException;
     
@@ -18,5 +18,4 @@ public interface Service<T> {
     
     T search(Predicate<T> p) throws NotFoundException;
 
-    T filter(String entry, String regex) throws InvalidDataException;
 }

@@ -25,7 +25,6 @@ public interface IScheduleService extends Service<Schedule> {
     @Override
     Schedule search(Predicate<Schedule> p) throws NotFoundException;
 
-    @Override
-    Schedule filter(String entry, String regex) throws InvalidDataException;
+    
 
 }

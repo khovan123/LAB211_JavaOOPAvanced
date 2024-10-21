@@ -33,7 +33,7 @@ public class Schedule {
     }
 
     public String getInfo() {
-        return String.format(userProgressId);
+        return null;
     }
 
     public void runValidate() throws InvalidDataException {
