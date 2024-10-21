@@ -34,6 +34,8 @@ public class ScheduleService implements IScheduleService {
         if (schedule == null) {
             throw new EventException("Error schedule.");
         }
+        scheduleList.add(schedule);
+        System.out.println("Added successfully.");
     }
 
     @Override
