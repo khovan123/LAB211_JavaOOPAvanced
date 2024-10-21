@@ -2,27 +2,48 @@ package service;
 
 import exception.EventException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 import exception.IOException;
+import exception.InvalidDataException;
 import exception.NotFoundException;
 import model.CoursePacket;
+import model.CourseSegment;
 import repository.CoursePacketRepository;
 import service.interfaces.ICoursePacketService;
 
 public class CoursePacketService implements ICoursePacketService {
 
     private static CoursePacketRepository coursePacketRepository = new CoursePacketRepository();
+    private static List<CoursePacket> coursePacketList = new ArrayList<>();
 
     public CoursePacketService() throws IOException {
 
     }
 
+    public void addCoursePacketFromRepository() throws IOException {
+        try {
+            for (CoursePacket coursePacket : coursePacketRepository.readFile()) {
+                add(coursePacket);
+            }
+        }catch (IOException e){
+            throw new IOException("-> Error While Reading File");
+        } catch (Exception e){
+            throw new RuntimeException("-> Error While Adding Course Packet From Repository - " + e.getMessage());
+        }
+    }
+
     @Override
     public void display() {
         try {
-            for (CoursePacket course : coursePacketRepository.getCoursePackets()) {
-                System.out.println(course);
+            if (!coursePacketList.isEmpty()) {
+                for (CoursePacket coursePacket : coursePacketList) {
+                    System.out.println(coursePacket);
+                }
+            } else {
+                System.out.println("-> The List Is Empty");
             }
         } catch (Exception e) {
             throw new RuntimeException("-> Error Occur While Displaying Course Packet: " + e.getMessage());
@@ -32,13 +53,14 @@ public class CoursePacketService implements ICoursePacketService {
 
     @Override
     public void add(CoursePacket coursePacket) throws EventException {
-        if (!coursePacket.getCoursePacketId().matches("CP-\\d{4}")) {
-            throw new EventException("-> Invalid Course Packet ID Format: " + coursePacket.getCoursePacketId());
-        }
         try {
-
-            coursePacketRepository.getCoursePackets().add(coursePacket);
-            System.out.println("-> Course Packet Added Successfully.");
+            for (CoursePacket coursePacket1 : coursePacketList) {
+                if (!coursePacket1.getCoursePacketId().equalsIgnoreCase(coursePacket.getCoursePacketId())) {
+                    coursePacketList.add(coursePacket);
+                } else {
+                    throw new InvalidDataException(coursePacket.getCoursePacketId() + " Was Existed");
+                }
+            }
         } catch (Exception e) {
             throw new EventException("-> Error While Adding Course Packet - " + e.getMessage());
         }
@@ -47,7 +69,7 @@ public class CoursePacketService implements ICoursePacketService {
     @Override
     public void delete(String id) throws EventException {
         try {
-            boolean removed = coursePacketRepository.getCoursePackets().removeIf(coursePacket -> coursePacket.getCoursePacketId().equalsIgnoreCase(id));
+            boolean removed = coursePacketList.removeIf(coursePacket -> coursePacket.getCoursePacketId().equalsIgnoreCase(id));
             if (!removed) {
                 throw new NotFoundException("-> Course Packet with ID " + id + " not found.");
             }
@@ -65,7 +87,7 @@ public class CoursePacketService implements ICoursePacketService {
 
     @Override
     public CoursePacket search(Predicate<CoursePacket> p) throws NotFoundException {
-        for (CoursePacket coursePacket : coursePacketRepository.getCoursePackets()) {
+        for (CoursePacket coursePacket : coursePacketList) {
             if (p.test(coursePacket)) {
                 return coursePacket;
             }
