@@ -150,6 +150,15 @@ public class CourseSegmentService implements ICourseSegmentService {
     }
 
     @Override
+    public CourseSegment findById(String id) throws NotFoundException {
+        try {
+            return search(courseSegment -> courseSegment.getCourseId().equalsIgnoreCase(id));
+        } catch (NotFoundException e){
+            throw new NotFoundException(e.getMessage());
+        }
+    }
+
+    @Override
     public void addWorkout(Workout workout) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -168,4 +177,6 @@ public class CourseSegmentService implements ICourseSegmentService {
     public Workout searchWorkout(Predicate<Workout> p) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+
 }

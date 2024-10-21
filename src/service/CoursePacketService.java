@@ -28,9 +28,9 @@ public class CoursePacketService implements ICoursePacketService {
             for (CoursePacket coursePacket : coursePacketRepository.readFile()) {
                 add(coursePacket);
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new IOException("-> Error While Reading File");
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("-> Error While Adding Course Packet From Repository - " + e.getMessage());
         }
     }
@@ -94,4 +94,14 @@ public class CoursePacketService implements ICoursePacketService {
         }
         throw new NotFoundException("-> Course Packet not found matching the given criteria.");
     }
+
+    @Override
+    public CoursePacket findById(String id) throws NotFoundException {
+        try {
+            return search(coursePacket -> coursePacket.getCoursePacketId().equalsIgnoreCase(id));
+        } catch (NotFoundException e){
+            throw new NotFoundException(e.getMessage());
+        }
+    }
+
 }

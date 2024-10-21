@@ -17,5 +17,7 @@ public interface Service<T> {
     void update(T entry) throws EventException, NotFoundException;
     
     T search(Predicate<T> p) throws NotFoundException;
+    
+    T findById(String id) throws NotFoundException;
 
 }
