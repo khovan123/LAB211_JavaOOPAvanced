@@ -4,7 +4,6 @@ import exception.EventException;
 import java.util.function.Predicate;
 
 import exception.IOException;
-import exception.InvalidDataException;
 import exception.NotFoundException;
 import model.CoursePacket;
 import repository.CoursePacketRepository;
@@ -45,6 +44,11 @@ public class CoursePacketService implements ICoursePacketService {
     @Override
     public CoursePacket search(Predicate<CoursePacket> p) throws NotFoundException {
         return coursePacketRepository.search(p);
+    }
+
+    @Override
+    public CoursePacket findById(String id) throws NotFoundException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 

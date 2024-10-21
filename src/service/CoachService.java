@@ -1,5 +1,6 @@
 package service;
 
+import exception.NotFoundException;
 import service.interfaces.ICoachService;
 import java.util.function.Predicate;
 import model.Coach;
@@ -76,6 +77,11 @@ public class CoachService implements ICoachService {
 
     @Override
     public void addUser(User user) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Coach findById(String id) throws NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

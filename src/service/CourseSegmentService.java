@@ -2,7 +2,6 @@ package service;
 
 import exception.EventException;
 import exception.IOException;
-import exception.InvalidDataException;
 import exception.NotFoundException;
 
 import java.util.function.Predicate;
@@ -122,5 +121,10 @@ public class CourseSegmentService implements ICourseSegmentService {
     @Override
     public Workout searchWorkout(Predicate<Workout> p) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public CourseSegment findById(String id) throws NotFoundException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

@@ -2,7 +2,6 @@ package service;
 
 import exception.EmptyDataException;
 import exception.EventException;
-import exception.InvalidDataException;
 import exception.NotFoundException;
 import service.interfaces.IUserProgressService;
 import java.util.function.Predicate;
@@ -37,6 +36,11 @@ public class UserProgressService implements IUserProgressService {
 
     @Override
     public UserProgress search(Predicate<UserProgress> p) throws NotFoundException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public UserProgress findById(String id) throws NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
