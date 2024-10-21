@@ -43,9 +43,9 @@ public class CourseSegmentService implements ICourseSegmentService {
             for (CourseSegment courseSegment : courseSegmentRepository.readFile()) {
                 add(courseSegment);
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new IOException("-> Error While Reading File");
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("-> Error While Adding Course Segment From Repository - " + e.getMessage());
         }
     }
@@ -53,10 +53,12 @@ public class CourseSegmentService implements ICourseSegmentService {
     @Override
     public void add(CourseSegment courseSegment) {
         try {
-            if (!courseSegment.getCourseId().isEmpty()) {
-                courseSegmentList.add(courseSegment);
-            } else {
-                throw new InvalidDataException(courseSegment.getCourseId() + " Was Existed !!");
+            for (CourseSegment courseSegment1 : courseSegmentList) {
+                if (!courseSegment1.getCourseId().equalsIgnoreCase(courseSegment.getCourseId())) {
+                    courseSegmentList.add(courseSegment);
+                } else {
+                    throw new InvalidDataException(courseSegment.getCourseId() + " Was Existed !!");
+                }
             }
         } catch (Exception e) {
             throw new RuntimeException("An error occurred: " + e.getMessage());
@@ -76,7 +78,7 @@ public class CourseSegmentService implements ICourseSegmentService {
             throw new EventException("-> An error occurred while deleting the Course Segment: " + e.getMessage());
         }
     }
-    
+
     @Override
     public void update(CourseSegment courseSegment) throws EventException, NotFoundException {
 //        --do not write this code--
