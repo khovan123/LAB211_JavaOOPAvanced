@@ -2,7 +2,6 @@ package service;
 
 import exception.EmptyDataException;
 import exception.EventException;
-import exception.InvalidDataException;
 import exception.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +41,11 @@ public class ScheduleService implements IScheduleService {
 
     @Override
     public Schedule search(Predicate<Schedule> p) throws NotFoundException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Schedule findById(String id) throws NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

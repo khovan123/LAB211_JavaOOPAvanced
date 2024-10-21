@@ -53,6 +53,11 @@ public class WorkoutService implements IWorkoutService {
        return workoutRepository.search(p);
     }
 
+    @Override
+    public Workout findById(String id) throws NotFoundException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     
 
 }
