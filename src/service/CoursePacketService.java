@@ -72,4 +72,10 @@ public class CoursePacketService implements ICoursePacketService {
         }
         throw new NotFoundException("-> Course Packet not found matching the given criteria.");
     }
+
+    @Override
+    public CoursePacket findById(String id) throws NotFoundException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

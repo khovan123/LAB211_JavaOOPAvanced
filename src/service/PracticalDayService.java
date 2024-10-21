@@ -46,5 +46,10 @@ public class PracticalDayService implements IPracticalDayService {
         return practicalDayRepository.search(p);
     }
 
+    @Override
+    public PracticalDay findById(String id) throws NotFoundException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
    
 }

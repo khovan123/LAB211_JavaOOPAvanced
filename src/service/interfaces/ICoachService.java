@@ -1,9 +1,4 @@
 package service.interfaces;
-
-import exception.EmptyDataException;
-import exception.EventException;
-import exception.InvalidDataException;
-import exception.NotFoundException;
 import java.util.function.Predicate;
 import model.Coach;
 import model.Course;
@@ -26,8 +21,6 @@ public interface ICoachService extends Service<Coach> {
 
     @Override
     Coach search(Predicate<Coach> p) throws NotFoundException;
-
-   
 
     void addCourse(Course course) throws EventException;
 
