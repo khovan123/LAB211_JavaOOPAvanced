@@ -29,40 +29,23 @@ public class WorkoutRepository implements IWorkoutRepository {
             return workoutList;
         }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                try {
-                    String[] data = line.split(",");
-                    Workout workout = new Workout(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
-                    workoutList.add(workout);
-                } catch (Exception e) {
-                    throw new IOException("Add failed (" + e.getMessage() + ")");
-                }
+        BufferedReader br = new BufferedReader(new FileReader(path));
+        String line;
+        while ((line = br.readLine()) != null) {
+            try {
+                String[] data = line.split(",");
+                Workout workout = new Workout(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
+                workoutList.add(workout);
+            } catch (Exception e) {
+                throw new IOException("Add failed (" + e.getMessage() + ")");
             }
-        } catch (java.io.IOException e) {
-            throw new IOException("Read file failed!!! (" + e.getMessage() + ")");
         }
         return workoutList;
     }
 
     @Override
     public void writeFile(List<Workout> workoutList) throws IOException {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
-            for (Workout workout : workoutList) {
-                bw.write(workout.getWorkoutId() + "," +
-                        workout.getWorkoutName() + "," +
-                        workout.getDescription() + "," +
-                        workout.getRepetition() + "," +
-                        workout.getSets() + "," +
-                        workout.getDuration() + "," +
-                        workout.isDone() + "," +
-                        workout.getCourseSegmentId());
-                bw.newLine();
-            }
-        } catch (java.io.IOException e) {
-            throw new IOException("Write workout objects to the file failed!!!");
-        }
+        System.out.println("Not yet supported!!!");
     }
 
 }

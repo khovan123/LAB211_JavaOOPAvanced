@@ -15,7 +15,6 @@ public class PracticalDayRepository implements IPracticalDayRepository {
 
     private static TreeSet<PracticalDay> practicalDays = new TreeSet<>();
 
-    //data sample: PD-YYYY, 14/10/2024, 18, CP-YYYY
     static {
         try {
             Nutrition nutrition1 = new Nutrition("NT-2024", "18");
@@ -61,18 +60,7 @@ public class PracticalDayRepository implements IPracticalDayRepository {
 
     @Override
     public void writeFile(TreeSet<PracticalDay> practicalDays) throws IOException {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
-            for (PracticalDay practicalDay : practicalDays) {
-                bw.write(practicalDay.getPracticeDayId() + "," +
-                        GlobalUtils.getDateString(practicalDay.getPracticeDate()) + "," +
-                        practicalDay.getNutrition().getNutritionId() + "," +
-                        practicalDay.getNutrition().getCalories() + "," +
-                        practicalDay.getScheduleId());
-                bw.newLine();
-            }
-        } catch (java.io.IOException e) {
-            throw new IOException("Write practicalDay objects to the file failed!!!");
-        }
+        System.out.println("Not yet supported!!!");
     }
 
 }

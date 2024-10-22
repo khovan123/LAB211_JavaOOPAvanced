@@ -1,6 +1,5 @@
 package service;
 
-import java.io.IOException;
 import java.util.TreeSet;
 import java.util.function.Predicate;
 
@@ -15,12 +14,15 @@ import service.interfaces.IPracticalDayService;
 public class PracticalDayService implements IPracticalDayService {
 
     private final PracticalDayRepository practicalDayRepository = new PracticalDayRepository();
-    private TreeSet<PracticalDay> practicalDayTreeSet = new TreeSet<>();
+    private final TreeSet<PracticalDay> practicalDayTreeSet = new TreeSet<>();
 
-    public PracticalDayService() {
+    public PracticalDayService() throws IOException {
+        readFromDatabase();
     }
 
-    public void readFromDatabase() throws IOException {    }
+    public void readFromDatabase() throws exception.IOException {
+        practicalDayTreeSet.addAll(practicalDayRepository.readFile());
+    }
 
     @Override
     public void display() throws EmptyDataException {
@@ -37,7 +39,7 @@ public class PracticalDayService implements IPracticalDayService {
     public void add(PracticalDay practiceDay) throws EventException {
         try {
             practicalDayTreeSet.add(practiceDay);
-            practicalDayRepository.writeFile(practicalDayTreeSet);
+//            practicalDayRepository.writeFile(practicalDayTreeSet);
             System.out.println("Practical Day added successfully!");
         } catch (Exception e) {
             throw new EventException("Failed to add Practical Day: " + e.getMessage());
@@ -49,24 +51,20 @@ public class PracticalDayService implements IPracticalDayService {
         try {
             practicalDayTreeSet.remove(this.search(p -> p.getPracticeDayId().equalsIgnoreCase(id)));
             System.out.println("Deleted Practical Day with ID: " + id + " successfully!");
-        } catch (NotFoundException e) {
-            throw new NotFoundException("Practical Day with ID: " + id + " not found!");
         } catch (Exception e) {
             throw new EventException("An error occurred while deleting Practical Day with ID: " + id + ". " + e.getMessage());
         }
     }
 
     @Override
-    public void update(PracticalDay practicalDay) {
-        try{
+    public void update(PracticalDay practicalDay) throws EventException, NotFoundException {
+        try {
             practicalDayTreeSet.remove(this.search(p -> p.getPracticeDayId().equalsIgnoreCase(practicalDay.getPracticeDayId())));
             practicalDayTreeSet.add(practicalDay);
-            practicalDayRepository.writeFile(practicalDayTreeSet);
+//            practicalDayRepository.writeFile(practicalDayTreeSet);
             System.out.println("Practical Day updated successfully!");
-        } catch (NotFoundException e){
-            throw new NotFoundException("Practical Day with ID: " + practicalDay.getPracticeDayId() + "not found!!!")
-        } catch (IOException e){
-            throw new IOException("Write practicalDay objects to the file failed!!!");
+        } catch (Exception e){
+            throw new EventException("An error occurred while updating Practical Day with ID: " + practicalDay.getPracticeDayId() + e.getMessage());
         }
     }
 
@@ -82,7 +80,12 @@ public class PracticalDayService implements IPracticalDayService {
 
     @Override
     public PracticalDay findById(String id) throws NotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (PracticalDay practicalDay : practicalDayTreeSet) {
+            if (practicalDay.getPracticeDayId().equals(id)) {
+                return practicalDay;
+            }
+        }
+        return null;
     }
 
 
