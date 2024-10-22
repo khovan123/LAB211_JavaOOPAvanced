@@ -1,9 +1,21 @@
 package repository;
 
 import exception.IOException;
+import exception.NotFoundException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.PracticalDay;
 import model.Schedule;
 import repository.interfaces.IScheduleRepository;
+import service.PracticalDayService;
 
 public class ScheduleRepository implements IScheduleRepository {
     //no path, just handle practicalRepository
@@ -15,7 +27,43 @@ public class ScheduleRepository implements IScheduleRepository {
 
     @Override
     public List<Schedule> readFile() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<Schedule> schedules = new ArrayList<>();
+        File file = new File(path);
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) {
+                    System.err.println("Skipping empty line.");
+                    continue;
+                }
+
+                String[] data = line.split(",");
+                
+                String userProgressID = data[0];
+                
+                TreeSet<PracticalDay> practicalDayTreeSet = new TreeSet<>();
+                PracticalDayService practicalDayService = new PracticalDayService();
+                
+                for(int i = 1; i< data.length; i++){
+                    PracticalDay practicalDay = practicalDayService.findById(data[i]);
+                    if (practicalDay != null){
+                        practicalDayTreeSet.add(practicalDay);
+                    }else {
+                        System.out.println("Practical Day with ID " + data[i] + " not found, skipping....");
+                    }
+                }
+                Schedule schedule = new Schedule(userProgressID, practicalDayTreeSet);
+                schedules.add(schedule);
+            }
+        } catch (java.io.IOException e) {
+            throw new IOException("Error reading the file: " + e.getMessage());
+        } catch (NotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        return schedules;
+                
     }
 
     @Override
