@@ -1,25 +1,68 @@
 package repository;
 
 import exception.IOException;
+
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
+
 import model.Workout;
 import repository.interfaces.IWorkoutRepository;
 
 public class WorkoutRepository implements IWorkoutRepository {
 
+    private static List<Workout> workoutList = new ArrayList<>();
+
     //data sample: WK-YYYY, Leg Day, Do not off, 2, 4, 2, true, CS-YYYY
     static {
-
+        workoutList.add(new Workout("WK-2024", "Leg Day", "Do not off", "2", "4", "2", "true", "CS-0001"));
+        workoutList.add(new Workout("WK-2025", "Arm Day", "Focus on biceps", "3", "3", "1", "false", "CS-0002"));
+        workoutList.add(new Workout("WK-2026", "Cardio", "Run for 30 mins", "1", "1", "30", "false", "CS-0003"));
     }
 
     @Override
     public List<Workout> readFile() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<Workout> workoutList = new ArrayList<>();
+        File file = new File(path);
+        if (!file.exists()) {
+            System.out.println("File not found!!!");
+            return workoutList;
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                try {
+                    String[] data = line.split(",");
+                    Workout workout = new Workout(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
+                    workoutList.add(workout);
+                } catch (Exception e) {
+                    throw new IOException("Add failed (" + e.getMessage() + ")");
+                }
+            }
+        } catch (java.io.IOException e) {
+            throw new IOException("Read file failed!!! (" + e.getMessage() + ")");
+        }
+        return workoutList;
     }
 
     @Override
-    public void writeFile(List<Workout> workouts) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void writeFile(List<Workout> workoutList) throws IOException {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
+            for (Workout workout : workoutList) {
+                bw.write(workout.getWorkoutId() + "," +
+                        workout.getWorkoutName() + "," +
+                        workout.getDescription() + "," +
+                        workout.getRepetition() + "," +
+                        workout.getSets() + "," +
+                        workout.getDuration() + "," +
+                        workout.isDone() + "," +
+                        workout.getCourseSegmentId());
+                bw.newLine();
+            }
+        } catch (java.io.IOException e) {
+            throw new IOException("Write workout objects to the file failed!!!");
+        }
     }
 
 }

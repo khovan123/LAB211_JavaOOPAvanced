@@ -16,14 +16,14 @@ public class Workout {
     public Workout() {
     }
 
-    public Workout(String workoutId, String workoutName, String description, int repetition, int sets, int duration, boolean done, String courseSegmentId) {
+    public Workout(String workoutId, String workoutName, String description, String repetition, String sets, String duration, String done, String courseSegmentId) {
         this.workoutId = workoutId;
         this.workoutName = workoutName;
         this.description = description;
-        this.repetition = repetition;
-        this.sets = sets;
-        this.duration = duration;
-        this.done = done;
+        this.setRepetition(repetition);
+        this.setSets(sets);
+        this.setDuration(duration);
+        this.setDone(done);
         this.courseSegmentId = courseSegmentId;
     }
 
@@ -55,32 +55,32 @@ public class Workout {
         return repetition;
     }
 
-    public void setRepetition(int repetition) {
-        this.repetition = repetition;
+    public void setRepetition(String repetition) {
+        this.repetition = Integer.parseInt(repetition);
     }
 
     public int getSets() {
         return sets;
     }
 
-    public void setSets(int sets) {
-        this.sets = sets;
+    public void setSets(String sets) {
+        this.sets = Integer.parseInt(sets);
     }
 
     public int getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setDuration(String duration) {
+        this.duration = Integer.parseInt(duration);
     }
 
     public boolean isDone() {
         return done;
     }
 
-    public void setDone(boolean done) {
-        this.done = done;
+    public void setDone(String done) {
+        this.done = Boolean.parseBoolean(done);
     }
 
     public String getCourseSegmentId() {
