@@ -3,14 +3,16 @@ package model;
 import exception.InvalidDataException;
 import service.PracticalDayService;
 
+import java.util.TreeSet;
+
 public class Schedule {
 
     private String userProgressId;
     private PracticalDayService practicalDayService;
 
-    public Schedule(String userProgressId, PracticalDayService practicalDayService) {
+    public Schedule(String userProgressId, TreeSet<PracticalDay> practicalDayTreeSet) {
         this.userProgressId = userProgressId;
-        this.practicalDayService = practicalDayService;
+        this.practicalDayService = new PracticalDayService(practicalDayTreeSet);
     }
     public String getUserProgressId() {
         return userProgressId;
