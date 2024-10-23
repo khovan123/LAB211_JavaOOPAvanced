@@ -19,12 +19,18 @@ public class ScheduleService implements IScheduleService {
 
     ScheduleRepository scheduleRepository = new ScheduleRepository();
     List<Schedule> scheduleList = new ArrayList<>();
-    public ScheduleService() throws IOException{
-        scheduleList = scheduleRepository.readFile();
-        if (scheduleList == null){
-            scheduleList = new ArrayList<>();
+
+    public ScheduleService() throws IOException {
+        try {
+            scheduleList = scheduleRepository.readFile();
+            if (scheduleList == null) {
+                scheduleList = new ArrayList<>();
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
+
     @Override
     public void display() throws EmptyDataException {
         if (scheduleList.isEmpty()) {
@@ -48,7 +54,7 @@ public class ScheduleService implements IScheduleService {
     @Override
     public void delete(String id) throws EventException, NotFoundException {
         Schedule deleteSchedule = findById(id);
-        if(deleteSchedule==null){
+        if (deleteSchedule == null) {
             throw new NotFoundException("Can not found schedule.");
         }
         scheduleList.remove(deleteSchedule);
@@ -96,13 +102,16 @@ public class ScheduleService implements IScheduleService {
         }
         return null;
     }
-    public void addWorkoutToSchedule(Date date, Workout workout){
-        
+
+    public void addWorkoutToSchedule(Date date, Workout workout) {
+
     }
-    public void removeWorkoutFromSchedule(Date date, Workout workout){
-        
+
+    public void removeWorkoutFromSchedule(Date date, Workout workout) {
+
     }
-    public void viewSchedule(){
-        
+
+    public void viewSchedule() {
+
     }
 }

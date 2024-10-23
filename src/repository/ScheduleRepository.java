@@ -29,41 +29,47 @@ public class ScheduleRepository implements IScheduleRepository {
     public List<Schedule> readFile() throws IOException {
         List<Schedule> schedules = new ArrayList<>();
         File file = new File(path);
+        if (!file.exists()) {
+            throw new IOException("File not found at " + path);
+        }
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty()) {
-                    System.err.println("Skipping empty line.");
-                    continue;
-                }
-
-                String[] data = line.split(",");
-                
-                String userProgressID = data[0];
-                
-                TreeSet<PracticalDay> practicalDayTreeSet = new TreeSet<>();
-                PracticalDayService practicalDayService = new PracticalDayService();
-                
-                for(int i = 1; i< data.length; i++){
-                    PracticalDay practicalDay = practicalDayService.findById(data[i]);
-                    if (practicalDay != null){
-                        practicalDayTreeSet.add(practicalDay);
-                    }else {
-                        System.out.println("Practical Day with ID " + data[i] + " not found, skipping....");
+                try {
+                    line = line.trim();
+                    if (line.isEmpty()) {
+                        System.err.println("Skipping empty line.");
+                        continue;
                     }
+
+                    String[] data = line.split(",");
+
+                    String userProgressID = data[0];
+
+                    TreeSet<PracticalDay> practicalDayTreeSet = new TreeSet<>();
+                    PracticalDayService practicalDayService = new PracticalDayService();
+
+                    for (int i = 1; i < data.length; i++) {
+                        PracticalDay practicalDay = practicalDayService.findById(data[i]);
+                        if (practicalDay != null) {
+                            practicalDayTreeSet.add(practicalDay);
+                        } else {
+                            System.out.println("Practical Day with ID " + data[i] + " not found, skipping....");
+                        }
+                    }
+                    Schedule schedule = new Schedule(userProgressID, practicalDayTreeSet);
+                    schedules.add(schedule);
+                } catch (Exception e) {
+                    throw new IOException("Add failed " + e.getMessage());
+
                 }
-                Schedule schedule = new Schedule(userProgressID, practicalDayTreeSet);
-                schedules.add(schedule);
             }
         } catch (java.io.IOException e) {
             throw new IOException("Error reading the file: " + e.getMessage());
-        } catch (NotFoundException ex) {
-            System.out.println(ex.getMessage());
         }
 
         return schedules;
-                
+
     }
 
     @Override
