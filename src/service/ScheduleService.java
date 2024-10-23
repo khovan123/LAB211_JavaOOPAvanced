@@ -5,19 +5,26 @@ import exception.EventException;
 import exception.IOException;
 import exception.NotFoundException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import service.interfaces.IScheduleService;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Schedule;
+import model.Workout;
 import repository.ScheduleRepository;
 
 public class ScheduleService implements IScheduleService {
 
     ScheduleRepository scheduleRepository = new ScheduleRepository();
     List<Schedule> scheduleList = new ArrayList<>();
-
+    public ScheduleService() throws IOException{
+        scheduleList = scheduleRepository.readFile();
+        if (scheduleList == null){
+            scheduleList = new ArrayList<>();
+        }
+    }
     @Override
     public void display() throws EmptyDataException {
         if (scheduleList.isEmpty()) {
@@ -89,5 +96,4 @@ public class ScheduleService implements IScheduleService {
         }
         return null;
     }
-
 }

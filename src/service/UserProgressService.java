@@ -21,7 +21,12 @@ public class UserProgressService implements IUserProgressService {
     static {
 
     }
-
+    public UserProgressService() throws IOException{
+        userProgressList = userProgressRepository.readFile();
+        if (userProgressList == null){
+            userProgressList = new ArrayList<>();
+        }
+    }
     @Override
     public void display() throws EmptyDataException {
         if (userProgressList.isEmpty()) {
