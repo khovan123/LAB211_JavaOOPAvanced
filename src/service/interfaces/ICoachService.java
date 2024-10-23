@@ -31,7 +31,7 @@ public interface ICoachService extends Service<Coach> {
 
     void addCourse(Course course) throws EventException;
 
-    void deleteCourse(String id) throws EventException;
+    void deleteCourse(String id) throws EventException, NotFoundException;
 
     void updateCourse(Course course);
 

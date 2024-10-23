@@ -2,40 +2,70 @@ package model;
 
 import exception.InvalidDataException;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.regex.Pattern;
+
 public class Coach {
 
     private String coachId;
     private String coachName;
+    private String coachEmail;
+    private String phoneNumber;
+    private Date dateOfBirth;
 
-    public Coach() {
-    }
 
-    public Coach(String coachId, String coachName) throws InvalidDataException {
+    public Coach(String coachId, String coachName, Date dateOfBirth, String phoneNumber, String coachEmail) throws InvalidDataException {
         this.coachId = coachId;
         this.coachName = coachName;
-        this.runValidate();
+        this.dateOfBirth = dateOfBirth;
+        this.phoneNumber = phoneNumber;
+        this.coachEmail = coachEmail;
+        runValidate();
     }
 
+    public String getCoachName() {return coachName;}
     public String getCoachId() {
         return coachId;
     }
 
-    public void setCoachId(String coachId) throws InvalidDataException {
-        this.coachId = coachId;
-        this.runValidate();
-    }
+    public void setCoachId(String coachId) {this.coachId = coachId;}
 
-    public String getCoachName() {
-        return coachName;
-    }
-
-    public void setCoachName(String coachName) throws InvalidDataException {
+    public void setCoachName(String coachName) {
+        if(!Pattern.matches("([A-Z][a-z]*\\s*)+",coachName)){
+            System.err.println("Invalid coach name.Each word must start with a uppercase letter");
+        }
         this.coachName = coachName;
-        this.runValidate();
     }
+
+    public String getCoachEmail() {return coachEmail;}
+
+    public void setCoachEmail(String coachEmail) {this.coachEmail = coachEmail;}
+
+    public String getPhoneNumber() {return phoneNumber;}
+
+    public void setPhoneNumber(String phoneNumber) {this.phoneNumber = phoneNumber;}
+
+    public Date getDateOfBirth() {return dateOfBirth;}
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
 
     public String getInfo() {
-        return String.format("Coach ID: %s, Coach Name: %s", coachId, coachName);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        return String.format(
+                "---------------------------------------------\n" +
+                        "Coach ID   : %s\n" +
+                        "Coach Name : %s\n" +
+                        "BirthDay   : %s\n" +
+                        "PhoneNumber: %s\n" +
+                        "Email      : %s\n" +
+                        "---------------------------------------------",
+                coachId, coachName, dateFormat.format(dateOfBirth), phoneNumber, coachEmail
+        );
+
     }
 
     public void runValidate() throws InvalidDataException {
@@ -44,6 +74,17 @@ public class Coach {
         }
         if (coachName == null || coachName.isEmpty()) {
             throw new InvalidDataException("Coach Name is invalid");
+
         }
+        if (phoneNumber == null || phoneNumber.isEmpty()) {
+            throw new InvalidDataException("Phone Number is invalid");
+        }
+        if (dateOfBirth == null) {
+            throw new InvalidDataException("Date Of Birth is invalid");
+        }
+        if (coachEmail == null || coachEmail.isEmpty()) {
+            throw new InvalidDataException("Email is invalid");
+        }
+
     }
 }

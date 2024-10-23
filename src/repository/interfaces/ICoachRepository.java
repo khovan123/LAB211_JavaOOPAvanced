@@ -22,18 +22,18 @@ public interface ICoachRepository extends Repository<Coach, List<Coach>> {
     void writeFile(List<Coach> coachs) throws IOException, java.io.IOException;
 
 
-    @Override
-    void add(Coach coach) throws EventException, InvalidDataException;
-
-    @Override
-    void delete(String id) throws EventException;
-
-    @Override
-    Coach search(Predicate<Coach> p) throws NotFoundException;
-
-    @Override
-    Coach filter(String entry, String regex) throws InvalidDataException;
-
-    @Override
-    void addFromDatabase() throws EventException;
+//    @Override
+//    void add(Coach coach) throws EventException, InvalidDataException;
+//
+//    @Override
+//    void delete(String id) throws EventException;
+//
+//    @Override
+//    Coach search(Predicate<Coach> p) throws NotFoundException;
+//
+//    @Override
+//    Coach filter(String entry, String regex) throws InvalidDataException;
+//
+//    @Override
+//    void addFromDatabase() throws EventException;
 }

@@ -8,6 +8,6 @@ public interface Repository<T, C> {
   
     C readFile() throws IOException;
 
-    void writeFile(C entry) throws IOException;
+    void writeFile(C entry) throws IOException, java.io.IOException;
 
 }
