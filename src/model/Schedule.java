@@ -34,7 +34,7 @@ public class Schedule {
     }
 
     public String getInfo() {
-        return null;
+        return String.format("%s\t%s", userProgressId, practicalDayService);
     }
 
     public void runValidate() throws InvalidDataException {

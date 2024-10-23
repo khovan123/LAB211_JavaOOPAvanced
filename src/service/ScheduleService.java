@@ -96,4 +96,13 @@ public class ScheduleService implements IScheduleService {
         }
         return null;
     }
+    public void addWorkoutToSchedule(Date date, Workout workout){
+        
+    }
+    public void removeWorkoutFromSchedule(Date date, Workout workout){
+        
+    }
+    public void viewSchedule(){
+        
+    }
 }

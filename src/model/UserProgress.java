@@ -1,5 +1,6 @@
 package model;
 
+import exception.IOException;
 import exception.InvalidDataException;
 import service.ScheduleService;
 
@@ -8,11 +9,11 @@ public class UserProgress {
     private String coursePacketId;
     private ScheduleService scheduleService;
 
-    public UserProgress() {
+    public UserProgress() throws IOException {
         this.scheduleService = new ScheduleService();
     }
 
-    public UserProgress(String coursePacketId) {
+    public UserProgress(String coursePacketId) throws IOException {
         this.coursePacketId = coursePacketId;
         this.scheduleService = new ScheduleService();
     }
@@ -30,7 +31,7 @@ public class UserProgress {
     }
 
     public String getInfo() {
-        return null;
+        return String.format("%s", coursePacketId);
     }
 
     public void runValidate() throws InvalidDataException {

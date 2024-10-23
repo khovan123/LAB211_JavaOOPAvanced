@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.UserProgress;
+import model.Workout;
 import repository.UserProgressRepository;
 
 public class UserProgressService implements IUserProgressService {
@@ -98,6 +99,9 @@ public class UserProgressService implements IUserProgressService {
             return up;
         }
         throw new NotFoundException("Can not found user progress.");
+    }
+    public void updateProgress(Workout workout){
+        
     }
 
 }
