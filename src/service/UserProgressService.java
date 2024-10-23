@@ -22,12 +22,16 @@ public class UserProgressService implements IUserProgressService {
     static {
 
     }
-    public UserProgressService() throws IOException{
-        userProgressList = userProgressRepository.readFile();
-        if (userProgressList == null){
-            userProgressList = new ArrayList<>();
+
+    public UserProgressService() throws IOException {
+        try {
+            userProgressList = userProgressRepository.readFile();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
+
     }
+
     @Override
     public void display() throws EmptyDataException {
         if (userProgressList.isEmpty()) {
@@ -40,7 +44,11 @@ public class UserProgressService implements IUserProgressService {
 
     @Override
     public void add(UserProgress userProgress) throws EventException {
-        //generate new UserProgress with id = 
+        try {
+            existID(userProgress);
+        } catch (NotFoundException ex) {
+            System.out.println(ex.getMessage()+ ". Add failed.");
+        }
         if (userProgress == null) {
             throw new EventException("UserProgress is null");
         }
@@ -69,11 +77,11 @@ public class UserProgressService implements IUserProgressService {
                 try {
                     userProgressRepository.writeFile(userProgressList);
                 } catch (IOException ex) {
-                    Logger.getLogger(UserProgressService.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println(ex.getMessage());
                 }
                 System.out.println("UserProgress updated successfully!!!");
                 found = true;
-                break; 
+                break;
             }
         }
         if (!found) {
@@ -100,8 +108,20 @@ public class UserProgressService implements IUserProgressService {
         }
         throw new NotFoundException("Can not found user progress.");
     }
-    public void updateProgress(Workout workout){
-        
+
+    public boolean existID(UserProgress userProgress) throws NotFoundException {
+        try {
+            if (findById(userProgress.getUserId()) == null) {
+                return true;
+            }
+        } catch (Exception e) {
+            throw new NotFoundException(userProgress.getUserId() + " not found.");
+        }
+        return false;
+    }
+
+    public void updateProgress(Workout workout) {
+
     }
 
 }

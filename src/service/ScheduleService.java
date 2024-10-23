@@ -23,9 +23,6 @@ public class ScheduleService implements IScheduleService {
     public ScheduleService() throws IOException {
         try {
             scheduleList = scheduleRepository.readFile();
-            if (scheduleList == null) {
-                scheduleList = new ArrayList<>();
-            }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -44,6 +41,11 @@ public class ScheduleService implements IScheduleService {
 
     @Override
     public void add(Schedule schedule) throws EventException {
+        try {
+            existID(schedule);
+        } catch (NotFoundException ex) {
+            System.out.println(ex.getMessage() + ". Add failed.");
+        }
         if (schedule == null) {
             throw new EventException("Error schedule.");
         }
@@ -100,7 +102,18 @@ public class ScheduleService implements IScheduleService {
                 return s;
             }
         }
-        return null;
+        throw new NotFoundException("Can not found user progress.");
+    }
+
+    public boolean existID(Schedule schedule) throws NotFoundException {
+        try {
+            if (findById(schedule.getScheduleId()) == null) {
+                return true;
+            }
+        } catch (Exception e) {
+            throw new NotFoundException(schedule.getScheduleId() + " not found.");
+        }
+        return false;
     }
 
     public void addWorkoutToSchedule(Date date, Workout workout) {
