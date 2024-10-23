@@ -14,14 +14,24 @@ import service.interfaces.IPracticalDayService;
 public class PracticalDayService implements IPracticalDayService {
 
     private final PracticalDayRepository practicalDayRepository = new PracticalDayRepository();
-    private final TreeSet<PracticalDay> practicalDayTreeSet = new TreeSet<>();
+    private final TreeSet<PracticalDay> practicalDayTreeSet;
 
-    public PracticalDayService() throws IOException {
+    public PracticalDayService() {
+        practicalDayTreeSet = new TreeSet<>();
         readFromDatabase();
     }
 
-    public void readFromDatabase() throws exception.IOException {
-        practicalDayTreeSet.addAll(practicalDayRepository.readFile());
+    public PracticalDayService(TreeSet<PracticalDay> practicalDayTreeSet) {
+        this.practicalDayTreeSet = practicalDayTreeSet;
+        readFromDatabase();
+    }
+
+    public void readFromDatabase() {
+        try {
+            practicalDayTreeSet.addAll(practicalDayRepository.readFile());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
@@ -63,7 +73,7 @@ public class PracticalDayService implements IPracticalDayService {
             practicalDayTreeSet.add(practicalDay);
 //            practicalDayRepository.writeFile(practicalDayTreeSet);
             System.out.println("Practical Day updated successfully!");
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new EventException("An error occurred while updating Practical Day with ID: " + practicalDay.getPracticeDayId() + e.getMessage());
         }
     }
@@ -85,7 +95,7 @@ public class PracticalDayService implements IPracticalDayService {
                 return practicalDay;
             }
         }
-        return null;
+        throw new NotFoundException("Practical Day with ID: " + id + " not found.");
     }
 
 

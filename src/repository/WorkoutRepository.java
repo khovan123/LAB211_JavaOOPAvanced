@@ -25,20 +25,22 @@ public class WorkoutRepository implements IWorkoutRepository {
         List<Workout> workoutList = new ArrayList<>();
         File file = new File(path);
         if (!file.exists()) {
-            System.out.println("File not found!!!");
-            return workoutList;
+            throw new IOException("File not found at path: " + path);
         }
 
-        BufferedReader br = new BufferedReader(new FileReader(path));
-        String line;
-        while ((line = br.readLine()) != null) {
-            try {
-                String[] data = line.split(",");
-                Workout workout = new Workout(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
-                workoutList.add(workout);
-            } catch (Exception e) {
-                throw new IOException("Add failed (" + e.getMessage() + ")");
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                try {
+                    String[] data = line.split(",");
+                    Workout workout = new Workout(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
+                    workoutList.add(workout);
+                } catch (Exception e) {
+                    throw new IOException("Add failed (" + e.getMessage() + ")");
+                }
             }
+        } catch (java.io.IOException e) {
+            throw new IOException("Read file failed!!! (" + e.getMessage() + ")");
         }
         return workoutList;
     }

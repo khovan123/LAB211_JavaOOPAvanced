@@ -3,11 +3,14 @@ package repository;
 import exception.IOException;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 import exception.InvalidDataException;
 import model.Nutrition;
 import model.PracticalDay;
+import model.Workout;
 import repository.interfaces.IPracticalDayRepository;
 import utils.GlobalUtils;
 
@@ -36,8 +39,7 @@ public class PracticalDayRepository implements IPracticalDayRepository {
         TreeSet<PracticalDay> practicalDaysFromFile = new TreeSet<>();
         File file = new File(path);
         if (!file.exists()) {
-            System.out.println("File not found!!!");
-            return practicalDaysFromFile;
+            throw new IOException("File not found at path: " + path);
         }
 
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
@@ -45,8 +47,17 @@ public class PracticalDayRepository implements IPracticalDayRepository {
             while ((line = br.readLine()) != null) {
                 try {
                     String[] data = line.split(",");
+
+                    String practicalDayID = data[0];
+                    String practiceDate = data[1];
                     Nutrition nutrition = new Nutrition(data[2], data[3]);
-                    PracticalDay practicalDay = new PracticalDay(data[0], data[1], nutrition, data[4]);
+                    List<Workout> workoutList = new ArrayList<>();
+                    for(int i = 5; i < data.length; i++){
+                        workoutList.add(new Workout(data[i]));
+                    }
+
+                    PracticalDay practicalDay = new PracticalDay(practicalDayID, practiceDate, nutrition, workoutList, data[4]);
+
                     practicalDaysFromFile.add(practicalDay);
                 } catch (Exception e) {
                     throw new IOException("Add failed (" + e.getMessage() + ")");

@@ -19,25 +19,24 @@ import repository.WorkoutRepository;
 public class WorkoutService implements IWorkoutService {
 
     private final WorkoutRepository workoutRepository = new WorkoutRepository();
-    private final List<Workout> workoutList = new ArrayList<>();
+    private final List<Workout> workoutList;
 
-    public WorkoutService() throws IOException {
+    public WorkoutService() {
+        workoutList = new ArrayList<>();
         readFromDatabase();
     }
 
     public WorkoutService(List<Workout> workouts) {
-        for (Workout workout : workouts) {
-            try {
-                this.add(workout);
-            } catch (EventException ex) {
-            }
-        }
+        this.workoutList = workouts;
+        readFromDatabase();
     }
 
     public void readFromDatabase() {
         try {
-        workoutList.addAll(workoutRepository.readFile());
-        } catch (IO)
+            workoutList.addAll(workoutRepository.readFile());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
@@ -100,7 +99,7 @@ public class WorkoutService implements IWorkoutService {
                 return workout;
             }
         }
-        return null;
+        throw new NotFoundException("Workout with ID: " + id + " not found.");
     }
 
 

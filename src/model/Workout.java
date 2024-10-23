@@ -13,7 +13,8 @@ public class Workout {
     private boolean done;
     private String courseSegmentId;
 
-    public Workout() {
+    public Workout(String workoutId) {
+        this.workoutId = workoutId;
     }
 
     public Workout(String workoutId, String workoutName, String description, String repetition, String sets, String duration, String done, String courseSegmentId) {
