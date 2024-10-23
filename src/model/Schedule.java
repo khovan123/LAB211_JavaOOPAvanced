@@ -4,6 +4,8 @@ import exception.InvalidDataException;
 import java.util.TreeSet;
 import service.PracticalDayService;
 
+import java.util.TreeSet;
+
 public class Schedule {
 
     private String userProgressId;

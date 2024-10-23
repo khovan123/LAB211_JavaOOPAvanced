@@ -95,7 +95,7 @@ public class PracticalDayService implements IPracticalDayService {
                 return practicalDay;
             }
         }
-        return null;
+        throw new NotFoundException("Practical Day with ID: " + id + " not found.");
     }
 
 
