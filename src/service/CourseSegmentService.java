@@ -1,9 +1,6 @@
 package service;
 
-import exception.EventException;
-import exception.IOException;
-import exception.InvalidDataException;
-import exception.NotFoundException;
+import exception.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,66 +13,70 @@ import service.interfaces.ICourseSegmentService;
 
 public class CourseSegmentService implements ICourseSegmentService {
 
-    private static CourseSegmentRepository courseSegmentRepository;
-    private static List<CourseSegment> courseSegmentList = new ArrayList<>();
+    private final CourseSegmentRepository courseSegmentRepository = new CourseSegmentRepository();
+    private final List<CourseSegment> courseSegmentList;
 
     public CourseSegmentService() throws IOException {
-        courseSegmentRepository = new CourseSegmentRepository();
+        courseSegmentList = new ArrayList<>();
+        readFromDatabase();
+    }
+
+    public CourseSegmentService(List<CourseSegment> courseSegmentList) throws IOException {
+        this.courseSegmentList = courseSegmentList;
+        readFromDatabase();
     }
 
     @Override
-    public void display() {
-        try {
-            if (!courseSegmentList.isEmpty()) {
-                for (CourseSegment courseSegment : courseSegmentList) {
-                    System.out.println(courseSegment.getInfo());
-                }
-            } else {
-                System.out.println("-> List Is Empty.");
+    public void display() throws EmptyDataException {
+        if (courseSegmentList.isEmpty()) {
+            throw new EmptyDataException("-> Course Segment List Is Empty. ");
+        } else {
+            for (CourseSegment courseSegment : courseSegmentList) {
+                System.out.println(courseSegment);
             }
-        } catch (Exception e) {
-            throw new RuntimeException("-> Error Occurred While Displaying Course Segment: " + e.getMessage());
         }
     }
 
-    public void addCourseSegmentFromRepository() throws IOException {
+    public void readFromDatabase() throws IOException {
         try {
             for (CourseSegment courseSegment : courseSegmentRepository.readFile()) {
-                add(courseSegment);
+                courseSegmentList.add(courseSegment);
             }
         } catch (IOException e) {
-            throw new IOException("-> Error While Reading File: " + e.getMessage());
-        } catch (Exception e) {
-            throw new RuntimeException("-> Error While Adding Course Segment From Repository: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 
     @Override
-    public void add(CourseSegment courseSegment) throws InvalidDataException {
-        for (CourseSegment courseSegment1 : courseSegmentList) {
-            if (courseSegment1.getCourseId().equalsIgnoreCase(courseSegment.getCourseId())) {
-                throw new InvalidDataException(courseSegment.getCourseId() + " already exists!");
-            }
-        }
-        courseSegmentList.add(courseSegment);
-    }
-
-
-    @Override
-    public void delete(String id) throws EventException {
+    public void add(CourseSegment courseSegment) throws EventException {
         try {
-            boolean removed = courseSegmentList.removeIf(courseSegment -> courseSegment.getCourseId().equalsIgnoreCase(id));
-            if (!removed) {
-                throw new NotFoundException("-> Course Segment with ID " + id + " not found.");
-            }
-            System.out.println("-> Course Segment with ID " + id + " has been removed.");
+            courseSegmentList.add(courseSegment);
+            System.out.println("-> Course Segment Add Successfully!");
         } catch (Exception e) {
-            throw new EventException("-> An error occurred while deleting the Course Segment: " + e.getMessage());
+            throw new EventException("-> Error Occurred While Add Course Segment - " + e.getMessage());
+        }
+    }
+
+
+    @Override
+    public void delete(String id) throws EventException, NotFoundException {
+        try {
+            courseSegmentList.remove(this.search(courseSegment -> courseSegment.getCourseId().equalsIgnoreCase(id)));
+            System.out.println("-> Course Segment With ID - " + id + " - Remove Successfully");
+        } catch (Exception e) {
+            throw new EventException("-> Course Segment with ID " + id + " not found.");
         }
     }
 
     @Override
     public void update(CourseSegment courseSegment) throws EventException, NotFoundException {
+        try {
+            courseSegmentList.remove(this.search(courseSegment1 -> courseSegment1.getCourseId().equalsIgnoreCase(courseSegment.getCourseId())));
+            courseSegmentList.add(courseSegment);
+            System.out.println("-> Update Course Segment - " + courseSegment.getCourseId() + " - Successfully");
+        } catch (Exception e) {
+            throw new EventException("-> Error Occurred While Updating - " + courseSegment.getCourseId() + " - " + e.getMessage());
+        }
     }
 
     @Override
@@ -92,7 +93,7 @@ public class CourseSegmentService implements ICourseSegmentService {
     public CourseSegment findById(String id) throws NotFoundException {
         try {
             return search(courseSegment -> courseSegment.getCourseId().equalsIgnoreCase(id));
-        } catch (NotFoundException e){
+        } catch (NotFoundException e) {
             throw new NotFoundException(e.getMessage());
         }
     }

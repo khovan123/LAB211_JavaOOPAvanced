@@ -12,15 +12,20 @@ import service.interfaces.ICoursePacketService;
 
 public class CoursePacketService implements ICoursePacketService {
 
-    private static CoursePacketRepository coursePacketRepository = new CoursePacketRepository();
-    private static List<CoursePacket> coursePacketList;
+    private final CoursePacketRepository coursePacketRepository = new CoursePacketRepository();
+    private final List<CoursePacket> coursePacketList;
 
     public CoursePacketService() throws IOException {
         coursePacketList = new ArrayList<>();
         readFromDataBase();
     }
 
-    public void readFromDataBase() throws IOException {
+    public CoursePacketService(List<CoursePacket> coursePacketList) throws IOException {
+        this.coursePacketList = coursePacketList;
+        readFromDataBase();
+    }
+
+    public void readFromDataBase() {
         try {
             for (CoursePacket coursePacket : coursePacketRepository.readFile()) {
                 add(coursePacket);
@@ -44,11 +49,6 @@ public class CoursePacketService implements ICoursePacketService {
     @Override
     public void add(CoursePacket coursePacket) throws EventException {
         try {
-            for (CoursePacket coursePacket1 : coursePacketList) {
-                if (coursePacket1.getCoursePacketId().equalsIgnoreCase(coursePacket.getCoursePacketId())) {
-                    throw new InvalidDataException(coursePacket.getCoursePacketId() + " Was Existed");
-                }
-            }
             coursePacketList.add(coursePacket);
         } catch (Exception e) {
             throw new EventException("-> Error While Adding Course Packet - " + e.getMessage());
@@ -57,22 +57,24 @@ public class CoursePacketService implements ICoursePacketService {
 
 
     @Override
-    public void delete(String id) throws EventException {
+    public void delete(String id) throws EventException, NotFoundException {
         try {
-            boolean removed = coursePacketList.removeIf(coursePacket -> coursePacket.getCoursePacketId().equalsIgnoreCase(id));
-            if (!removed) {
-                throw new NotFoundException("-> Course Packet with ID " + id + " not found.");
-            }
+            coursePacketList.remove(this.search(coursePacket -> coursePacket.getCoursePacketId().equalsIgnoreCase(id)));
             System.out.println("-> Course Packet with ID " + id + " has been removed.");
-
         } catch (Exception e) {
             throw new EventException("-> An error occurred while deleting the Course Packet " + e.getMessage());
         }
     }
 
     @Override
-    public void update(CoursePacket coursePacket) {
-        // empty--dont write this code block
+    public void update(CoursePacket coursePacket) throws NotFoundException, EventException {
+        try {
+            coursePacketList.remove(this.search(coursePacket1 -> coursePacket1.getCoursePacketId().equalsIgnoreCase(coursePacket.getCoursePacketId())));
+            coursePacketList.add(coursePacket);
+            System.out.println("-> Updated Course Packet Successfully!");
+        } catch (Exception e){
+            throw new EventException("-> Error Occurred While Updating Course Packet With ID - " + coursePacket.getCoursePacketId() + " - " + e.getMessage());
+        }
     }
 
     @Override
@@ -90,7 +92,7 @@ public class CoursePacketService implements ICoursePacketService {
         try {
             return search(coursePacket -> coursePacket.getCoursePacketId().equalsIgnoreCase(id));
         } catch (NotFoundException e) {
-            throw new NotFoundException(e.getMessage());
+            throw new NotFoundException("-> Course Packet With ID - " + id + " - Not Found.");
         }
     }
 
