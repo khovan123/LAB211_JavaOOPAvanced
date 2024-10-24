@@ -43,18 +43,14 @@ public class ScheduleService implements IScheduleService {
     public void add(Schedule schedule) throws EventException {
         if (!existID(schedule)) {
             scheduleList.add(schedule);
-        }else{
-            throw new EventException("ID: "+schedule.getScheduleId() + " existed.");
+        } else {
+            throw new EventException("ID: " + schedule.getScheduleId() + " existed.");
         }
     }
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
-        Schedule deleteSchedule = findById(id);
-        if (deleteSchedule == null) {
-            throw new NotFoundException("Can not found schedule.");
-        }
-        scheduleList.remove(deleteSchedule);
+        scheduleList.remove(findById(id));
     }
 
     @Override
@@ -67,7 +63,7 @@ public class ScheduleService implements IScheduleService {
                 try {
                     scheduleRepository.writeFile(scheduleList);
                 } catch (IOException ex) {
-                    Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println(ex.getMessage());
                 }
                 found = true;
                 break;
@@ -98,13 +94,13 @@ public class ScheduleService implements IScheduleService {
         throw new NotFoundException("Can not found user progress.");
     }
 
-    public boolean existID(Schedule schedule){
+    public boolean existID(Schedule schedule) {
         try {
             if (findById(schedule.getScheduleId()) == null) {
                 return true;
             }
         } catch (NotFoundException ex) {
-            Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Can not find " + schedule);
         }
         return false;
     }

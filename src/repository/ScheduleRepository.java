@@ -16,6 +16,7 @@ import model.PracticalDay;
 import model.Schedule;
 import repository.interfaces.IScheduleRepository;
 import service.PracticalDayService;
+import java.util.Map;
 
 public class ScheduleRepository implements IScheduleRepository {
     //no path, just handle practicalRepository

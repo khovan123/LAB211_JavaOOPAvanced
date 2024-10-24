@@ -28,23 +28,18 @@ public class UserProgressRepository implements IUserProgressRepository {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = br.readLine()) != null) {
-                try {
-                    line = line.trim();
-                    if (line.isEmpty()) {
-                        System.err.println("Skipping empty line.");
-                        continue;
-                    }
-
-                    String[] data = line.split(",");
-                    if (data.length != 2) {
-                        System.err.println("Invalid line (incorrect number of fields): " + line);
-                        continue;
-                    }
-                    String userProgressID = data[0];
-                    userProgresses.add(new UserProgress(userProgressID));
-                } catch (IOException e) {
-                    throw new IOException("Add failed " + e.getMessage());
+                line = line.trim();
+                if (line.isEmpty()) {
+                    System.err.println("Skipping empty line.");
+                    continue;
                 }
+                String[] data = line.split(",");
+                if (data.length != 2) {
+                    System.err.println("Invalid line (incorrect number of fields): " + line);
+                    continue;
+                }
+                String userProgressID = data[0];
+                userProgresses.add(new UserProgress(userProgressID));
             }
         } catch (Exception e) {
             throw new IOException("Add failed " + e.getMessage());

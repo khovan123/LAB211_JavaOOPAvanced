@@ -9,11 +9,11 @@ public class UserProgress {
     private String coursePacketId;
     private ScheduleService scheduleService;
 
-    public UserProgress() throws IOException {
+    public UserProgress(){
         this.scheduleService = new ScheduleService();
     }
 
-    public UserProgress(String coursePacketId) throws IOException {
+    public UserProgress(String coursePacketId){
         this.coursePacketId = coursePacketId;
         this.scheduleService = new ScheduleService();
     }

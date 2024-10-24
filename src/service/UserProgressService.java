@@ -47,7 +47,7 @@ public class UserProgressService implements IUserProgressService {
         if (!existID(userProgress)) {
             userProgressList.add(userProgress);
         }else{
-            throw new EventException("ID: "+userProgress.getUserId() + " existed.")
+            throw new EventException("ID: "+userProgress.getUserId() + " existed.");
         }
         
 
@@ -55,11 +55,7 @@ public class UserProgressService implements IUserProgressService {
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
-        UserProgress userProgress = findById(id);
-        if (userProgress == null) {
-            throw new NotFoundException("Can not found user progress.");
-        }
-        userProgressList.remove(userProgress);
+        userProgressList.remove(findById(id));
     }
 
     @Override
@@ -109,7 +105,7 @@ public class UserProgressService implements IUserProgressService {
                 return true;
             }
         } catch (NotFoundException ex) {
-            Logger.getLogger(UserProgressService.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Can not find "+ userProgress);
         }
 
         return false;
