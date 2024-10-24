@@ -5,20 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/PracticalDay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/PracticalDay.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Schedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Schedule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Workout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Workout.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/main/Coach.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/PracticalDayRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/PracticalDayRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/WorkoutRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/WorkoutRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/CoursePacketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CoursePacketService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/PracticalDayService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/PracticalDayService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/WorkoutService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/WorkoutService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/GlobalUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/GlobalUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/CourseRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +15,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "hywangg1412"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/khovan123/LAB211_JavaOOPAvanced.git",
+    "accountId": "4de5b5bf-a83c-4794-9619-015d05b763d9"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -39,15 +38,29 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Merging huy",
+    "git-widget-placeholder": "huy",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "E:/FPT/Semester_III/LAB211/ResortManagement",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.keymap"
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -56,8 +69,23 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1729569624839</updated>
+      <workItem from="1729728527679" duration="454000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="LAST_COMMIT_MESSAGE" value="" />
