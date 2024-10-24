@@ -23,7 +23,7 @@ public class UserProgressService implements IUserProgressService {
 
     }
 
-    public UserProgressService() throws IOException {
+    public UserProgressService() {
         try {
             userProgressList = userProgressRepository.readFile();
         } catch (IOException e) {
@@ -44,16 +44,12 @@ public class UserProgressService implements IUserProgressService {
 
     @Override
     public void add(UserProgress userProgress) throws EventException {
-        try {
-            existID(userProgress);
-        } catch (NotFoundException ex) {
-            System.out.println(ex.getMessage()+ ". Add failed.");
+        if (!existID(userProgress)) {
+            userProgressList.add(userProgress);
+        }else{
+            throw new EventException("ID: "+userProgress.getUserId() + " existed.")
         }
-        if (userProgress == null) {
-            throw new EventException("UserProgress is null");
-        }
-        userProgressList.add(userProgress);
-        System.out.println("Added successfully.");
+        
 
     }
 
@@ -64,7 +60,6 @@ public class UserProgressService implements IUserProgressService {
             throw new NotFoundException("Can not found user progress.");
         }
         userProgressList.remove(userProgress);
-        System.out.println("Deleted successfully.");
     }
 
     @Override
@@ -79,7 +74,6 @@ public class UserProgressService implements IUserProgressService {
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
                 }
-                System.out.println("UserProgress updated successfully!!!");
                 found = true;
                 break;
             }
@@ -109,14 +103,15 @@ public class UserProgressService implements IUserProgressService {
         throw new NotFoundException("Can not found user progress.");
     }
 
-    public boolean existID(UserProgress userProgress) throws NotFoundException {
+    public boolean existID(UserProgress userProgress) {
         try {
             if (findById(userProgress.getUserId()) == null) {
                 return true;
             }
-        } catch (Exception e) {
-            throw new NotFoundException(userProgress.getUserId() + " not found.");
+        } catch (NotFoundException ex) {
+            Logger.getLogger(UserProgressService.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         return false;
     }
 

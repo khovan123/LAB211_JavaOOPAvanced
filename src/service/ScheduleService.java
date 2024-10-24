@@ -20,7 +20,7 @@ public class ScheduleService implements IScheduleService {
     ScheduleRepository scheduleRepository = new ScheduleRepository();
     List<Schedule> scheduleList = new ArrayList<>();
 
-    public ScheduleService() throws IOException {
+    public ScheduleService() {
         try {
             scheduleList = scheduleRepository.readFile();
         } catch (IOException e) {
@@ -41,16 +41,11 @@ public class ScheduleService implements IScheduleService {
 
     @Override
     public void add(Schedule schedule) throws EventException {
-        try {
-            existID(schedule);
-        } catch (NotFoundException ex) {
-            System.out.println(ex.getMessage() + ". Add failed.");
+        if (!existID(schedule)) {
+            scheduleList.add(schedule);
+        }else{
+            throw new EventException("ID: "+schedule.getScheduleId() + " existed.");
         }
-        if (schedule == null) {
-            throw new EventException("Error schedule.");
-        }
-        scheduleList.add(schedule);
-        System.out.println("Added successfully.");
     }
 
     @Override
@@ -60,7 +55,6 @@ public class ScheduleService implements IScheduleService {
             throw new NotFoundException("Can not found schedule.");
         }
         scheduleList.remove(deleteSchedule);
-        System.out.println("Schedule deleted successfully.");
     }
 
     @Override
@@ -75,7 +69,6 @@ public class ScheduleService implements IScheduleService {
                 } catch (IOException ex) {
                     Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                System.out.println("Customer updated successfully!!!");
                 found = true;
                 break;
             }
@@ -105,13 +98,13 @@ public class ScheduleService implements IScheduleService {
         throw new NotFoundException("Can not found user progress.");
     }
 
-    public boolean existID(Schedule schedule) throws NotFoundException {
+    public boolean existID(Schedule schedule){
         try {
             if (findById(schedule.getScheduleId()) == null) {
                 return true;
             }
-        } catch (Exception e) {
-            throw new NotFoundException(schedule.getScheduleId() + " not found.");
+        } catch (NotFoundException ex) {
+            Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
