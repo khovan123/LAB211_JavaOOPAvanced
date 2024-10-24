@@ -6,10 +6,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 import model.Schedule;
 import model.UserProgress;
 import repository.interfaces.IUserProgressRepository;
 import service.PracticalDayService;
+import service.ScheduleService;
 
 public class UserProgressRepository implements IUserProgressRepository {
 
@@ -34,12 +36,19 @@ public class UserProgressRepository implements IUserProgressRepository {
                     continue;
                 }
                 String[] data = line.split(",");
-                if (data.length != 2) {
-                    System.err.println("Invalid line (incorrect number of fields): " + line);
-                    continue;
-                }
                 String userProgressID = data[0];
-                userProgresses.add(new UserProgress(userProgressID));
+                TreeSet<Schedule> scheduleTreeSet = new TreeSet<>();
+                ScheduleService scheduleService = new ScheduleService();
+                for (int i = 1; i < data.length; i++) {
+                    Schedule schedule = scheduleService.findById(data[i]);
+                    if (schedule != null) {
+                        scheduleTreeSet.add(schedule);
+                    } else {
+                        System.out.println("Schedule with ID " + data[i] + " not found, skipping...");
+                    }
+                }
+                UserProgress userProgress = new UserProgress(userProgressID, scheduleTreeSet);
+                userProgresses.add(userProgress);
             }
         } catch (Exception e) {
             throw new IOException("Add failed " + e.getMessage());

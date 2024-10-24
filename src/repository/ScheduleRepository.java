@@ -8,7 +8,9 @@ import java.io.FileReader;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,7 +18,6 @@ import model.PracticalDay;
 import model.Schedule;
 import repository.interfaces.IScheduleRepository;
 import service.PracticalDayService;
-import java.util.Map;
 
 public class ScheduleRepository implements IScheduleRepository {
     //no path, just handle practicalRepository
@@ -29,6 +30,7 @@ public class ScheduleRepository implements IScheduleRepository {
     @Override
     public List<Schedule> readFile() throws IOException {
         List<Schedule> schedules = new ArrayList<>();
+        Map<String, List<PracticalDay>> coursePacketMap = new HashMap<>();
         File file = new File(path);
         if (!file.exists()) {
             throw new IOException("File not found at " + path);
@@ -46,28 +48,33 @@ public class ScheduleRepository implements IScheduleRepository {
                     String[] data = line.split(",");
 
                     String userProgressID = data[0];
-
-                    TreeSet<PracticalDay> practicalDayTreeSet = new TreeSet<>();
+                    String coursePacketID = data[1];
+                    List<PracticalDay> practicalDays = coursePacketMap.getOrDefault(coursePacketID, new ArrayList<>());
                     PracticalDayService practicalDayService = new PracticalDayService();
-
-                    for (int i = 1; i < data.length; i++) {
+                    TreeSet<PracticalDay> practicalDayTreeSet = new TreeSet<>();
+                    for (int i = 2; i < data.length; i++) {
                         PracticalDay practicalDay = practicalDayService.findById(data[i]);
                         if (practicalDay != null) {
                             practicalDayTreeSet.add(practicalDay);
+                            practicalDays.add(practicalDay);
                         } else {
                             System.out.println("Practical Day with ID " + data[i] + " not found, skipping....");
                         }
                     }
+                    coursePacketMap.put(coursePacketID, practicalDays);
                     Schedule schedule = new Schedule(userProgressID, practicalDayTreeSet);
                     schedules.add(schedule);
+
                 } catch (Exception e) {
                     throw new IOException("Add failed " + e.getMessage());
-
                 }
             }
         } catch (java.io.IOException e) {
-            throw new IOException("Error reading the file: " + e.getMessage());
+            throw new IOException("Error reading file: " + e.getMessage());
         }
+        coursePacketMap.forEach((key, value) -> {
+            System.out.println("Course Packet ID: " + key + ", Practical Days: " + value);
+        });
 
         return schedules;
 

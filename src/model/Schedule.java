@@ -14,7 +14,7 @@ public class Schedule {
     public Schedule(String userProgressId, TreeSet<PracticalDay>  practicalDayTreeSet) {
         this.userProgressId = userProgressId;
         this.practicalDayService = new PracticalDayService(practicalDayTreeSet);
-    }
+        }
     public String getUserProgressId() {
         return userProgressId;
     }

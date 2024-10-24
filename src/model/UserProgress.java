@@ -2,6 +2,7 @@ package model;
 
 import exception.IOException;
 import exception.InvalidDataException;
+import java.util.TreeSet;
 import service.ScheduleService;
 
 public class UserProgress {
@@ -13,9 +14,9 @@ public class UserProgress {
         this.scheduleService = new ScheduleService();
     }
 
-    public UserProgress(String coursePacketId){
+    public UserProgress(String coursePacketId,TreeSet<Schedule> scheduleTreeSet){
         this.coursePacketId = coursePacketId;
-        this.scheduleService = new ScheduleService();
+        this.scheduleService = new ScheduleService(scheduleTreeSet);
     }
 
     public String getUserId() {
