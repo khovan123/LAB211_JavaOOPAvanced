@@ -7,6 +7,7 @@ import exception.NotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TreeSet;
 import service.interfaces.IScheduleService;
 import java.util.function.Predicate;
 import java.util.logging.Level;
@@ -19,10 +20,21 @@ public class ScheduleService implements IScheduleService {
 
     ScheduleRepository scheduleRepository = new ScheduleRepository();
     List<Schedule> scheduleList = new ArrayList<>();
+    private final TreeSet<Schedule> scheduleTreeSet;
 
     public ScheduleService() {
+        scheduleTreeSet = new TreeSet<>();
+        readFromDatabase();
+    }
+
+    public ScheduleService(TreeSet<Schedule> scheduleTreeSet) {
+        this.scheduleTreeSet = scheduleTreeSet;
+        readFromDatabase();
+    }
+
+    public void readFromDatabase() {
         try {
-            scheduleList = scheduleRepository.readFile();
+            scheduleTreeSet.addAll(scheduleRepository.readFile());
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
