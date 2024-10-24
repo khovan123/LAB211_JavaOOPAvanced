@@ -2,7 +2,6 @@ package repository;
 
 import exception.IOException;
 import model.Course;
-import model.Workout;
 import repository.interfaces.ICourseRepository;
 
 import java.io.BufferedReader;
@@ -36,7 +35,7 @@ public class CourseRepository implements ICourseRepository {
                 }
             }
         } catch (java.io.IOException e) {
-            throw new RuntimeException("-> Error While Reading Course Data " + e.getMessage());
+            throw new IOException("-> Error While Reading Course Data " + e.getMessage());
         }
         return courseList;
     }

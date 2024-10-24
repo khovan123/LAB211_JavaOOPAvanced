@@ -15,14 +15,7 @@ public class CourseSegmentRepository implements ICourseSegmentRepository {
 
     private static List<CourseSegment> courseSegments = new ArrayList<>();
 
-    //data sample: CS-YYYY, 30 days full body master, CA-YYYY 
-    static {
-        CourseSegment courseSegment1 = new CourseSegment("CS-0001", "Cable Row Extension ", "CA-0001");
-        CourseSegment courseSegment2 = new CourseSegment("CS-0002", "Bulgarian Split Squad ", "CA-0002");
-
-        courseSegments.add(courseSegment1);
-        courseSegments.add(courseSegment2);
-    }
+    //data sample: CS-YYYY, 30 days full body master, CA-YYYY
 
     @Override
     public List<CourseSegment> readFile() throws IOException {
