@@ -4,14 +4,13 @@ import exception.EmptyDataException;
 import exception.EventException;
 import exception.InvalidDataException;
 import exception.NotFoundException;
+import model.Course;
 import repository.CoachRepository;
-import repository.CoursePacketRepository;
 import repository.CourseRepository;
 import repository.UserRepository;
 import service.interfaces.ICoachService;
 import java.util.function.Predicate;
 import model.Coach;
-import model.Course;
 import model.PracticalDay;
 import model.User;
 

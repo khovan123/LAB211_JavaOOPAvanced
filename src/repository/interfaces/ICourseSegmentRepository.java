@@ -1,9 +1,9 @@
 package repository.interfaces;
 
 import java.util.List;
-import model.CourseSegment;
+import model.Course;
 
-public interface ICourseSegmentRepository extends Repository<CourseSegment, List<CourseSegment>> {
+public interface ICourseSegmentRepository extends Repository<Course, List<Course>> {
 
     final String path = "";
 

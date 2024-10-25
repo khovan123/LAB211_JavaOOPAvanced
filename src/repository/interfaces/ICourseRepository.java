@@ -1,7 +1,6 @@
 package repository.interfaces;
 
-import model.Course;
 import java.util.List;
 
-public interface ICourseRepository extends Repository<Course, List<Course>> {
+public interface ICourseRepository extends Repository<CourseT, List<CourseT>> {
 }

@@ -8,18 +8,18 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.CourseSegment;
+import model.Course;
 import repository.interfaces.ICourseSegmentRepository;
 
 public class CourseSegmentRepository implements ICourseSegmentRepository {
 
-    private static List<CourseSegment> courseSegments = new ArrayList<>();
+    private static List<Course> courses = new ArrayList<>();
 
     //data sample: CS-YYYY, 30 days full body master, CA-YYYY
 
     @Override
-    public List<CourseSegment> readFile() throws IOException {
-        List<CourseSegment> courseSegmentList = new ArrayList<>();
+    public List<Course> readFile() throws IOException {
+        List<Course> courseList = new ArrayList<>();
         File file = new File(path);
         if (!file.exists()) {
             throw new IOException("-> File Not Found - " + path);
@@ -30,12 +30,12 @@ public class CourseSegmentRepository implements ICourseSegmentRepository {
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
                 try {
-                    CourseSegment courseSegment = new CourseSegment(
+                    Course course = new Course(
                             data[0],
                             data[1],
                             data[2]
                     );
-                    courseSegmentList.add(courseSegment);
+                    courseList.add(course);
                 } catch (Exception e) {
                     throw new IOException("-> Error While Adding Course Segment - " + e.getMessage());
                 }
@@ -43,11 +43,11 @@ public class CourseSegmentRepository implements ICourseSegmentRepository {
         } catch (java.io.IOException e) {
             throw new IOException("-> Error While Reading File - " + e.getMessage());
         }
-        return courseSegmentList;
+        return courseList;
     }
 
     @Override
-    public void writeFile(List<CourseSegment> courseSegments) throws IOException {
+    public void writeFile(List<Course> courses) throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

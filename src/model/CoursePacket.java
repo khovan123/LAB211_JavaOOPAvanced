@@ -10,7 +10,7 @@ public class CoursePacket {
     private String coursePacketId;
     private String userId;
     private String courseSegmentId;
-    private CourseSegment courseSegment;
+    private Course course;
     private UserProgressService userProgressService;
 
     public CoursePacket() {
@@ -24,11 +24,11 @@ public class CoursePacket {
         this.userProgressService = new UserProgressService();
     }
 
-    public CoursePacket(String coursePacketId, String userId, String courseSegmentId, CourseSegment courseSegment) {
+    public CoursePacket(String coursePacketId, String userId, String courseSegmentId, Course course) {
         this.coursePacketId = coursePacketId;
         this.userId = userId;
         this.courseSegmentId = courseSegmentId;
-        this.courseSegment = courseSegment;
+        this.course = course;
         this.userProgressService = new UserProgressService();
     }
 
@@ -48,12 +48,12 @@ public class CoursePacket {
         this.userId = userId;
     }
 
-    public CourseSegment getCourseSegment() {
-        return courseSegment;
+    public Course getCourseSegment() {
+        return course;
     }
 
-    public void setCourseSegment(CourseSegment courseSegment) {
-        this.courseSegment = courseSegment;
+    public void setCourseSegment(Course course) {
+        this.course = course;
     }
 
     public UserProgressService getUserProgressService() {

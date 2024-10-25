@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import model.CourseSegment;
+import model.Course;
 import model.Workout;
 import repository.CourseSegmentRepository;
 import service.interfaces.ICourseSegmentService;
@@ -14,50 +14,50 @@ import service.interfaces.ICourseSegmentService;
 public class CourseSegmentService implements ICourseSegmentService {
 
     private final CourseSegmentRepository courseSegmentRepository = new CourseSegmentRepository();
-    private final List<CourseSegment> courseSegmentList;
+    private final List<Course> courseList;
 
     public CourseSegmentService() {
-        courseSegmentList = new ArrayList<>();
+        courseList = new ArrayList<>();
         readFromDatabase();
     }
 
-    public CourseSegmentService(List<CourseSegment> courseSegmentList) {
-        this.courseSegmentList = courseSegmentList;
+    public CourseSegmentService(List<Course> courseList) {
+        this.courseList = courseList;
         readFromDatabase();
     }
 
     @Override
     public void display() throws EmptyDataException {
-        if (courseSegmentList.isEmpty()) {
+        if (courseList.isEmpty()) {
             throw new EmptyDataException("-> Course Segment List Is Empty. ");
         } else {
-            for (CourseSegment courseSegment : courseSegmentList) {
-                System.out.println(courseSegment);
+            for (Course course : courseList) {
+                System.out.println(course);
             }
         }
     }
 
     public void readFromDatabase() {
         try {
-            courseSegmentList.addAll(courseSegmentRepository.readFile());
+            courseList.addAll(courseSegmentRepository.readFile());
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
     @Override
-    public void add(CourseSegment courseSegment) throws EventException {
-        if (courseSegment == null) {
+    public void add(Course course) throws EventException {
+        if (course == null) {
             throw new EventException("-> Course Segment Cannot Be Null.");
         }
-        if (!courseSegment.getCourseId().matches("CS-\\d{4}")) {
-            throw new EventException("-> Invalid Course Segment ID Format: " + courseSegment.getCourseId() + " - Must Be CS-YYYY");
+        if (!course.getCourseId().matches("CS-\\d{4}")) {
+            throw new EventException("-> Invalid Course Segment ID Format: " + course.getCourseId() + " - Must Be CS-YYYY");
         }
-        if (existsID(courseSegment)) {
-            throw new EventException("-> Course Segment With ID - " + courseSegment.getCourseId() + " - Already Exist");
+        if (existsID(course)) {
+            throw new EventException("-> Course Segment With ID - " + course.getCourseId() + " - Already Exist");
         }
         try {
-            courseSegmentList.add(courseSegment);
+            courseList.add(course);
             System.out.println("-> Course Segment Add Successfully!");
         } catch (Exception e) {
             throw new EventException("-> Error Occurred While Add Course Segment - " + e.getMessage());
@@ -70,9 +70,9 @@ public class CourseSegmentService implements ICourseSegmentService {
         if (id == null || id.trim().isEmpty()) {
             throw new EventException("-> Course Segment ID Cannot Be Null Or Empty.");
         }
-        CourseSegment segmentToRemove = findById(id);
+        Course segmentToRemove = findById(id);
         if (segmentToRemove != null) {
-            courseSegmentList.remove(segmentToRemove);
+            courseList.remove(segmentToRemove);
             System.out.println("-> Course Segment With ID - " + id + " - Remove Successfully");
         } else {
             throw new EventException("-> Course Segment with ID " + id + " not found.");
@@ -81,46 +81,46 @@ public class CourseSegmentService implements ICourseSegmentService {
 
 
     @Override
-    public void update(CourseSegment courseSegment) throws EventException, NotFoundException {
-        if (courseSegment == null) {
+    public void update(Course course) throws EventException, NotFoundException {
+        if (course == null) {
             throw new EventException("-> Course Segment Cannot Be Null.");
         }
-        CourseSegment existCourse = findById(courseSegment.getCourseId());
+        Course existCourse = findById(course.getCourseId());
         if (existCourse == null) {
-            throw new NotFoundException("-> Course Segment With ID - " + courseSegment.getCourseId() + " - Not Found.");
+            throw new NotFoundException("-> Course Segment With ID - " + course.getCourseId() + " - Not Found.");
         }
         try {
-            courseSegmentList.remove(existCourse);
-            courseSegmentList.add(courseSegment);
-            System.out.println("-> Update Course Segment - " + courseSegment.getCourseId() + " - Successfully");
+            courseList.remove(existCourse);
+            courseList.add(course);
+            System.out.println("-> Update Course Segment - " + course.getCourseId() + " - Successfully");
         } catch (Exception e) {
-            throw new EventException("-> Error Occurred While Updating - " + courseSegment.getCourseId());
+            throw new EventException("-> Error Occurred While Updating - " + course.getCourseId());
         }
     }
 
     @Override
-    public CourseSegment search(Predicate<CourseSegment> p) throws NotFoundException {
-        for (CourseSegment courseSegment : courseSegmentList) {
-            if (p.test(courseSegment)) {
-                return courseSegment;
+    public Course search(Predicate<Course> p) throws NotFoundException {
+        for (Course course : courseList) {
+            if (p.test(course)) {
+                return course;
             }
         }
         throw new NotFoundException("-> No Course Segment found matching the criteria.");
     }
 
     @Override
-    public CourseSegment findById(String id) throws NotFoundException {
-        for (CourseSegment courseSegment : courseSegmentList) {
-            if (courseSegment.getCourseId().equalsIgnoreCase(id)) {
-                return courseSegment;
+    public Course findById(String id) throws NotFoundException {
+        for (Course course : courseList) {
+            if (course.getCourseId().equalsIgnoreCase(id)) {
+                return course;
             }
         }
         throw new NotFoundException("-> Course Segment With ID - " + id + " - Not Found.");
     }
 
-    public boolean existsID(CourseSegment courseSegment) {
+    public boolean existsID(Course course) {
         try {
-            return findById(courseSegment.getCourseId()) != null;
+            return findById(course.getCourseId()) != null;
         } catch (NotFoundException e) {
             return false;
         }

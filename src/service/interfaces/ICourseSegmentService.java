@@ -1,10 +1,10 @@
 package service.interfaces;
 
 import java.util.function.Predicate;
-import model.CourseSegment;
+import model.Course;
 import model.Workout;
 
-public interface ICourseSegmentService extends Service<CourseSegment> {
+public interface ICourseSegmentService extends Service<Course> {
 
     void addWorkout(Workout workout);
 

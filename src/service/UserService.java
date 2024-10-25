@@ -2,9 +2,6 @@ package service;
 
 import exception.NotFoundException;
 import service.interfaces.IUserService;
-import java.util.function.Predicate;
-import model.Course;
-import model.PracticalDay;
 import model.User;
 
 public class UserService implements IUserService {
@@ -28,15 +25,13 @@ public class UserService implements IUserService {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-  
-
     @Override
     public void update(User user) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void searchCourse(Predicate<Course> p) {
+    public void searchCourse(Predicate< CourseT > p) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
