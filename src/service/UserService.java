@@ -81,6 +81,11 @@ try{
         return userRepository.getUsers().stream().filter(p).findFirst().orElseThrow(()->new NotFoundException("User could not be found"));
     }
 
+    @Override
+    public User findById(String id) throws NotFoundException {
+        return null;
+    }
+
 
     @Override
     public void update(User user) throws EventException, NotFoundException {

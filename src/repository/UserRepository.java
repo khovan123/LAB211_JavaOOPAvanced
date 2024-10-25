@@ -36,11 +36,11 @@ public class UserRepository implements IUserRepository {
 
 
     @Override
-    public void writeFile(List<User> users) throws IOException, java.io.IOException {
+    public void writeFile(List<User> users) throws IOException {
         try (BufferedWriter output = new BufferedWriter(new FileWriter(path + userPath))) {
 
         } catch (java.io.IOException e) {
-            throw new java.io.IOException("Error writing to the file: " + userPath);
+            throw new IOException("Error writing to the file: " + userPath);
         }
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }

@@ -35,7 +35,6 @@ public class PracticalDay implements Comparator<PracticalDay> {
         this.nutrition = nutrition;
         this.workoutService = new WorkoutService(workoutList);
         this.scheduleId = scheduleId;
-
     }
 
     public String getPracticeDayId() {
@@ -75,9 +74,11 @@ public class PracticalDay implements Comparator<PracticalDay> {
     }
 
     @Override
-    public int compare(PracticalDay o1, PracticalDay o2) {
-        //compare 2 date
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public int compare(PracticalDay pd1, PracticalDay pd2) {
+        if(pd1.getPracticeDate() == null || pd2.getPracticeDate() == null){
+            throw new UnsupportedOperationException("Practice Date cannot be null");
+        }
+        return pd1.getPracticeDate().compareTo(pd2.getPracticeDate());
     }
 
     public String getInfo() {

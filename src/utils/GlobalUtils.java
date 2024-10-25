@@ -1,6 +1,7 @@
 package utils;
 
 import exception.InvalidDataException;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,8 +48,12 @@ public class GlobalUtils {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public static Date dateParse(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public static Date dateParse(String dateString) throws InvalidDataException {
+        try {
+            return sdf.parse(dateString);
+        } catch (ParseException e) {
+            throw new InvalidDataException("Invalid date format. Expected format: dd/MM/yyyy");
+        }
     }
 
     /**
@@ -58,8 +63,8 @@ public class GlobalUtils {
      *
      * @param inputPrompt The message to display when asking for input.
      * @param errorPrompt The message to display when the input is invalid.
-     * @param validator A predicate that defines the validation logic for the
-     * input.
+     * @param validator   A predicate that defines the validation logic for the
+     *                    input.
      * @return The validated input string that meets the validation criteria.
      */
     public static String getValidatedInput(String inputPrompt, String errorPrompt, Predicate<String> validator) {

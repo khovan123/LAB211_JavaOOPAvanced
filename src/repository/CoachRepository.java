@@ -28,11 +28,11 @@ public  List<Coach> getCoaches() {
     }
 
     @Override
-    public void writeFile(List<Coach> coachs) throws IOException, java.io.IOException {
+    public void writeFile(List<Coach> coachs) throws IOException {
         try (BufferedWriter output = new BufferedWriter(new FileWriter(path + coachPath))) {
 
         } catch (java.io.IOException e) {
-            throw new java.io.IOException("Error writing to the file: " + coachPath);
+            throw new IOException("Error writing to the file: " + coachPath);
         }
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }

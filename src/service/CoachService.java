@@ -81,7 +81,7 @@ public class CoachService implements ICoachService{
         }
         try{
             coachRepository.writeFile(coachRepository.getCoaches());
-        }catch(IOException | exception.IOException e){
+        }catch(exception.IOException e){
             throw new EventException("Coach ID"+ id +" could not be deleted");
         }
     }
@@ -89,6 +89,11 @@ public class CoachService implements ICoachService{
     @Override
     public Coach search(Predicate<Coach> p) throws NotFoundException {
         return coachRepository.getCoaches().stream().filter(p).findFirst().orElseThrow(()->new NotFoundException("Coach not found")) ;
+    }
+
+    @Override
+    public Coach findById(String id) throws NotFoundException {
+        return null;
     }
 
     @Override

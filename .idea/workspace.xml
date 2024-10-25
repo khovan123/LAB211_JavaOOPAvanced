@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/PracticalDay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/PracticalDay.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Schedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Schedule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Workout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Workout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/main/Coach.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/CoachRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/CoachRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/CoursePacketRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/CoursePacketRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/CourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/CourseSegmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/CourseSegmentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/PracticalDayRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/PracticalDayRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/ScheduleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/ScheduleRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/UserProgressRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/UserProgressRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/WorkoutRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/WorkoutRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/interfaces/ICoachRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/interfaces/ICoachRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/interfaces/ICoursePacketRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/interfaces/ICoursePacketRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/interfaces/ICourseSegmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/interfaces/ICourseSegmentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/interfaces/IPracticalDayRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/interfaces/IPracticalDayRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/interfaces/IScheduleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/interfaces/IScheduleRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/interfaces/IUserProgressRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/interfaces/IUserProgressRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/interfaces/IUserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/interfaces/IUserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/interfaces/IWorkoutRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/interfaces/IWorkoutRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/interfaces/Repository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/interfaces/Repository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/CoachService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CoachService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/CoursePacketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CoursePacketService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/CourseSegmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CourseSegmentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/PracticalDayService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/PracticalDayService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/ScheduleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/ScheduleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/UserProgressService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/UserProgressService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/WorkoutService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/WorkoutService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/interfaces/ICoachService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/interfaces/ICoachService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/interfaces/ICoursePacketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/interfaces/ICoursePacketService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/interfaces/ICourseSegmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/interfaces/ICourseSegmentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/interfaces/IPracticalDayService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/interfaces/IPracticalDayService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/interfaces/IScheduleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/interfaces/IScheduleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/interfaces/IUserProgressService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/interfaces/IUserProgressService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/interfaces/IUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/interfaces/IUserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/interfaces/IWorkoutService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/interfaces/IWorkoutService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/interfaces/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/interfaces/Service.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/GlobalUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/GlobalUtils.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2nmE07wZCfdKh2MTGJULfpskFyt" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "#41 on Merging dat",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "E:/FPT/Semester_III/LAB211/ResortManagement",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.keymap"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="" />
+      <created>1729569624839</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1729569624839</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+</project>
