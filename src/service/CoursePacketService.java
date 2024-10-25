@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 import model.CoursePacket;
 import repository.CoursePacketRepository;
 import service.interfaces.ICoursePacketService;
+import utils.ObjectUtils;
 
 public class CoursePacketService implements ICoursePacketService {
 
@@ -27,9 +28,9 @@ public class CoursePacketService implements ICoursePacketService {
 
     public void readFromDataBase() {
         try {
-            coursePacketList.addAll(coursePacketRepository.readFile());
+            coursePacketList.add((CoursePacket) coursePacketRepository.readFile());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -39,18 +40,14 @@ public class CoursePacketService implements ICoursePacketService {
             throw new EmptyDataException("-> No Course Packet Found");
         }
         for (CoursePacket coursePacket : coursePacketList) {
-            System.out.println(coursePacket);
+            coursePacket.getInfo();
         }
     }
 
     @Override
     public void add(CoursePacket coursePacket) throws EventException {
-        if (coursePacket == null) {
-            throw new EventException("-> Course Packet Cannot Be Null.");
-        }
-
-        if (!coursePacket.getCoursePacketId().matches("CP-\\d{4}")) {
-            throw new EventException("-> Invalid Course Packet ID Format: " + coursePacket.getCoursePacketId() + " - Must Be CP-YYYY");
+        if (ObjectUtils.validID(coursePacket.getCoursePacketId())) {
+            throw new EventException("-> Invalid Course Packet ID - " + coursePacket.getCoursePacketId() + " - Must Be CP-yyyy");
         }
 
         if (existID(coursePacket)) {
@@ -66,9 +63,6 @@ public class CoursePacketService implements ICoursePacketService {
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
-        if (id == null || id.trim().isEmpty()) {
-            throw new EventException("-> Course Packet ID Cannot Be Null Or Empty.");
-        }
         CoursePacket packetToRemove = findById(id);
         if (packetToRemove != null) {
             coursePacketList.remove(packetToRemove);
@@ -80,9 +74,6 @@ public class CoursePacketService implements ICoursePacketService {
 
     @Override
     public void update(CoursePacket coursePacket) throws NotFoundException, EventException {
-        if (coursePacket == null) {
-            throw new EventException("-> Course Packet Cannot Be Null.");
-        }
         CoursePacket existCourse = findById(coursePacket.getCoursePacketId());
         if (existCourse == null) {
             throw new NotFoundException("-> Course Packet with ID - " + coursePacket.getCoursePacketId() + " - Not Found.");
@@ -108,9 +99,6 @@ public class CoursePacketService implements ICoursePacketService {
 
     @Override
     public CoursePacket findById(String id) throws NotFoundException {
-        if (id == null || id.trim().isEmpty()) {
-            throw new IllegalArgumentException("-> Course Packet ID cannot be null or empty.");
-        }
         for (CoursePacket coursePacket : coursePacketList) {
             if (coursePacket.getCoursePacketId().equalsIgnoreCase(id)) {
                 return coursePacket;

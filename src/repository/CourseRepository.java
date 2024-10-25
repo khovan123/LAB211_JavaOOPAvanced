@@ -1,8 +1,6 @@
 package repository;
 
 import exception.IOException;
-import model.Course;
-import repository.interfaces.ICourseRepository;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,16 +8,23 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Course;
+import repository.interfaces.ICourseRepository;
+
 public class CourseRepository implements ICourseRepository {
+
+    private static List<Course> courses = new ArrayList<>();
+
+    //data sample: CS-YYYY, 30 days full body master, CA-YYYY
 
     @Override
     public List<Course> readFile() throws IOException {
+        List<Course> courseList = new ArrayList<>();
         File file = new File(path);
         if (!file.exists()) {
             throw new IOException("-> File Not Found - " + path);
         }
 
-        List<Course> courseList = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -28,20 +33,21 @@ public class CourseRepository implements ICourseRepository {
                     Course course = new Course(
                             data[0],
                             data[1],
-                            data[2]);
+                            data[2]
+                    );
                     courseList.add(course);
                 } catch (Exception e) {
-                    throw new IOException("-> Error While Adding Course " + e.getMessage());
+                    throw new IOException("-> Error While Adding Course Segment - " + e.getMessage());
                 }
             }
         } catch (java.io.IOException e) {
-            throw new IOException("-> Error While Reading Course Data " + e.getMessage());
+            throw new IOException("-> Error While Reading File - " + e.getMessage());
         }
         return courseList;
     }
 
     @Override
-    public void writeFile(List<Course> entry) throws IOException {
+    public void writeFile(List<Course> courses) throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

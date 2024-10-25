@@ -6,6 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/CourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/CourseSegmentRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/interfaces/ICourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/interfaces/ICourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/interfaces/ICourseSegmentRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/CoursePacketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CoursePacketService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/CourseSegmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CourseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/ObjectUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/ObjectUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +45,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;huy&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;E:/FPT/Semester_III/LAB211/ResortManagement&quot;,
@@ -49,7 +57,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -74,7 +82,9 @@
       <workItem from="1729743940940" duration="57000" />
       <workItem from="1729744055062" duration="97000" />
       <workItem from="1729762248316" duration="3790000" />
-      <workItem from="1729816982016" duration="1547000" />
+      <workItem from="1729816982016" duration="5022000" />
+      <workItem from="1729826744696" duration="103000" />
+      <workItem from="1729826854718" duration="517000" />
     </task>
     <servers />
   </component>

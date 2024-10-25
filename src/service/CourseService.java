@@ -8,20 +8,21 @@ import java.util.function.Predicate;
 
 import model.Course;
 import model.Workout;
-import repository.CourseSegmentRepository;
+import repository.CourseRepository;
 import service.interfaces.ICourseSegmentService;
+import utils.ObjectUtils;
 
-public class CourseSegmentService implements ICourseSegmentService {
+public class CourseService implements ICourseSegmentService {
 
-    private final CourseSegmentRepository courseSegmentRepository = new CourseSegmentRepository();
+    private final CourseRepository courseRepository = new CourseRepository();
     private final List<Course> courseList;
 
-    public CourseSegmentService() {
+    public CourseService() {
         courseList = new ArrayList<>();
         readFromDatabase();
     }
 
-    public CourseSegmentService(List<Course> courseList) {
+    public CourseService(List<Course> courseList) {
         this.courseList = courseList;
         readFromDatabase();
     }
@@ -32,26 +33,23 @@ public class CourseSegmentService implements ICourseSegmentService {
             throw new EmptyDataException("-> Course Segment List Is Empty. ");
         } else {
             for (Course course : courseList) {
-                System.out.println(course);
+                course.getInfo();
             }
         }
     }
 
     public void readFromDatabase() {
         try {
-            courseList.addAll(courseSegmentRepository.readFile());
+            courseList.add((Course) courseRepository.readFile());
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
     @Override
     public void add(Course course) throws EventException {
-        if (course == null) {
-            throw new EventException("-> Course Segment Cannot Be Null.");
-        }
-        if (!course.getCourseId().matches("CS-\\d{4}")) {
-            throw new EventException("-> Invalid Course Segment ID Format: " + course.getCourseId() + " - Must Be CS-YYYY");
+        if (ObjectUtils.validID(course.getCourseId())){
+            throw new EventException("-> Invalid Course ID - " + course.getCourseId() + " - Must Be CS-yyyy");
         }
         if (existsID(course)) {
             throw new EventException("-> Course Segment With ID - " + course.getCourseId() + " - Already Exist");
@@ -64,12 +62,8 @@ public class CourseSegmentService implements ICourseSegmentService {
         }
     }
 
-
     @Override
     public void delete(String id) throws EventException, NotFoundException {
-        if (id == null || id.trim().isEmpty()) {
-            throw new EventException("-> Course Segment ID Cannot Be Null Or Empty.");
-        }
         Course segmentToRemove = findById(id);
         if (segmentToRemove != null) {
             courseList.remove(segmentToRemove);
@@ -79,12 +73,8 @@ public class CourseSegmentService implements ICourseSegmentService {
         }
     }
 
-
     @Override
     public void update(Course course) throws EventException, NotFoundException {
-        if (course == null) {
-            throw new EventException("-> Course Segment Cannot Be Null.");
-        }
         Course existCourse = findById(course.getCourseId());
         if (existCourse == null) {
             throw new NotFoundException("-> Course Segment With ID - " + course.getCourseId() + " - Not Found.");
