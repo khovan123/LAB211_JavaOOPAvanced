@@ -93,17 +93,16 @@ public class ScheduleService implements IScheduleService {
                 return schedule;
             }
         }
-        throw new NotFoundException("Can not found schedule.");
+        throw new NotFoundException("Can not found any schedule.");
     }
 
     @Override
     public Schedule findById(String id) throws NotFoundException {
-        for (Schedule s : scheduleList) {
-            if (s.getScheduleId().equals(id)) {
-                return s;
-            }
+        try{
+            return this.search(p -> p.getScheduleId().equals(id));
+        } catch (NotFoundException e) {
+            throw new NotFoundException(e);
         }
-        throw new NotFoundException("Can not found user progress.");
     }
 
     public boolean existID(Schedule schedule) {

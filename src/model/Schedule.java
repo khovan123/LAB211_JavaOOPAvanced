@@ -10,8 +10,13 @@ public class Schedule {
 
     private String userProgressId;
     private final PracticalDayService practicalDayService;
+    
+    public Schedule(String userProgressId){
+        this.userProgressId = userProgressId;
+        this.practicalDayService = null;
+    }
 
-    public Schedule(String userProgressId, TreeSet<PracticalDay>  practicalDayTreeSet) {
+    public Schedule(String userProgressId, TreeSet<PracticalDay> practicalDayTreeSet) {
         this.userProgressId = userProgressId;
         this.practicalDayService = new PracticalDayService(practicalDayTreeSet);
         }

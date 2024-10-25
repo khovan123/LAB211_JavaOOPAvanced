@@ -8,15 +8,11 @@ import service.ScheduleService;
 public class UserProgress {
 
     private String coursePacketId;
-    private ScheduleService scheduleService;
+    private final Schedule schedule;
 
-    public UserProgress(){
-        this.scheduleService = new ScheduleService();
-    }
-
-    public UserProgress(String coursePacketId,TreeSet<Schedule> scheduleTreeSet){
+    public UserProgress(String coursePacketId, Schedule schedule){
         this.coursePacketId = coursePacketId;
-        this.scheduleService = new ScheduleService(scheduleTreeSet);
+        this.schedule = new Schedule(coursePacketId);
     }
 
     public String getUserId() {
@@ -27,8 +23,8 @@ public class UserProgress {
         this.coursePacketId = coursePacketId;
     }
 
-    public ScheduleService getScheduleService() {
-        return scheduleService;
+    public Schedule getSchedule() {
+        return schedule;
     }
 
     public String getInfo() {

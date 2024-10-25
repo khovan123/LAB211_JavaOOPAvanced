@@ -91,12 +91,11 @@ public class UserProgressService implements IUserProgressService {
 
     @Override
     public UserProgress findById(String id) throws NotFoundException {
-        UserProgress exist = findById(id);
-        for (UserProgress up : userProgressList) {
-            if (up.getUserId().equals(id));
-            return up;
+        try{
+            return this.search(p -> p.getUserId().equals(id));
+        } catch (NotFoundException e) {
+            throw new NotFoundException(e);
         }
-        throw new NotFoundException("Can not found user progress.");
     }
 
     public boolean existID(UserProgress userProgress) {

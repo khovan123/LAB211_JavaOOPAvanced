@@ -31,23 +31,11 @@ public class UserProgressRepository implements IUserProgressRepository {
             String line;
             while ((line = br.readLine()) != null) {
                 line = line.trim();
-                if (line.isEmpty()) {
-                    System.err.println("Skipping empty line.");
-                    continue;
-                }
                 String[] data = line.split(",");
+
                 String userProgressID = data[0];
-                TreeSet<Schedule> scheduleTreeSet = new TreeSet<>();
-                ScheduleService scheduleService = new ScheduleService();
-                for (int i = 1; i < data.length; i++) {
-                    Schedule schedule = scheduleService.findById(data[i]);
-                    if (schedule != null) {
-                        scheduleTreeSet.add(schedule);
-                    } else {
-                        System.out.println("Schedule with ID " + data[i] + " not found, skipping...");
-                    }
-                }
-                UserProgress userProgress = new UserProgress(userProgressID, scheduleTreeSet);
+                Schedule schedule = new Schedule(data[0]);
+                UserProgress userProgress = new UserProgress(userProgressID, schedule );
                 userProgresses.add(userProgress);
             }
         } catch (Exception e) {

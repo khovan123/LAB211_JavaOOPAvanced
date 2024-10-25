@@ -2,6 +2,7 @@ package repository;
 
 import exception.IOException;
 import exception.NotFoundException;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import model.PracticalDay;
 import model.Schedule;
 import repository.interfaces.IScheduleRepository;
@@ -40,13 +42,7 @@ public class ScheduleRepository implements IScheduleRepository {
             while ((line = br.readLine()) != null) {
                 try {
                     line = line.trim();
-                    if (line.isEmpty()) {
-                        System.err.println("Skipping empty line.");
-                        continue;
-                    }
-
                     String[] data = line.split(",");
-
                     String userProgressID = data[0];
                     String coursePacketID = data[1];
                     List<PracticalDay> practicalDays = coursePacketMap.getOrDefault(coursePacketID, new ArrayList<>());
