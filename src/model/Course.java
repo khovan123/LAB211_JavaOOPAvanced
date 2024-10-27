@@ -17,19 +17,22 @@ public class Course {
     private double price;
     private String comboID;
     private String coachId;
-    WorkoutService workoutService; // All workouts, to know what you do in the course
+    private WorkoutService workoutService; // All workouts, to know what you do in the course
 
-    public Course(String courseId, String courseName, boolean addventor, String generateDate, double price, String comboID, String coachId) throws InvalidDataException {
+    public Course() {
+    }
+
+    public Course(String courseId, String courseName, boolean addventor, String generateDate, String price, String comboID, String coachId) throws InvalidDataException {
         this.courseId = courseId;
         this.courseName = courseName;
         this.addventor = addventor;
         this.setGenerateDate(generateDate);
-        this.price = price;
+        this.setPrice(price);
         this.comboID = comboID;
         this.coachId = coachId;
     }
 
-    public Course(String courseId, String courseName, boolean addventor, String generateDate, double price, String comboID, String coachId, WorkoutService workoutService) throws InvalidDataException {
+    public Course(String courseId, String courseName, boolean addventor, String generateDate, String price, String comboID, String coachId, WorkoutService workoutService) throws InvalidDataException {
         this(courseId, courseName, addventor, generateDate, price, comboID, coachId); // Call primary constructor
         this.workoutService = workoutService;
     }
@@ -50,8 +53,12 @@ public class Course {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setPrice(String price) throws InvalidDataException {
+        try {
+            this.price = Double.parseDouble(price);
+        } catch (NumberFormatException e) {
+            throw new InvalidDataException("-> Price must be a number.");
+        }
     }
 
     public String getComboID() {
@@ -107,7 +114,7 @@ public class Course {
                 courseId, courseName, addventor, GlobalUtils.getDateString(generateDate), price, comboID, coachId);
     }
 
-    public void runValidate() throws InvalidDataException {
+    public void validate() throws InvalidDataException {
         if (!ObjectUtils.validCourseID(courseId)) {
             throw new InvalidDataException("-> Course ID Must Be CSyyyy.");
         }
@@ -119,6 +126,9 @@ public class Course {
         }
         if (!ObjectUtils.validCoursePrice(String.valueOf(price))) {
             throw new InvalidDataException("-> Price Must Be Larger Than 0.");
+        }
+        if (generateDate == null) {
+            throw new InvalidDataException("-> Generate Date cannot be null.");
         }
     }
 }

@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="" />
+    <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/CourseCombo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/CourseCombo.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -95,7 +99,7 @@
       <workItem from="1730029481330" duration="6542000" />
       <workItem from="1730036467963" duration="3957000" />
       <workItem from="1730045484926" duration="24000" />
-      <workItem from="1730045519348" duration="5836000" />
+      <workItem from="1730045519348" duration="6549000" />
     </task>
     <servers />
   </component>

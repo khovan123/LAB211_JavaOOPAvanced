@@ -8,10 +8,13 @@ public class CourseCombo {
     private String comboName;
     private double sales;
 
-    public CourseCombo(String comboId, String comboName, double sales) {
+    public CourseCombo() {
+    }
+
+    public CourseCombo(String comboId, String comboName, String sales) throws InvalidDataException {
         this.comboId = comboId;
         this.comboName = comboName;
-        this.sales = sales;
+        this.setSales(sales);
     }
 
     public String getComboId() {
@@ -34,15 +37,23 @@ public class CourseCombo {
         return sales;
     }
 
-    public void setSales(double sales) {
-        this.sales = sales;
+    public void setSales(String sales) throws InvalidDataException {
+        try {
+            double saleValue = Double.parseDouble(sales);
+            if (saleValue <= 0) {
+                throw new InvalidDataException("-> Sales must be larger than 0.");
+            }
+            this.sales = saleValue;
+        } catch (NumberFormatException e) {
+            throw new InvalidDataException("-> Sales must be a number.");
+        }
     }
 
     public String getInfo() {
-        return String.format("");
+        return String.format("Combo ID: %s, Combo Name: %s, Sales: %.2f", comboId, comboName, sales);
     }
 
-    public void runValidate() throws InvalidDataException {
+    public void validate() throws InvalidDataException {
         if (!ObjectUtils.valideCourseComboID(comboId)) {
             throw new InvalidDataException("-> Course Combo ID Must Be CByyyy.");
         }

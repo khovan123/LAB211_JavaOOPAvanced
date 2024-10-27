@@ -15,12 +15,27 @@ public class RegisteredCourse {
     private String courseID;
     private String userID;
 
+    public RegisteredCourse() {
+    }
+
     public RegisteredCourse(String registeredCourseID, String registeredDate, String finishRegisteredDate, String courseID, String userID) throws InvalidDataException {
         this.registeredCourseID = registeredCourseID;
         this.setRegisteredDate(registeredDate);
         this.setFinishRegisteredDate(finishRegisteredDate);
         this.courseID = courseID;
         this.userID = userID;
+    }
+
+    public String getRegisteredCourseID() {
+        return registeredCourseID;
+    }
+
+    public void setRegisteredCourseID(String registeredCourseID) {
+        this.registeredCourseID = registeredCourseID;
+    }
+
+    public Date getRegisteredDate() {
+        return registeredDate;
     }
 
     public void setRegisteredDate(String registeredDate) throws InvalidDataException {
@@ -31,8 +46,8 @@ public class RegisteredCourse {
         }
     }
 
-    public Date getRegisteredDate() {
-        return registeredDate;
+    public Date getFinishRegisteredDate() {
+        return finishRegisteredDate;
     }
 
     public void setFinishRegisteredDate(String finishRegisteredDate) throws InvalidDataException {
@@ -41,18 +56,6 @@ public class RegisteredCourse {
         } catch (ParseException e) {
             throw new InvalidDataException("-> Finish Registered Date must be in dd/MM/yyyy format.");
         }
-    }
-
-    public Date getFinishRegisteredDate() {
-        return finishRegisteredDate;
-    }
-
-    public String getRegisteredCourseID() {
-        return registeredCourseID;
-    }
-
-    public void setRegisteredCourseID(String registeredCourseID) {
-        this.registeredCourseID = registeredCourseID;
     }
 
     public String getCourseID() {
@@ -76,7 +79,7 @@ public class RegisteredCourse {
                 registeredCourseID, GlobalUtils.getDateString(registeredDate), GlobalUtils.getDateString(finishRegisteredDate), courseID, userID);
     }
 
-    public void runValidate() throws InvalidDataException {
+    public void validate() throws InvalidDataException {
         if (!ObjectUtils.validCourseRegistedID(registeredCourseID)) {
             throw new InvalidDataException("-> Registered Course ID must be RCyyyy.");
         }
