@@ -20,11 +20,11 @@ public class PracticalDayRepository implements IPracticalDayRepository {
 
     static {
         try {
-            Nutrition nutrition1 = new Nutrition("NT-2024", "18");
-            Nutrition nutrition2 = new Nutrition("NT-2025", "22");
+//            Nutrition nutrition1 = new Nutrition("NT-2024", "18");
+//            Nutrition nutrition2 = new Nutrition("NT-2025", "22");
 
-            practicalDays.add(new PracticalDay("PD-2024", "14/10/2024", nutrition1, "CP-2024"));
-            practicalDays.add(new PracticalDay("PD-2025", "15/10/2024", nutrition2, "CP-2025"));
+            practicalDays.add(new PracticalDay("PD-2024", "14/10/2024", "CP-2024"));
+            practicalDays.add(new PracticalDay("PD-2025", "15/10/2024", "CP-2025"));
         } catch (InvalidDataException e) {
             System.out.println("Error initializing sample data: " + e.getMessage());
         }
@@ -50,13 +50,13 @@ public class PracticalDayRepository implements IPracticalDayRepository {
 
                     String practicalDayID = data[0];
                     String practiceDate = data[1];
-                    Nutrition nutrition = new Nutrition(data[2], data[3]);
-                    List<Workout> workoutList = new ArrayList<>();
-                    for(int i = 5; i < data.length; i++){
-                        workoutList.add(new Workout(data[i]));
-                    }
+//                    Nutrition nutrition = new Nutrition(data[2], data[3]);
+//                    List<Workout> workoutList = new ArrayList<>();
+//                    for(int i = 5; i < data.length; i++){
+//                        workoutList.add(new Workout(data[i]));
+//                    }
 
-                    PracticalDay practicalDay = new PracticalDay(practicalDayID, practiceDate, nutrition, workoutList, data[4]);
+                    PracticalDay practicalDay = new PracticalDay(practicalDayID, practiceDate, data[2]);
 
                     practicalDaysFromFile.add(practicalDay);
                 } catch (Exception e) {

@@ -15,9 +15,9 @@ public class WorkoutRepository implements IWorkoutRepository {
 
     //data sample: WK-YYYY, Leg Day, Do not off, 2, 4, 2, true, CS-YYYY
     static {
-        workoutList.add(new Workout("WK-2024", "Leg Day", "Do not off", "2", "4", "2", "true", "CS-0001"));
-        workoutList.add(new Workout("WK-2025", "Arm Day", "Focus on biceps", "3", "3", "1", "false", "CS-0002"));
-        workoutList.add(new Workout("WK-2026", "Cardio", "Run for 30 mins", "1", "1", "30", "false", "CS-0003"));
+        workoutList.add(new Workout("WK-2024", "Leg Day", "2", "4", "2", "CS-0001"));
+        workoutList.add(new Workout("WK-2025", "Arm Day", "3", "3", "1", "CS-0002"));
+        workoutList.add(new Workout("WK-2026", "Cardio", "1", "1", "30", "CS-0003"));
     }
 
     @Override
@@ -33,7 +33,7 @@ public class WorkoutRepository implements IWorkoutRepository {
             while ((line = br.readLine()) != null) {
                 try {
                     String[] data = line.split(",");
-                    Workout workout = new Workout(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
+                    Workout workout = new Workout(data[0], data[1], data[2], data[3], data[4], data[5]);
                     workoutList.add(workout);
                 } catch (Exception e) {
                     throw new IOException("Add failed (" + e.getMessage() + ")");
