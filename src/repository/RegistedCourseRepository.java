@@ -26,11 +26,12 @@ public class RegistedCourseRepository implements IRegistedCourseRepository {
                 try {
                     RegisteredCourse registeredCourse = new RegisteredCourse(
                             data[1],
-                            LocalDate.parse(data[2]),
-                            LocalDate.parse(data[3]),
+                            data[2],
+                            data[3],
                             data[4],
                             data[5]
                     );
+                    registeredCourse.runValidate();
                     registeredCours.add(registeredCourse);
                 } catch (Exception e) {
                     throw new IOException("-> Error While Adding - " + e.getMessage());

@@ -42,7 +42,6 @@ public class CourseRepository implements ICourseRepository {
                     );
                     course.runValidate();
                     courseList.add(course);
-
                 } catch (Exception e) {
                     System.err.println("-> Error While Adding - " + e.getMessage());
                 }
