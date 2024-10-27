@@ -1,21 +1,20 @@
 package repository;
 
 import exception.IOException;
+import model.Course;
+import repository.interfaces.ICourseRepository;
+import utils.GlobalUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import model.Course;
-import repository.interfaces.ICourseRepository;
 
 public class CourseRepository implements ICourseRepository {
 
     private static List<Course> courses = new ArrayList<>();
-
+    private static final String path = "path/to/your/course/file.csv";
     //data sample: CS-YYYY, 30 days full body master, CA-YYYY
 
     @Override
@@ -23,33 +22,32 @@ public class CourseRepository implements ICourseRepository {
         List<Course> courseList = new ArrayList<>();
         File file = new File(path);
         if (!file.exists()) {
-            throw new IOException("-> File Not Found - " + path);
+            System.err.println("-> File Not Found At Path - " + path);
+            return courseList;
         }
-
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
                 try {
-
                     boolean addventor = data[2].trim().equalsIgnoreCase("Y");
-
                     Course course = new Course(
-                            data[0],
-                            data[1],
+                            data[0].trim(),
+                            data[1].trim(),
                             addventor,
-                            LocalDate.parse(data[3]),
-                            Double.parseDouble(data[4]),
-                            data[5],
-                            data[6]
+                            data[3].trim(),
+                            Double.parseDouble(data[4].trim()),
+                            data[5].trim(),
+                            data[6].trim()
                     );
                     courseList.add(course);
+
                 } catch (Exception e) {
-                    throw new IOException("-> Error While Adding Course Segment - " + e.getMessage());
+                    System.err.println("-> Error While Adding - " + e.getMessage());
                 }
             }
         } catch (java.io.IOException e) {
-            throw new IOException("-> Error While Reading File - " + e.getMessage());
+            System.err.println("-> Error While Reading File - " + e.getMessage());
         }
         return courseList;
     }
@@ -57,7 +55,6 @@ public class CourseRepository implements ICourseRepository {
 
     @Override
     public void writeFile(List<Course> courses) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-
 }
