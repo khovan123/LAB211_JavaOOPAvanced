@@ -40,6 +40,7 @@ public class CourseRepository implements ICourseRepository {
                             data[5].trim(),
                             data[6].trim()
                     );
+                    course.runValidate();
                     courseList.add(course);
 
                 } catch (Exception e) {
