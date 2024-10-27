@@ -15,11 +15,12 @@ public class SampleCoachRepository implements ICoachRepository {
     public static final String FullName_Column = "FullName";
     public static final String DoB_Column = "DOB";
     public static final String Phone_Column = "Phone";
+    public static final boolean Active_Column = true;
     public static final String Certificate_Column = "Certificate";
-    private static final List<String> PERSONMODELCOLUMN = new ArrayList<>(Arrays.asList(PersonID_Column, FullName_Column, DoB_Column, Phone_Column));
+    private static final List<String> PERSONMODELCOLUMN = new ArrayList<>(Arrays.asList(PersonID_Column, FullName_Column, DoB_Column, Phone_Column,Boolean.toString(Active_Column)));
     private static final List<String> COACHMODELCOLUMN = new ArrayList<>(Arrays.asList(PersonID_Column, Certificate_Column));
     private Connection conn = SQLServerConnection.getConnection();
-
+    
     @Override
     public List<Coach> readFile() throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -35,7 +36,7 @@ public class SampleCoachRepository implements ICoachRepository {
         try {
             StringBuilder row = new StringBuilder();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT p.PersonID, p.FullName, p.DoB, p.Phone, c.Certificate  FROM PersonModel p JOIN CoachModel c ON p.PersonID = c.PersonID");
+            ResultSet rs = stmt.executeQuery("SELECT p.PersonID, p.FullName, p.DoB, p.Phone, c.Certificate  FROM PersonModel p JOIN CoachModel c ON p.PersonID = c.PersonID WHERE p.Active = 1");
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
             while (rs.next()) {
@@ -139,15 +140,10 @@ public class SampleCoachRepository implements ICoachRepository {
     }
 
     public void delete(String ID) throws SQLException {
-        String personQuery = "DELETE FROM PersonModel WHERE PersonID = ?";
-        String coachQuery = "DELETE FROM CoachModel WHERE PersonID = ?";
-
+        String personQuery = "UPDATE PersonModel SET Active = 0 WHERE PersonID = ?";
         try {
-            PreparedStatement coachPS = conn.prepareStatement(coachQuery);
             PreparedStatement personPS = conn.prepareStatement(personQuery);
-            coachPS.setString(1, ID);
             personPS.setString(1, ID);
-            coachPS.executeUpdate();
             personPS.executeUpdate();
         } catch (SQLException e) {
             throw new SQLException(e);
