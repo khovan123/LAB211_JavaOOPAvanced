@@ -5,13 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/model/RegistedCourse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/repository/RegistedCourseRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/repository/interfaces/IRegistedCourseRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/service/RegistedCourseService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/service/interfaces/IRegistedCourseService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/f7596f98-7592-4b63-a635-b020c74fc9ac/storage_v2/_src_/database/master.YiqNvw/schema/dbo.sYMBAA.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/f7596f98-7592-4b63-a635-b020c74fc9ac/storage_v2/_src_/database/master.YiqNvw/schema/dbo.sYMBAA.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/f7596f98-7592-4b63-a635-b020c74fc9ac/storage_v2/_src_/database/master.YiqNvw/schema/dbo.sYMBAA.zip" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/f7596f98-7592-4b63-a635-b020c74fc9ac/storage_v2/_src_/database/master.YiqNvw/schema/dbo.sYMBAA.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -102,7 +95,8 @@
       <workItem from="1730029024068" duration="67000" />
       <workItem from="1730029099918" duration="371000" />
       <workItem from="1730029481330" duration="6542000" />
-      <workItem from="1730036467963" duration="1643000" />
+      <workItem from="1730036467963" duration="3957000" />
+      <workItem from="1730045484926" duration="24000" />
     </task>
     <servers />
   </component>
