@@ -9,10 +9,10 @@ import java.util.function.Predicate;
 import model.Course;
 import model.Workout;
 import repository.CourseRepository;
-import service.interfaces.ICourseSegmentService;
+import service.interfaces.ICourseService;
 import utils.ObjectUtils;
 
-public class CourseService implements ICourseSegmentService {
+public class CourseService implements ICourseService {
 
     private final CourseRepository courseRepository = new CourseRepository();
     private final List<Course> courseList;
@@ -30,7 +30,7 @@ public class CourseService implements ICourseSegmentService {
     @Override
     public void display() throws EmptyDataException {
         if (courseList.isEmpty()) {
-            throw new EmptyDataException("-> Course Segment List Is Empty. ");
+            throw new EmptyDataException("-> Course List Is Empty.");
         } else {
             for (Course course : courseList) {
                 course.getInfo();
@@ -40,7 +40,7 @@ public class CourseService implements ICourseSegmentService {
 
     public void readFromDatabase() {
         try {
-            courseList.add((Course) courseRepository.readFile());
+            courseList.addAll(courseRepository.readFile());
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
@@ -48,44 +48,35 @@ public class CourseService implements ICourseSegmentService {
 
     @Override
     public void add(Course course) throws EventException {
-        if (ObjectUtils.validID(course.getCourseId())){
+        if (ObjectUtils.validID(course.getCourseId())) {
             throw new EventException("-> Invalid Course ID - " + course.getCourseId() + " - Must Be CS-yyyy");
         }
+        if (ObjectUtils.validID(course.getCoachId())) {
+            throw new EventException("-> Invalid Coach ID - " + course.getCourseId() + " - Must Be C-yyyy");
+        }
         if (existsID(course)) {
-            throw new EventException("-> Course Segment With ID - " + course.getCourseId() + " - Already Exist");
+            throw new EventException("-> Course With ID - " + course.getCourseId() + " - Already Exist");
         }
         try {
             courseList.add(course);
-            System.out.println("-> Course Segment Add Successfully!");
+            System.out.println("-> Course Added Successfully!");
         } catch (Exception e) {
-            throw new EventException("-> Error Occurred While Add Course Segment - " + e.getMessage());
+            throw new EventException("-> Error Occurred While Adding Course - " + e.getMessage());
         }
     }
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
-        Course segmentToRemove = findById(id);
-        if (segmentToRemove != null) {
-            courseList.remove(segmentToRemove);
-            System.out.println("-> Course Segment With ID - " + id + " - Remove Successfully");
-        } else {
-            throw new EventException("-> Course Segment with ID " + id + " not found.");
-        }
+        courseList.remove(findById(id));
+        System.out.println("-> Course With ID - " + id + " - Removed Successfully");
     }
 
     @Override
     public void update(Course course) throws EventException, NotFoundException {
         Course existCourse = findById(course.getCourseId());
-        if (existCourse == null) {
-            throw new NotFoundException("-> Course Segment With ID - " + course.getCourseId() + " - Not Found.");
-        }
-        try {
-            courseList.remove(existCourse);
-            courseList.add(course);
-            System.out.println("-> Update Course Segment - " + course.getCourseId() + " - Successfully");
-        } catch (Exception e) {
-            throw new EventException("-> Error Occurred While Updating - " + course.getCourseId());
-        }
+        courseList.remove(existCourse);
+        courseList.add(course);
+        System.out.println("-> Update Course - " + course.getCourseId() + " - Successfully");
     }
 
     @Override
@@ -95,17 +86,12 @@ public class CourseService implements ICourseSegmentService {
                 return course;
             }
         }
-        throw new NotFoundException("-> No Course Segment found matching the criteria.");
+        throw new NotFoundException("-> No Course found matching the criteria.");
     }
 
     @Override
     public Course findById(String id) throws NotFoundException {
-        for (Course course : courseList) {
-            if (course.getCourseId().equalsIgnoreCase(id)) {
-                return course;
-            }
-        }
-        throw new NotFoundException("-> Course Segment With ID - " + id + " - Not Found.");
+        return search(course -> course.getCourseId().equalsIgnoreCase(id));
     }
 
     public boolean existsID(Course course) {

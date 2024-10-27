@@ -4,7 +4,7 @@ import java.util.function.Predicate;
 import model.Course;
 import model.Workout;
 
-public interface ICourseSegmentService extends Service<Course> {
+public interface ICourseService extends Service<Course> {
 
     void addWorkout(Workout workout);
 

@@ -5,6 +5,7 @@ import exception.IOException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,10 +31,17 @@ public class CourseRepository implements ICourseRepository {
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
                 try {
+
+                    boolean addventor = data[2].trim().equalsIgnoreCase("Y");
+
                     Course course = new Course(
                             data[0],
                             data[1],
-                            data[2]
+                            addventor,
+                            LocalDate.parse(data[3]),
+                            Double.parseDouble(data[4]),
+                            data[5],
+                            data[6]
                     );
                     courseList.add(course);
                 } catch (Exception e) {
@@ -45,6 +53,7 @@ public class CourseRepository implements ICourseRepository {
         }
         return courseList;
     }
+
 
     @Override
     public void writeFile(List<Course> courses) throws IOException {

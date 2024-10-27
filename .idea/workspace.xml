@@ -5,20 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7596f98-7592-4b63-a635-b020c74fc9ac.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7596f98-7592-4b63-a635-b020c74fc9ac/storage_v2/_src_/database/master.YiqNvw.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7596f98-7592-4b63-a635-b020c74fc9ac/storage_v2/_src_/database/master.YiqNvw/schema/dbo.sYMBAA.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7596f98-7592-4b63-a635-b020c74fc9ac/storage_v2/_src_/database/master.YiqNvw/schema/dbo.sYMBAA.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/CourseCombo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/repository/CourseComboRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/repository/interfaces/ICourseComboRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/service/CourseComboService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/service/interfaces/ICourseComboService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FitnessCourse.sql" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessCourse.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/CourseRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +49,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "Merging huy",
+    "git-widget-placeholder": "huy",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "E:/FPT/Semester_III/LAB211/ResortManagement",
     "node.js.detected.package.eslint": "true",
@@ -107,7 +96,7 @@
       <workItem from="1729865489827" duration="12000" />
       <workItem from="1730029024068" duration="67000" />
       <workItem from="1730029099918" duration="371000" />
-      <workItem from="1730029481330" duration="4688000" />
+      <workItem from="1730029481330" duration="5488000" />
     </task>
     <servers />
   </component>
