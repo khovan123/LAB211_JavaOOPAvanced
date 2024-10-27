@@ -33,4 +33,12 @@ public class ObjectUtils {
             return false;
         }
     }
+
+    public static boolean validCourseRegistedID(String code){
+        return code.matches("^RC\\d*$");
+    }
+
+    public static boolean validUserID(String code){
+        return code.matches("^U\\d*$");
+    }
 }

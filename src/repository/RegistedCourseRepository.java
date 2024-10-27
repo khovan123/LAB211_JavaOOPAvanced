@@ -1,7 +1,7 @@
 package repository;
 
 import exception.IOException;
-import model.RegistedCourse;
+import model.RegisteredCourse;
 import repository.interfaces.IRegistedCourseRepository;
 
 import java.io.BufferedReader;
@@ -13,8 +13,8 @@ import java.util.List;
 
 public class RegistedCourseRepository implements IRegistedCourseRepository {
 
-    public List<RegistedCourse> readFile() throws IOException {
-        List<RegistedCourse> registedCourses = new ArrayList<>();
+    public List<RegisteredCourse> readFile() throws IOException {
+        List<RegisteredCourse> registeredCours = new ArrayList<>();
         File file = new File(path);
         if (!file.exists()) {
             throw new IOException("-> File not found");
@@ -24,14 +24,14 @@ public class RegistedCourseRepository implements IRegistedCourseRepository {
             while ((line = bf.readLine()) != null) {
                 String[] data = line.split(",");
                 try {
-                    RegistedCourse registedCourse = new RegistedCourse(
+                    RegisteredCourse registeredCourse = new RegisteredCourse(
                             data[1],
                             LocalDate.parse(data[2]),
                             LocalDate.parse(data[3]),
                             data[4],
                             data[5]
                     );
-                    registedCourses.add(registedCourse);
+                    registeredCours.add(registeredCourse);
                 } catch (Exception e) {
                     throw new IOException("-> Error While Adding - " + e.getMessage());
                 }
@@ -39,11 +39,11 @@ public class RegistedCourseRepository implements IRegistedCourseRepository {
         } catch (java.io.IOException e) {
             throw new IOException("-> Error While Reading File - " + e.getMessage());
         }
-        return registedCourses;
+        return registeredCours;
     }
 
     @Override
-    public void writeFile(List<RegistedCourse> entry) throws IOException {
+    public void writeFile(List<RegisteredCourse> entry) throws IOException {
 
     }
 }

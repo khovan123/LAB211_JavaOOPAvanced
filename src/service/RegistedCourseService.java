@@ -4,7 +4,7 @@ import exception.EmptyDataException;
 import exception.EventException;
 import exception.InvalidDataException;
 import exception.NotFoundException;
-import model.RegistedCourse;
+import model.RegisteredCourse;
 import repository.RegistedCourseRepository;
 import service.interfaces.IRegistedCourseService;
 import utils.ObjectUtils;
@@ -15,21 +15,21 @@ import java.util.function.Predicate;
 
 public class RegistedCourseService implements IRegistedCourseService {
     private final RegistedCourseRepository registedCourseRepository = new RegistedCourseRepository();
-    private final List<RegistedCourse> registedCourseList;
+    private final List<RegisteredCourse> registeredCourseList;
 
     public RegistedCourseService() {
-        registedCourseList = new ArrayList<>();
+        registeredCourseList = new ArrayList<>();
         readFromDataBase();
     }
 
-    public RegistedCourseService(List<RegistedCourse> registedCourseList) {
-        this.registedCourseList = registedCourseList;
+    public RegistedCourseService(List<RegisteredCourse> registeredCourseList) {
+        this.registeredCourseList = registeredCourseList;
         readFromDataBase();
     }
 
     public void readFromDataBase() {
         try {
-            registedCourseList.addAll(registedCourseRepository.readFile());
+            registeredCourseList.addAll(registedCourseRepository.readFile());
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
@@ -37,30 +37,30 @@ public class RegistedCourseService implements IRegistedCourseService {
 
     @Override
     public void display() throws EmptyDataException {
-        if (registedCourseList.isEmpty()) {
+        if (registeredCourseList.isEmpty()) {
             throw new EmptyDataException("-> No Registed Course Found");
         }
-        for (RegistedCourse registedCourse : registedCourseList) {
-            registedCourse.getInfo();
+        for (RegisteredCourse registeredCourse : registeredCourseList) {
+            registeredCourse.getInfo();
         }
     }
 
     @Override
-    public void add(RegistedCourse registedCourse) throws EventException, InvalidDataException {
-        if (!ObjectUtils.validID(registedCourse.getRegistedCourseID())) {
-            throw new EventException("-> Invalid Registed Course ID - " + registedCourse.getRegistedCourseID() + " - Must Be RC-yyyy");
+    public void add(RegisteredCourse registeredCourse) throws EventException, InvalidDataException {
+        if (!ObjectUtils.validID(registeredCourse.getRegistedCourseID())) {
+            throw new EventException("-> Invalid Registed Course ID - " + registeredCourse.getRegistedCourseID() + " - Must Be RC-yyyy");
         }
-        if (!ObjectUtils.validID(registedCourse.getRegistedCourseID())) {
-            throw new EventException("-> Invalid Course ID - " + registedCourse.getCourseID() + " - Must Be C-yyyy");
+        if (!ObjectUtils.validID(registeredCourse.getRegistedCourseID())) {
+            throw new EventException("-> Invalid Course ID - " + registeredCourse.getCourseID() + " - Must Be C-yyyy");
         }
-        if (!ObjectUtils.validID(registedCourse.getRegistedCourseID())) {
-            throw new EventException("-> Invalid User ID - " + registedCourse.getUserID() + " - Must Be U-yyyy");
+        if (!ObjectUtils.validID(registeredCourse.getRegistedCourseID())) {
+            throw new EventException("-> Invalid User ID - " + registeredCourse.getUserID() + " - Must Be U-yyyy");
         }
-        if (existID(registedCourse)) {
-            throw new EventException("-> Registed Course With ID - " + registedCourse.getRegistedCourseID() + " - Already Exist");
+        if (existID(registeredCourse)) {
+            throw new EventException("-> Registed Course With ID - " + registeredCourse.getRegistedCourseID() + " - Already Exist");
         }
         try {
-            registedCourseList.add(registedCourse);
+            registeredCourseList.add(registeredCourse);
             System.out.println("-> Registed Course Added Successfully!");
         } catch (Exception e) {
             throw new EventException("-> Error While Adding Registed Course - " + e.getMessage());
@@ -69,43 +69,43 @@ public class RegistedCourseService implements IRegistedCourseService {
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
-        if (!registedCourseList.remove(search(course -> course.getRegistedCourseID().equalsIgnoreCase(id)))) {
+        if (!registeredCourseList.remove(search(course -> course.getRegistedCourseID().equalsIgnoreCase(id)))) {
             throw new NotFoundException("-> Registed Course with ID - " + id + " - Not Found.");
         }
         System.out.println("-> Registed Course With ID - " + id + " - Removed Successfully");
     }
 
     @Override
-    public void update(RegistedCourse registedCourse) throws EventException, NotFoundException {
-        if (!registedCourseList.remove(search(course -> course.getRegistedCourseID().equalsIgnoreCase(registedCourse.getRegistedCourseID())))) {
-            throw new NotFoundException("-> Registed Course with ID - " + registedCourse.getRegistedCourseID() + " - Not Found.");
+    public void update(RegisteredCourse registeredCourse) throws EventException, NotFoundException {
+        if (!registeredCourseList.remove(search(course -> course.getRegistedCourseID().equalsIgnoreCase(registeredCourse.getRegistedCourseID())))) {
+            throw new NotFoundException("-> Registed Course with ID - " + registeredCourse.getRegistedCourseID() + " - Not Found.");
         }
         try {
-            registedCourseList.add(registedCourse);
-            System.out.println("-> Updated Registed Course - " + registedCourse.getRegistedCourseID() + " - Successfully");
+            registeredCourseList.add(registeredCourse);
+            System.out.println("-> Updated Registed Course - " + registeredCourse.getRegistedCourseID() + " - Successfully");
         } catch (Exception e) {
-            throw new EventException("-> Error While Updating Registed Course With ID - " + registedCourse.getRegistedCourseID() + " - " + e.getMessage());
+            throw new EventException("-> Error While Updating Registed Course With ID - " + registeredCourse.getRegistedCourseID() + " - " + e.getMessage());
         }
     }
 
     @Override
-    public RegistedCourse search(Predicate<RegistedCourse> p) throws NotFoundException {
-        for (RegistedCourse registedCourse : registedCourseList) {
-            if (p.test(registedCourse)) {
-                return registedCourse;
+    public RegisteredCourse search(Predicate<RegisteredCourse> p) throws NotFoundException {
+        for (RegisteredCourse registeredCourse : registeredCourseList) {
+            if (p.test(registeredCourse)) {
+                return registeredCourse;
             }
         }
         throw new NotFoundException("-> Registed Course not found matching the given criteria.");
     }
 
     @Override
-    public RegistedCourse findById(String id) throws NotFoundException {
+    public RegisteredCourse findById(String id) throws NotFoundException {
         return search(course -> course.getRegistedCourseID().equalsIgnoreCase(id));
     }
 
-    public boolean existID(RegistedCourse registedCourse) {
+    public boolean existID(RegisteredCourse registeredCourse) {
         try {
-            return findById(registedCourse.getRegistedCourseID()) != null;
+            return findById(registeredCourse.getRegistedCourseID()) != null;
         } catch (NotFoundException e) {
             return false;
         }

@@ -80,4 +80,12 @@ public class GlobalUtils {
         return input;
     }
 
+    public static boolean validDateNow(Date date) {
+        Date currentDate = new Date();
+        if (currentDate.getYear() == date.getYear() && currentDate.getMonth() == date.getMonth() && currentDate.getDay() == date.getDay()) {
+            return true;
+        }
+        return date.compareTo(new Date()) >= 0;
+    }
+
 }
