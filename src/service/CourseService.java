@@ -48,12 +48,6 @@ public class CourseService implements ICourseService {
 
     @Override
     public void add(Course course) throws EventException {
-        if (ObjectUtils.validID(course.getCourseId())) {
-            throw new EventException("-> Invalid Course ID - " + course.getCourseId() + " - Must Be CS-yyyy");
-        }
-        if (ObjectUtils.validID(course.getCoachId())) {
-            throw new EventException("-> Invalid Coach ID - " + course.getCourseId() + " - Must Be C-yyyy");
-        }
         if (existsID(course)) {
             throw new EventException("-> Course With ID - " + course.getCourseId() + " - Already Exist");
         }

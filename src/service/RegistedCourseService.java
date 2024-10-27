@@ -47,17 +47,8 @@ public class RegistedCourseService implements IRegistedCourseService {
 
     @Override
     public void add(RegisteredCourse registeredCourse) throws EventException, InvalidDataException {
-        if (!ObjectUtils.validID(registeredCourse.getRegistedCourseID())) {
-            throw new EventException("-> Invalid Registed Course ID - " + registeredCourse.getRegistedCourseID() + " - Must Be RC-yyyy");
-        }
-        if (!ObjectUtils.validID(registeredCourse.getRegistedCourseID())) {
-            throw new EventException("-> Invalid Course ID - " + registeredCourse.getCourseID() + " - Must Be C-yyyy");
-        }
-        if (!ObjectUtils.validID(registeredCourse.getRegistedCourseID())) {
-            throw new EventException("-> Invalid User ID - " + registeredCourse.getUserID() + " - Must Be U-yyyy");
-        }
         if (existID(registeredCourse)) {
-            throw new EventException("-> Registed Course With ID - " + registeredCourse.getRegistedCourseID() + " - Already Exist");
+            throw new EventException("-> Registed Course With ID - " + registeredCourse.getRegisteredCourseID() + " - Already Exist");
         }
         try {
             registeredCourseList.add(registeredCourse);
@@ -69,7 +60,7 @@ public class RegistedCourseService implements IRegistedCourseService {
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
-        if (!registeredCourseList.remove(search(course -> course.getRegistedCourseID().equalsIgnoreCase(id)))) {
+        if (!registeredCourseList.remove(search(course -> course.getRegisteredCourseID().equalsIgnoreCase(id)))) {
             throw new NotFoundException("-> Registed Course with ID - " + id + " - Not Found.");
         }
         System.out.println("-> Registed Course With ID - " + id + " - Removed Successfully");
@@ -77,14 +68,14 @@ public class RegistedCourseService implements IRegistedCourseService {
 
     @Override
     public void update(RegisteredCourse registeredCourse) throws EventException, NotFoundException {
-        if (!registeredCourseList.remove(search(course -> course.getRegistedCourseID().equalsIgnoreCase(registeredCourse.getRegistedCourseID())))) {
-            throw new NotFoundException("-> Registed Course with ID - " + registeredCourse.getRegistedCourseID() + " - Not Found.");
+        if (!registeredCourseList.remove(search(course -> course.getRegisteredCourseID().equalsIgnoreCase(registeredCourse.getRegisteredCourseID())))) {
+            throw new NotFoundException("-> Registed Course with ID - " + registeredCourse.getRegisteredCourseID() + " - Not Found.");
         }
         try {
             registeredCourseList.add(registeredCourse);
-            System.out.println("-> Updated Registed Course - " + registeredCourse.getRegistedCourseID() + " - Successfully");
+            System.out.println("-> Updated Registed Course - " + registeredCourse.getRegisteredCourseID() + " - Successfully");
         } catch (Exception e) {
-            throw new EventException("-> Error While Updating Registed Course With ID - " + registeredCourse.getRegistedCourseID() + " - " + e.getMessage());
+            throw new EventException("-> Error While Updating Registed Course With ID - " + registeredCourse.getRegisteredCourseID() + " - " + e.getMessage());
         }
     }
 
@@ -100,12 +91,12 @@ public class RegistedCourseService implements IRegistedCourseService {
 
     @Override
     public RegisteredCourse findById(String id) throws NotFoundException {
-        return search(course -> course.getRegistedCourseID().equalsIgnoreCase(id));
+        return search(course -> course.getRegisteredCourseID().equalsIgnoreCase(id));
     }
 
     public boolean existID(RegisteredCourse registeredCourse) {
         try {
-            return findById(registeredCourse.getRegistedCourseID()) != null;
+            return findById(registeredCourse.getRegisteredCourseID()) != null;
         } catch (NotFoundException e) {
             return false;
         }

@@ -46,10 +46,6 @@ public class CourseComboService implements ICourseComboService {
 
     @Override
     public void add(CourseCombo courseCombo) throws EventException, InvalidDataException {
-        if (!ObjectUtils.validID(courseCombo.getComboId())) {
-            throw new EventException("-> Invalid Course Combo ID - " + courseCombo.getComboId() + " - Must Be CB-yyyy");
-        }
-
         if (existID(courseCombo)) {
             throw new EventException("-> Course Combo With ID - " + courseCombo.getComboId() + " - Already Exist");
         }
