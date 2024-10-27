@@ -16,9 +16,8 @@ public class CourseComboRepository implements ICourseComboRepository {
         List<CourseCombo> courseCombos = new ArrayList<>();
         File file = new File(path);
         if (!file.exists()) {
-            throw new IOException("-> File not found");
+            throw new IOException("-> File Not Found At Path - " + path);
         }
-
         try (BufferedReader bf = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = bf.readLine()) != null) {
@@ -29,8 +28,10 @@ public class CourseComboRepository implements ICourseComboRepository {
                             data[2],
                             Double.parseDouble(data[3])
                     );
+                    courseCombo.runValidate();
+                    courseCombos.add(courseCombo);
                 } catch (Exception e) {
-                    throw new IOException("-> Error While Adding - " + e.getMessage());
+                    throw new IOException("-> Error While Adding Course Combo - " + e.getMessage());
                 }
             }
 
