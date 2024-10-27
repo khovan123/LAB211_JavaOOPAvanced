@@ -17,4 +17,20 @@ public class ObjectUtils {
             return false;
         }
     }
+
+    public static boolean valideCourseComboID(String code){
+        return code.matches("^CB\\d*$");
+    }
+
+    public static boolean validCoachID(String code){
+        return code.matches("^C\\d*$");
+    }
+
+    public static boolean validCourseComboSale(String sale){
+        try {
+            return Double.parseDouble(sale) > 0;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
 }

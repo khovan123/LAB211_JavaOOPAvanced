@@ -1,5 +1,8 @@
 package model;
 
+import exception.InvalidDataException;
+import utils.ObjectUtils;
+
 public class CourseCombo {
     private String comboId;
     private String comboName;
@@ -37,5 +40,14 @@ public class CourseCombo {
 
     public String getInfo() {
         return String.format("");
+    }
+
+    public void runValidate() throws InvalidDataException {
+        if (!ObjectUtils.valideCourseComboID(comboId)) {
+            throw new InvalidDataException("-> Course Combo ID Must Be CByyyy.");
+        }
+        if (!ObjectUtils.validCourseComboSale(String.valueOf(sales))) {
+            throw new InvalidDataException("-> Sales Must Be Larger Than 0.");
+        }
     }
 }
