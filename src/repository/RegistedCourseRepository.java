@@ -13,11 +13,13 @@ import java.util.List;
 
 public class RegistedCourseRepository implements IRegistedCourseRepository {
 
-    public List<RegisteredCourse> readFile() throws IOException {
-        List<RegisteredCourse> registeredCours = new ArrayList<>();
+    @Override
+    public List<RegisteredCourse> readFile() {
+        List<RegisteredCourse> registeredCourses = new ArrayList<>();
         File file = new File(path);
         if (!file.exists()) {
-            throw new IOException("-> File not found");
+            System.err.println("-> File not found at path: " + path);
+            return registeredCourses;
         }
         try (BufferedReader bf = new BufferedReader(new FileReader(path))) {
             String line;
@@ -25,22 +27,23 @@ public class RegistedCourseRepository implements IRegistedCourseRepository {
                 String[] data = line.split(",");
                 try {
                     RegisteredCourse registeredCourse = new RegisteredCourse(
-                            data[1],
-                            data[2],
-                            data[3],
-                            data[4],
-                            data[5]
+                            data[0].trim(),
+                            data[1].trim(),
+                            data[2].trim(),
+                            data[3].trim(),
+                            data[4].trim()
                     );
-                    registeredCourse.runValidate();
-                    registeredCours.add(registeredCourse);
+                    registeredCourse.validate();
+                    registeredCourses.add(registeredCourse);
                 } catch (Exception e) {
-                    throw new IOException("-> Error While Adding - " + e.getMessage());
+                    System.err.println("-> Error While Adding Registered Course - " + e.getMessage());
                 }
             }
-        } catch (java.io.IOException e) {
-            throw new IOException("-> Error While Reading File - " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("-> Read file failed at path: " + path);
+            System.err.println(e.getMessage());
         }
-        return registeredCours;
+        return registeredCourses;
     }
 
     @Override

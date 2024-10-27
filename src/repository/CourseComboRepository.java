@@ -11,32 +11,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseComboRepository implements ICourseComboRepository {
-    @Override
-    public List<CourseCombo> readFile() throws IOException {
+    public List<CourseCombo> readFile() {
         List<CourseCombo> courseCombos = new ArrayList<>();
         File file = new File(path);
         if (!file.exists()) {
-            throw new IOException("-> File Not Found At Path - " + path);
+            System.err.println("-> File not found at path: " + path);
+            return courseCombos;
         }
         try (BufferedReader bf = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = bf.readLine()) != null) {
-                String[] data = line.split(",");
                 try {
+                    String[] data = line.split(",");
                     CourseCombo courseCombo = new CourseCombo(
-                            data[1],
-                            data[2],
-                            Double.parseDouble(data[3])
+                            data[1].trim(),
+                            data[2].trim(),
+                            (data[3].trim())
                     );
-                    courseCombo.runValidate();
+                    courseCombo.validate();
                     courseCombos.add(courseCombo);
                 } catch (Exception e) {
-                    throw new IOException("-> Error While Adding Course Combo - " + e.getMessage());
+                    System.err.println("-> Error While Adding Course Combo - " + e.getMessage());
                 }
             }
-
-        } catch (java.io.IOException e) {
-            throw new IOException("-> Error While Reading File - " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("-> Read file failed at path: " + path);
+            System.err.println(e.getMessage());
         }
         return courseCombos;
     }

@@ -36,22 +36,22 @@ public class CourseRepository implements ICourseRepository {
                             data[1].trim(),
                             addventor,
                             data[3].trim(),
-                            Double.parseDouble(data[4].trim()),
+                            data[4].trim(),
                             data[5].trim(),
                             data[6].trim()
                     );
-                    course.runValidate();
+                    course.validate();
                     courseList.add(course);
                 } catch (Exception e) {
                     System.err.println("-> Error While Adding - " + e.getMessage());
                 }
             }
         } catch (java.io.IOException e) {
-            System.err.println("-> Error While Reading File - " + e.getMessage());
+            System.err.println("-> Read file failed at path: " + path);
+            System.err.println(e.getMessage());
         }
         return courseList;
     }
-
 
     @Override
     public void writeFile(List<Course> courses) throws IOException {
