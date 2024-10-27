@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/exception/NotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/exception/NotFoundException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Schedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Schedule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/UserProgress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/UserProgress.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/ScheduleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/ScheduleRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/UserProgressRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/UserProgressRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/ScheduleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/ScheduleService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/UserProgressService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/UserProgressService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
