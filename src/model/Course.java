@@ -109,7 +109,13 @@ public class Course {
 
     public void runValidate() throws InvalidDataException {
         if (!ObjectUtils.validCourseID(courseId)) {
-            throw new InvalidDataException("-> Course ID Must Be CS-YYYY.");
+            throw new InvalidDataException("-> Course ID Must Be CSyyyy.");
+        }
+        if (!ObjectUtils.validCoachID(coachId)){
+            throw new InvalidDataException("-> Coach ID Must Be Cyyyy.");
+        }
+        if (!ObjectUtils.valideCourseComboID(comboID)){
+            throw new InvalidDataException("-> Combo ID Must Be CByyyy.");
         }
         if (!ObjectUtils.validCoursePrice(String.valueOf(price))) {
             throw new InvalidDataException("-> Price Must Be Larger Than 0.");
