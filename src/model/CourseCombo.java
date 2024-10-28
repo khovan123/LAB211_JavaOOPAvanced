@@ -60,9 +60,8 @@ public class CourseCombo {
         if (!ObjectUtils.valideCourseComboID(comboId)) {
             throw new InvalidDataException("-> Course Combo ID Must Be CByyyy.");
         }
-        if (sales < 0 || sales > 1) {
+        if (!ObjectUtils.checkSales(String.valueOf(sales))) {
             throw new InvalidDataException("-> Sales Must Be A Percentage Between 0 And 1.");
         }
     }
-
 }
