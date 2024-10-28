@@ -7,19 +7,22 @@ import service.PracticalDayService;
 import java.util.TreeSet;
 
 public class Schedule {
-
+    private String scheduleId;
     private String userProgressId;
     private final PracticalDayService practicalDayService;
     
-    public Schedule(String userProgressId){
+    public Schedule(String scheduleId, String userProgressId){
+        this.scheduleId = scheduleId;
         this.userProgressId = userProgressId;
         this.practicalDayService = null;
     }
 
-    public Schedule(String userProgressId, TreeSet<PracticalDay> practicalDayTreeSet) {
+    public Schedule(String scheduleId, String userProgressId, TreeSet<PracticalDay> practicalDayTreeSet) {
+        this.scheduleId = scheduleId;
         this.userProgressId = userProgressId;
         this.practicalDayService = new PracticalDayService(practicalDayTreeSet);
         }
+
     public String getUserProgressId() {
         return userProgressId;
     }
@@ -41,7 +44,7 @@ public class Schedule {
     }
 
     public String getInfo() {
-        return String.format("%s\t%s", userProgressId, practicalDayService);
+        return String.format("%s\t%s\t%s", scheduleId, userProgressId, practicalDayService);
     }
 
     public void runValidate() throws InvalidDataException {
