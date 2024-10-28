@@ -3,7 +3,6 @@ package repository;
 import exception.IOException;
 import model.Course;
 import repository.interfaces.ICourseRepository;
-import utils.GlobalUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,7 +39,7 @@ public class CourseRepository implements ICourseRepository {
                             data[5].trim(),
                             data[6].trim()
                     );
-                    course.validate();
+                    course.runValidate();
                     courseList.add(course);
                 } catch (Exception e) {
                     System.err.println("-> Error While Adding - " + e.getMessage());

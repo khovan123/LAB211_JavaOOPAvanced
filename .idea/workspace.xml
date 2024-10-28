@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/f7596f98-7592-4b63-a635-b020c74fc9ac/storage_v2/_src_/database/master.YiqNvw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/f7596f98-7592-4b63-a635-b020c74fc9ac/storage_v2/_src_/database/master.YiqNvw/schema/dbo.sYMBAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/f7596f98-7592-4b63-a635-b020c74fc9ac/storage_v2/_src_/database/master.YiqNvw/schema/dbo.sYMBAA.zip" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FitnessCourse.sql" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessCourse.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/InsertData.sql" beforeDir="false" afterPath="$PROJECT_DIR$/InsertData.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TriggerInsert.sql" beforeDir="false" afterPath="$PROJECT_DIR$/TriggerInsert.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/CourseRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,6 +101,7 @@
       <workItem from="1730045484926" duration="24000" />
       <workItem from="1730045519348" duration="7907000" />
       <workItem from="1730102635152" duration="161000" />
+      <workItem from="1730102813742" duration="1351000" />
     </task>
     <servers />
   </component>
