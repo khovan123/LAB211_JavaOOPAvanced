@@ -1,6 +1,7 @@
 package repository;
 
 import exception.IOException;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -8,6 +9,7 @@ import java.sql.*;
 import java.util.*;
 
 import exception.InvalidDataException;
+import model.Course;
 import model.CourseCombo;
 import repository.interfaces.ICourseComboRepository;
 
@@ -20,35 +22,65 @@ public class CourseComboRepository implements ICourseComboRepository {
 
     @Override
     public List<CourseCombo> readFile() throws IOException {
-        List<CourseCombo> courseCombos = new ArrayList<>();
-        File file = new File(path);
-        if (!file.exists()) {
-            throw new IOException("-> File not found at Path: " + path);
-        }
-        try (BufferedReader bf = new BufferedReader(new FileReader(path))) {
-            String line;
-            while ((line = bf.readLine()) != null) {
-                try {
-                    String[] data = line.split(",");
-                    CourseCombo courseCombo = new CourseCombo(
-                            data[0].trim(),
-                            data[1].trim(),
-                            data[2].trim()
-                    );
-                    courseCombos.add(courseCombo);
-                } catch (InvalidDataException e) {
-                    throw new IOException("-> Error While Adding Course Combo");
-                }
-            }
-        } catch (Exception e) {
-            throw new IOException("-> Error While Reading File");
-        }
-        return courseCombos;
+        return new ArrayList<>();
     }
 
     @Override
     public void writeFile(List<CourseCombo> entry) throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public List<CourseCombo> getProcessData() throws SQLException {
+        List<String> rawData = getData();
+        List<CourseCombo> processData = new ArrayList<>();
+        for (String row : rawData) {
+            String[] col = row.split(", ");
+            if (col.length == 3) {
+                try {
+                    CourseCombo courseCombo = new CourseCombo(
+                            col[0].trim(),
+                            col[1].trim(),
+                            col[2].trim()
+                    );
+                    courseCombo.runValidate();
+                    processData.add(courseCombo);
+                } catch (InvalidDataException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return processData;
+    }
+
+    public void insertCourseCombo(CourseCombo courseCombo) throws SQLException {
+        Map<String, String> entries = new HashMap<>();
+        try {
+            entries.put(ComboID_Column, courseCombo.getComboId());
+            entries.put(ComboName_Column, courseCombo.getComboName());
+            entries.put(Sales_Column, String.valueOf(courseCombo.getSales()));
+            insert(entries);
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    public void updateCourseCombo(String courseComboID, CourseCombo courseCombo) throws SQLException {
+        Map<String, String> entries = new HashMap<>();
+        try {
+            entries.put(ComboName_Column, courseCombo.getComboName());
+            entries.put(Sales_Column, String.valueOf(courseCombo.getSales()));
+            update(courseComboID, entries);
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    public void deleteCourseCombo(String courseComboID) throws SQLException {
+        try {
+            delete(courseComboID);
+        } catch (SQLException e){
+            throw new SQLException(e);
+        }
     }
 
     public List<String> getData() throws SQLException {
@@ -73,7 +105,7 @@ public class CourseComboRepository implements ICourseComboRepository {
         return list;
     }
 
-    public void insert(Map<String, String> entries) throws SQLException {
+    private void insert(Map<String, String> entries) throws SQLException {
         String courseComboQuery = "INSERT INTO CourseComboModel(X) VALUES(Y)";
         StringBuilder modelColumn = new StringBuilder();
         StringBuilder modelValue = new StringBuilder();
@@ -101,7 +133,7 @@ public class CourseComboRepository implements ICourseComboRepository {
         }
     }
 
-    public void update(String ID, Map<String, String> entries) throws SQLException {
+    private void update(String ID, Map<String, String> entries) throws SQLException {
         String query = "UPDATE CourseComboModel SET X WHERE ComboID = ?";
         StringBuilder modelColumn = new StringBuilder();
 
@@ -128,7 +160,7 @@ public class CourseComboRepository implements ICourseComboRepository {
         }
     }
 
-    public void delete(String ID) throws SQLException {
+    private void delete(String ID) throws SQLException {
         String query = "DELETE FROM CourseComboModel WHERE ComboID = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
