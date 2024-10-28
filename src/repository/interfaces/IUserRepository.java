@@ -6,4 +6,6 @@ import model.User;
 public interface IUserRepository extends Repository<User, List<User>> {
 
     final String userPath = "";
+
+    List<User> getUsers();
 }

@@ -15,6 +15,12 @@ public class User {
     private String phoneNumber;
     private String email;
 
+    // Regular expressions for validation
+    private static final Pattern USER_ID_PATTERN = Pattern.compile("US-\\d{4}");
+    private static final Pattern PHONE_NUMBER_PATTERN = Pattern.compile("^\\+?\\d{10,15}$");
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[a-zA-Z\\s]+$");
+
     public User(String userId, String userName, Boolean gender, Date dateOfBirth, String phoneNumber, String email) throws InvalidDataException {
         this.userId = userId;
         this.userName = userName;
@@ -25,43 +31,67 @@ public class User {
         runValidate();
     }
 
-    // Getters and Setters with validation logic
-    public String getUserId() { return userId; }
+
+    public String getUserId() {
+        return userId;
+    }
 
     public void setUserId(String userId) {
+        if (!isValidUserId(userId)) {
+            throw new IllegalArgumentException("Invalid User ID. It should be in the format 'US-xxxx'.");
+        }
         this.userId = userId;
     }
 
-    public String getUserName() { return userName; }
+    public String getUserName() {
+        return userName;
+    }
 
     public void setUserName(String userName) {
-        if (!Pattern.matches("([A-Z][a-z]*\\s*)+", userName)) {
-            throw new IllegalArgumentException("Invalid user name. Each word must start with an uppercase letter.");
+        if (!isValidName(userName)) {
+            throw new IllegalArgumentException("Invalid user name. It should only contain letters and spaces.");
         }
         this.userName = userName;
     }
 
-    public Date getDateOfBirth() { return dateOfBirth; }
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
 
     public void setDateOfBirth(Date dateOfBirth) {
+        if (dateOfBirth == null || dateOfBirth.after(new Date())) {
+            throw new IllegalArgumentException("Date of Birth must be a valid date in the past.");
+        }
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Boolean getGender() { return gender; }
+    public Boolean getGender() {
+        return gender;
+    }
 
     public void setGender(Boolean gender) {
         this.gender = gender;
     }
 
-    public String getPhoneNumber() { return phoneNumber; }
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
     public void setPhoneNumber(String phoneNumber) {
+        if (!isValidPhoneNumber(phoneNumber)) {
+            throw new IllegalArgumentException("Invalid phone number format.");
+        }
         this.phoneNumber = phoneNumber;
     }
 
-    public String getEmail() { return email; }
+    public String getEmail() {
+        return email;
+    }
 
     public void setEmail(String email) {
+        if (!isValidEmail(email)) {
+            throw new IllegalArgumentException("Invalid Email format.");
+        }
         this.email = email;
     }
 
@@ -86,11 +116,40 @@ public class User {
     }
 
     private void runValidate() throws InvalidDataException {
-        if (userId == null || userId.isEmpty()) throw new InvalidDataException("User ID is invalid");
-        if (userName == null || userName.isEmpty()) throw new InvalidDataException("User Name is invalid");
-        if (phoneNumber == null || phoneNumber.isEmpty()) throw new InvalidDataException("Phone Number is invalid");
-        if (dateOfBirth == null) throw new InvalidDataException("Date Of Birth is invalid");
-        if (gender == null) throw new InvalidDataException("Gender is invalid");
-        if (email == null || email.isEmpty()) throw new InvalidDataException("Email is invalid");
+        if (!isValidUserId(userId)) {
+            throw new InvalidDataException("User ID is invalid");
+        }
+        if (!isValidName(userName)) {
+            throw new InvalidDataException("User Name is invalid");
+        }
+        if (!isValidPhoneNumber(phoneNumber)) {
+            throw new InvalidDataException("Phone Number is invalid");
+        }
+        if (dateOfBirth == null || dateOfBirth.after(new Date())) {
+            throw new InvalidDataException("Date Of Birth is invalid");
+        }
+        if (gender == null) {
+            throw new InvalidDataException("Gender is invalid");
+        }
+        if (!isValidEmail(email)) {
+            throw new InvalidDataException("Email is invalid");
+        }
+    }
+
+
+    private boolean isValidUserId(String id) {
+        return USER_ID_PATTERN.matcher(id).matches();
+    }
+
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        return PHONE_NUMBER_PATTERN.matcher(phoneNumber).matches();
+    }
+
+    private boolean isValidEmail(String email) {
+        return EMAIL_PATTERN.matcher(email).matches();
+    }
+
+    private boolean isValidName(String name) {
+        return NAME_PATTERN.matcher(name).matches();
     }
 }

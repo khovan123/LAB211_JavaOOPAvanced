@@ -154,4 +154,9 @@ public class SampleCoachRepository implements ICoachRepository {
         }
     }
 
+
+    @Override
+    public List<Coach> getCoaches() {
+        return List.of();
+    }
 }

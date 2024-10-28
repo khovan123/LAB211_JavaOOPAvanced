@@ -56,7 +56,7 @@ public class UserService implements IUserService {
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
-        User user = this.search(u -> u.getUserId().equalsIgnoreCase(id));
+        User user = this.findById(id);
         if (userTreeSet.remove(user)) {
             try {
                 userRepository.writeFile(new ArrayList<>(userTreeSet));

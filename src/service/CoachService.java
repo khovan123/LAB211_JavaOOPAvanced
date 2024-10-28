@@ -2,12 +2,11 @@ package service;
 
 import exception.EmptyDataException;
 import exception.EventException;
-import exception.InvalidDataException;
+
 import exception.NotFoundException;
 import repository.CoachRepository;
 import service.interfaces.ICoachService;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeSet;
 import java.util.function.Predicate;
@@ -57,7 +56,7 @@ public class CoachService implements ICoachService {
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
-        Coach coach = this.search(c -> c.getCoachId().equalsIgnoreCase(id));
+        Coach coach = this.findById(id);
         if (coachTreeSet.remove(coach)) {
             try {
                 coachRepository.writeFile(new ArrayList<>(coachTreeSet));
