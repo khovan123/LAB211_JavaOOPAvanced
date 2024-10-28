@@ -6,7 +6,6 @@ import model.Schedule;
 import repository.interfaces.IScheduleRepository;
 
 public class ScheduleRepository implements IScheduleRepository {
-    //no path, just handle practicalRepository
 
     //generate Schdule with id of CP-YYYY in practicalDayRepository
     static {
