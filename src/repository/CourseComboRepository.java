@@ -28,7 +28,7 @@ public class CourseComboRepository implements ICourseComboRepository {
                             data[2].trim(),
                             (data[3].trim())
                     );
-                    courseCombo.validate();
+                    courseCombo.runValidate();
                     courseCombos.add(courseCombo);
                 } catch (Exception e) {
                     System.err.println("-> Error While Adding Course Combo - " + e.getMessage());

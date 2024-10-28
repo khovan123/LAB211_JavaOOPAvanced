@@ -21,44 +21,48 @@ public class CourseCombo {
         return comboId;
     }
 
-    public void setComboId(String comboId) {
-        this.comboId = comboId;
-    }
-
     public String getComboName() {
         return comboName;
-    }
-
-    public void setComboName(String comboName) {
-        this.comboName = comboName;
     }
 
     public double getSales() {
         return sales;
     }
 
-    public void setSales(String sales) throws InvalidDataException {
-        try {
-            double saleValue = Double.parseDouble(sales);
-            if (saleValue <= 0) {
-                throw new InvalidDataException("-> Sales must be larger than 0.");
-            }
-            this.sales = saleValue;
-        } catch (NumberFormatException e) {
-            throw new InvalidDataException("-> Sales must be a number.");
-        }
-    }
-
     public String getInfo() {
         return String.format("Combo ID: %s, Combo Name: %s, Sales: %.2f", comboId, comboName, sales);
     }
 
-    public void validate() throws InvalidDataException {
+    public void setComboId(String comboId) {
+        this.comboId = comboId;
+    }
+
+    public void setComboName(String comboName) {
+        this.comboName = comboName;
+    }
+
+    public void setSales(String sales) throws InvalidDataException {
+        try {
+            double saleValue = Double.parseDouble(sales);
+            if (saleValue < 0 || saleValue > 1) {
+                throw new InvalidDataException("-> Sales Must Be A Percentage Between 0 And 1.");
+            }
+            this.sales = saleValue;
+        } catch (NumberFormatException e) {
+            throw new InvalidDataException("-> Sales must be a number between 0 and 1.");
+        }
+    }
+
+    public void runValidate() throws InvalidDataException {
+        if (comboId == null || comboId.isEmpty()) {
+            throw new InvalidDataException("-> Combo ID Must Not Be Null or Empty.");
+        }
         if (!ObjectUtils.valideCourseComboID(comboId)) {
             throw new InvalidDataException("-> Course Combo ID Must Be CByyyy.");
         }
-        if (!ObjectUtils.validCourseComboSale(String.valueOf(sales))) {
-            throw new InvalidDataException("-> Sales Must Be Larger Than 0.");
+        if (sales < 0 || sales > 1) {
+            throw new InvalidDataException("-> Sales Must Be A Percentage Between 0 And 1.");
         }
     }
+
 }
