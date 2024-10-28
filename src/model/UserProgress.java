@@ -2,38 +2,48 @@ package model;
 
 import exception.IOException;
 import exception.InvalidDataException;
+
 import java.util.TreeSet;
+
 import service.ScheduleService;
+import utils.ObjectUtils;
 
 public class UserProgress {
 
-    private String coursePacketId;
-    private final Schedule schedule;
+    private String userProgressId;
+    private String registedCourseID;
 
-    public UserProgress(String coursePacketId, Schedule schedule){
-        this.coursePacketId = coursePacketId;
-        this.schedule = new Schedule(coursePacketId);
+    public UserProgress(String userProgressId, String registedCourseID) {
+        this.userProgressId = userProgressId;
+        this.registedCourseID = registedCourseID;
     }
 
-    public String getUserId() {
-        return coursePacketId;
+    public String getUserProgressId() {
+        return userProgressId;
     }
 
-    public void setUserId(String coursePacketId) {
-        this.coursePacketId = coursePacketId;
+    public void setUserProgressId(String userProgressId) {
+        this.userProgressId = userProgressId;
     }
 
-    public Schedule getSchedule() {
-        return schedule;
+    public String getRegistedCourseID() {
+        return registedCourseID;
+    }
+
+    public void setRegistedCourseID(String registedCourseID) {
+        this.registedCourseID = registedCourseID;
     }
 
     public String getInfo() {
-        return String.format("%s", coursePacketId);
+        return String.format("%s\t%s", userProgressId, registedCourseID);
     }
 
     public void runValidate() throws InvalidDataException {
-        if (coursePacketId == null || coursePacketId.isEmpty()) {
-            throw new InvalidDataException("Course Packet ID cannot be null or empty.");
+        if (!ObjectUtils.validCodeUserProgress(userProgressId)){
+            throw new InvalidDataException("UserProgress ID must be UPYYY with YYY are numbers");
+        }
+        if (!ObjectUtils.validCodeRegistedCourse(registedCourseID)){
+            throw new InvalidDataException("RegistedCourse ID must be RCYYY with YYY are numbers");
         }
     }
 }
