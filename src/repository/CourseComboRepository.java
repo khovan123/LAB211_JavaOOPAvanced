@@ -129,7 +129,7 @@ public class CourseComboRepository implements ICourseComboRepository {
             }
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("-> Error while inserting data - " + e.getMessage());
+            throw new SQLException(e);
         }
     }
 
@@ -156,7 +156,7 @@ public class CourseComboRepository implements ICourseComboRepository {
             ps.setString(i, ID);
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("-> Error while updating data - " + e.getMessage());
+            throw new SQLException(e);
         }
     }
 
@@ -167,7 +167,7 @@ public class CourseComboRepository implements ICourseComboRepository {
             ps.setString(1, ID);
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("-> Error while deleting data - " + e.getMessage());
+            throw new SQLException(e);
         }
     }
 }
