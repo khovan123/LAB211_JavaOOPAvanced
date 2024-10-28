@@ -1,25 +1,20 @@
 package repository;
 
 import exception.IOException;
+import exception.InvalidDataException;
 import model.Course;
 import model.Workout;
 import repository.interfaces.ICourseRepository;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CourseRepository implements ICourseRepository {
     public static final String CourseID_Column = "CourseID";
     public static final String CourseName_Column = "CourseName";
     public static final boolean Addventor_Column = true;
     public static final String GenerateDate_Column = "GenerateDate";
+    public static final String Price_Column = "Price";
     public static final String ComboID_Column = "ComboID";
     public static final String CoachID_Column = "CoachID";
     private static final List<String> COURSEMODELCOLUMN = new ArrayList<>(Arrays.asList(CourseID_Column, CourseName_Column, Boolean.toString(Addventor_Column), GenerateDate_Column, ComboID_Column, CoachID_Column));
@@ -28,55 +23,95 @@ public class CourseRepository implements ICourseRepository {
     //data sample: CS-YYYY, 30 days full body master, CA-YYYY
 
     public List<Course> readFile() throws IOException {
-        List<Course> courseList = new ArrayList<>();
-        File file = new File(path);
-        if (!file.exists()) {
-            throw new IOException("-> File Not Found At Path - " + path);
-        }
-
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(",");
-                List<Workout> workouts = new ArrayList<>();
-                for (int i = 8; i < data.length; i += 7) {
-                    if (i + 6 < data.length) {
-                        Workout workout = new Workout(
-                                data[i].trim(),
-                                data[i + 1].trim(),
-                                data[i + 2].trim(),
-                                data[i + 3].trim(),
-                                data[i + 4].trim(),
-                                data[i + 5].trim(),
-                                data[i + 6].trim(),
-                                data[0].trim()
-                        );
-                        workouts.add(workout);
-                    }
-                }
-                Course course = new Course(
-                        data[0].trim(),
-                        data[1].trim(),
-                        data[2].trim(),
-                        data[3].trim(),
-                        data[4].trim(),
-                        data[5].trim(),
-                        data[6].trim(),
-                        workouts
-                );
-                course.runValidate();
-                courseList.add(course);
-            }
-        } catch (Exception e) {
-            throw new IOException("-> Error While Reading File or Adding Course - " + e.getMessage(), e);
-        }
-        return courseList;
+        return new ArrayList<>();
     }
-
 
     @Override
     public void writeFile(List<Course> courses) throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public List<Course> getProcessData() throws SQLException {
+        List<String> rawData = getData();
+        List<Course> processData = new ArrayList<>();
+        for (String row : rawData) {
+            String[] col = row.split(", ");
+            if (col.length == 15) {
+                List<Workout> workoutList = new ArrayList<>();
+                try {
+                    Workout workout = new Workout(
+                            col[8].trim(),
+                            col[9].trim(),
+                            col[10].trim(),
+                            col[11].trim(),
+                            col[12].trim(),
+                            col[13].trim(),
+                            col[14].trim(),
+                            col[0].trim()
+                    );
+                    workout.runValidate();
+                    workoutList.add(workout);
+                } catch (InvalidDataException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    Course course = new Course(
+                            col[0].trim(),
+                            col[1].trim(),
+                            col[2].trim(),
+                            col[3].trim(),
+                            col[4].trim(),
+                            col[5].trim(),
+                            col[6].trim(),
+                            workoutList
+                    );
+                    course.runValidate();
+                    processData.add(course);
+                } catch (InvalidDataException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return processData;
+    }
+
+    public void insertCourse(Course course) throws SQLException {
+        Map<String, String> entries = new HashMap<>();
+        try {
+            entries.put(CourseID_Column, course.getCourseId());
+            entries.put(CourseName_Column, course.getCourseName());
+            entries.put(String.valueOf(Addventor_Column), String.valueOf(course.isAddventor())); // Use "true"/"false"
+            entries.put(GenerateDate_Column, String.valueOf(course.getGenerateDate()));
+            entries.put(Price_Column, String.valueOf(course.getPrice()));
+            entries.put(ComboID_Column, course.getComboID());
+            entries.put(CoachID_Column, course.getCoachId());
+            insert(entries);
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    public void updateCourse(String ID, Course course) throws SQLException {
+        Map<String, String> entries = new HashMap<>();
+        try {
+            entries.put(CourseName_Column, course.getCourseName());
+            entries.put(String.valueOf(Addventor_Column), String.valueOf(course.isAddventor())); // Use "true"/"false"
+            entries.put(GenerateDate_Column, String.valueOf(course.getGenerateDate()));
+            entries.put(Price_Column, String.valueOf(course.getPrice()));
+            entries.put(ComboID_Column, course.getComboID());
+            entries.put(CoachID_Column, course.getCoachId());
+            update(ID, entries);
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    public void deleteCourse(String ID) throws SQLException {
+        try {
+            delete(ID);
+        } catch (SQLException e ){
+            throw new SQLException(e);
+        }
     }
 
     public List<String> getData() throws SQLException {
@@ -104,8 +139,8 @@ public class CourseRepository implements ICourseRepository {
         String courseQuery = "INSERT INTO CourseModel(X) VALUES (Y)";
         StringBuilder courseModelColumn = new StringBuilder();
         StringBuilder courseModelValues = new StringBuilder();
-        for (String column : entries.keySet()){
-            if (COURSEMODELCOLUMN.contains(column)){
+        for (String column : entries.keySet()) {
+            if (COURSEMODELCOLUMN.contains(column)) {
                 courseModelColumn.append((courseModelColumn.length() == 0 ? " " : ", ")).append(column);
                 courseModelValues.append((courseModelValues.length() == 0 ? " " : ", ")).append("?");
             }
@@ -116,14 +151,14 @@ public class CourseRepository implements ICourseRepository {
         try {
             PreparedStatement coursePS = conn.prepareStatement(courseQuery);
             int i = 1;
-            for (String column : entries.keySet()){
-                if (COURSEMODELCOLUMN.contains(column)){
+            for (String column : entries.keySet()) {
+                if (COURSEMODELCOLUMN.contains(column)) {
                     coursePS.setString(i++, entries.get(column));
                 }
             }
             coursePS.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("-> Error while inserting data - " + e.getMessage());
+            throw new SQLException(e);
         }
     }
 
@@ -152,7 +187,7 @@ public class CourseRepository implements ICourseRepository {
                 coursePS.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new SQLException("-> Error while updating data - " + e.getMessage());
+            throw new SQLException(e);
         }
     }
 
@@ -163,7 +198,7 @@ public class CourseRepository implements ICourseRepository {
             coursePS.setString(1, ID);
             coursePS.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("-> Error while deleting data - " + e.getMessage());
+            throw new SQLException(e);
         }
     }
 
