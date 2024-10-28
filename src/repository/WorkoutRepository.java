@@ -8,17 +8,13 @@ import java.util.List;
 
 import model.Workout;
 import repository.interfaces.IWorkoutRepository;
+import java.sql.*;
+import java.util.Map;
 
 public class WorkoutRepository implements IWorkoutRepository {
 
     private static List<Workout> workoutList = new ArrayList<>();
-
-    //data sample: WK-YYYY, Leg Day, Do not off, 2, 4, 2, true, CS-YYYY
-    static {
-        workoutList.add(new Workout("WK-2024", "Leg Day", "2", "4", "2", "CS-0001"));
-        workoutList.add(new Workout("WK-2025", "Arm Day", "3", "3", "1", "CS-0002"));
-        workoutList.add(new Workout("WK-2026", "Cardio", "1", "1", "30", "CS-0003"));
-    }
+    private Connection conn = SQLServerConnection.getConnection();
 
     @Override
     public List<Workout> readFile() throws IOException {
@@ -48,6 +44,70 @@ public class WorkoutRepository implements IWorkoutRepository {
     @Override
     public void writeFile(List<Workout> workoutList) throws IOException {
         System.out.println("Not yet supported!!!");
+    }
+
+    public List<String> getData() throws SQLException {
+        List<String> list = new ArrayList<>();
+        try {
+            StringBuilder row = new StringBuilder();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT WorkoutID, WorkoutName, Repetition, Sets, Duration, CourseID FROM WorkoutModel");
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            while (rs.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    row.append(rs.getString(i)).append(i < columnCount ? ", " : "");
+                }
+                list.add(row.toString());
+                row = new StringBuilder();
+            }
+            return list;
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    public void insert(Map<String, String> entries) throws SQLException {
+        String query = "INSERT INTO WorkoutModel (WorkoutID, WorkoutName, Repetition, Sets, Duration, CourseID) VALUES (?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, entries.get("WorkoutID"));
+            ps.setString(2, entries.get("WorkoutName"));
+            ps.setString(3, entries.get("Repetition"));
+            ps.setString(4, entries.get("Sets"));
+            ps.setString(5, entries.get("Duration"));
+            ps.setString(6, entries.get("CourseID"));
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException("Failed to insert Workout: " + e.getMessage());
+        }
+    }
+
+    public void update(String workoutID, Map<String, String> entries) throws SQLException {
+        String query = "UPDATE WorkoutModel SET WorkoutName = ?, Repetition = ?, Sets = ?, Duration = ?, CourseID = ? WHERE WorkoutID = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, entries.get("WorkoutName"));
+            ps.setString(2, entries.get("Repetition"));
+            ps.setString(3, entries.get("Sets"));
+            ps.setString(4, entries.get("Duration"));
+            ps.setString(5, entries.get("CourseID"));
+            ps.setString(6, workoutID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException("Failed to update Workout: " + e.getMessage());
+        }
+    }
+
+    public void delete(String workoutID) throws SQLException {
+        String query = "DELETE FROM WorkoutModel WHERE WorkoutID = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, workoutID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException("Failed to delete Workout: " + e.getMessage());
+        }
     }
 
 }

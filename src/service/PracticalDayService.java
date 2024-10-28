@@ -10,6 +10,7 @@ import exception.NotFoundException;
 import model.PracticalDay;
 import repository.PracticalDayRepository;
 import service.interfaces.IPracticalDayService;
+import utils.GlobalUtils;
 
 public class PracticalDayService implements IPracticalDayService {
 
@@ -50,7 +51,6 @@ public class PracticalDayService implements IPracticalDayService {
         try {
             if (!existID(practiceDay)) {
                 practicalDayTreeSet.add(practiceDay);
-//            practicalDayRepository.writeFile(practicalDayTreeSet);
             } else {
                 throw new EventException(practiceDay.getPracticalDayId() + " already exist.");
             }
@@ -62,8 +62,8 @@ public class PracticalDayService implements IPracticalDayService {
     @Override
     public void delete(String id) throws EventException, NotFoundException {
         try {
-            practicalDayTreeSet.remove(this.search(p -> p.getPracticalDayId().equalsIgnoreCase(id)));
-            System.out.println("Deleted Practical Day with ID: " + id + " successfully!");
+            PracticalDay practicalDay = this.findById(id);
+            practicalDayTreeSet.remove(practicalDay);
         } catch (Exception e) {
             throw new EventException("An error occurred while deleting Practical Day with ID: " + id + ". " + e.getMessage());
         }
@@ -72,10 +72,13 @@ public class PracticalDayService implements IPracticalDayService {
     @Override
     public void update(PracticalDay practicalDay) throws EventException, NotFoundException {
         try {
-            practicalDayTreeSet.remove(this.search(p -> p.getPracticalDayId().equalsIgnoreCase(practicalDay.getPracticalDayId())));
-            practicalDayTreeSet.add(practicalDay);
-//            practicalDayRepository.writeFile(practicalDayTreeSet);
-            System.out.println("Practical Day updated successfully!");
+            PracticalDay existingPracticalDay = this.findById(practicalDay.getPracticalDayId());
+            if (practicalDay.getPracticeDate() != null) {
+                existingPracticalDay.setPracticeDate(GlobalUtils.getDateString(practicalDay.getPracticeDate()));
+            }
+            if (practicalDay.getScheduleId() != null) {
+                existingPracticalDay.setScheduleId(practicalDay.getScheduleId());
+            }
         } catch (Exception e) {
             throw new EventException("An error occurred while updating Practical Day with ID: " + practicalDay.getPracticalDayId() + e.getMessage());
         }

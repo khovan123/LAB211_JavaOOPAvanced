@@ -21,34 +21,19 @@ public class ObjectUtils {
         return code.matches("^WK[0-9]{3}");
     }
 
-    public static boolean validCalories(String calories) throws InvalidDataException {
+    public static boolean validDouble(String calories) throws InvalidDataException {
         try {
             return Double.parseDouble(calories) > 0;
         } catch (NumberFormatException e) {
-            throw new InvalidDataException("Calories must be a number");
+            return false;
         }
     }
 
-    public static boolean validRepetition(String repetition) throws InvalidDataException {
+    public static boolean validInteger(String repetition) throws InvalidDataException {
         try {
             return Integer.parseInt(repetition) > 0;
         } catch (NumberFormatException e) {
-            throw new InvalidDataException("Repetition must be a number");
-        }
-    }
-    public static boolean validSet(String set) throws InvalidDataException {
-        try {
-            return Integer.parseInt(set) > 0;
-        } catch (NumberFormatException e) {
-            throw new InvalidDataException("Set must be a number");
-        }
-    }
-
-    public static boolean validDuration(String duration) throws InvalidDataException {
-        try {
-            return Integer.parseInt(duration) > 0;
-        } catch (NumberFormatException e) {
-            throw new InvalidDataException("Duration must be a number");
+            return false;
         }
     }
 

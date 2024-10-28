@@ -7,11 +7,9 @@ public class Workout {
 
     private String workoutId;
     private String workoutName;
-//    private String description;
     private int repetition;
     private int sets;
     private int duration;
-//    private boolean done;
     private String courseId;
 
     public Workout(String workoutId) {
@@ -21,11 +19,9 @@ public class Workout {
     public Workout(String workoutId, String workoutName, String repetition, String sets, String duration, String courseId) {
         this.workoutId = workoutId;
         this.workoutName = workoutName;
-//        this.description = description;
         this.setRepetition(repetition);
         this.setSets(sets);
         this.setDuration(duration);
-//        this.setDone(done);
         this.courseId = courseId;
     }
 
@@ -44,14 +40,6 @@ public class Workout {
     public void setWorkoutName(String workoutName) {
         this.workoutName = workoutName;
     }
-
-//    public String getDescription() {
-//        return description;
-//    }
-//
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
 
     public int getRepetition() {
         return repetition;
@@ -77,14 +65,6 @@ public class Workout {
         this.duration = Integer.parseInt(duration);
     }
 
-//    public boolean isDone() {
-//        return done;
-//    }
-//
-//    public void setDone(String done) {
-//        this.done = Boolean.parseBoolean(done);
-//    }
-
     public String getCourseId() {
         return courseId;
     }
@@ -101,13 +81,13 @@ public class Workout {
         if(!ObjectUtils.validCodeWorkout(workoutId)){
             throw new InvalidDataException("Workout ID must be WKYYY with YYY are numbers");
         }
-        if(!ObjectUtils.validRepetition(String.valueOf(repetition))){
+        if(!ObjectUtils.validInteger(String.valueOf(repetition))){
             throw new InvalidDataException("Repetition must be a positive number");
         }
-        if(!ObjectUtils.validSet(String.valueOf(sets))){
+        if(!ObjectUtils.validInteger(String.valueOf(sets))){
             throw new InvalidDataException("Sets must be a positive number");
         }
-        if(!ObjectUtils.validDuration(String.valueOf(duration))){
+        if(!ObjectUtils.validInteger(String.valueOf(duration))){
             throw new InvalidDataException("Duration must be a positive number");
         }
     }

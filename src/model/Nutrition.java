@@ -58,7 +58,7 @@ public class Nutrition {
         if(!ObjectUtils.validCodePracticalDay(practicalDayId)){
             throw new InvalidDataException("Practical ID must be PDYYY with YYY are numbers");
         }
-        if(!ObjectUtils.validCalories(String.valueOf(calories))){
+        if(!ObjectUtils.validDouble(String.valueOf(calories))){
             throw new InvalidDataException("Calories must be a positive number");
         }
     }
