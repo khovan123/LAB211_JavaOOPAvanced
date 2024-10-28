@@ -1,7 +1,9 @@
 package model;
 
 import exception.InvalidDataException;
+
 import java.util.TreeSet;
+
 import service.PracticalDayService;
 
 import java.util.TreeSet;
@@ -9,19 +11,17 @@ import java.util.TreeSet;
 public class Schedule {
     private String scheduleId;
     private String userProgressId;
-    private final PracticalDayService practicalDayService;
-    
-    public Schedule(String scheduleId, String userProgressId){
+
+    public Schedule(String scheduleId, String userProgressId) {
         this.scheduleId = scheduleId;
         this.userProgressId = userProgressId;
-        this.practicalDayService = null;
     }
 
-    public Schedule(String scheduleId, String userProgressId, TreeSet<PracticalDay> practicalDayTreeSet) {
-        this.scheduleId = scheduleId;
-        this.userProgressId = userProgressId;
-        this.practicalDayService = new PracticalDayService(practicalDayTreeSet);
-        }
+//    public Schedule(String scheduleId, String userProgressId, TreeSet<PracticalDay> practicalDayTreeSet) {
+//        this.scheduleId = scheduleId;
+//        this.userProgressId = userProgressId;
+//        this.practicalDayService = new PracticalDayService(practicalDayTreeSet);
+//        }
 
     public String getUserProgressId() {
         return userProgressId;
@@ -39,12 +39,9 @@ public class Schedule {
         this.userProgressId = userProgressId;
     }
 
-    public PracticalDayService getPracticalDayService() {
-        return practicalDayService;
-    }
 
     public String getInfo() {
-        return String.format("%s\t%s\t%s", scheduleId, userProgressId, practicalDayService);
+        return String.format("%s\t%s\t%s", scheduleId, userProgressId);
     }
 
     public void runValidate() throws InvalidDataException {
