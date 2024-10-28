@@ -7,7 +7,6 @@ import repository.interfaces.IRegistedCourseRepository;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class RegistedCourseRepository implements IRegistedCourseRepository {
                             data[3].trim(),
                             data[4].trim()
                     );
-                    registeredCourse.validate();
+                    registeredCourse.runValidate();
                     registeredCourses.add(registeredCourse);
                 } catch (Exception e) {
                     System.err.println("-> Error While Adding Registered Course - " + e.getMessage());

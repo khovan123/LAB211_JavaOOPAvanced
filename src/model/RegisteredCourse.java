@@ -30,12 +30,29 @@ public class RegisteredCourse {
         return registeredCourseID;
     }
 
-    public void setRegisteredCourseID(String registeredCourseID) {
-        this.registeredCourseID = registeredCourseID;
-    }
-
     public Date getRegisteredDate() {
         return registeredDate;
+    }
+
+    public Date getFinishRegisteredDate() {
+        return finishRegisteredDate;
+    }
+
+    public String getCourseID() {
+        return courseID;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public String getInfo() {
+        return String.format("Registered Course ID: %s, Registered Date: %s, Finish Registered Date: %s, Course ID: %s, User ID: %s",
+                registeredCourseID, GlobalUtils.getDateString(registeredDate), GlobalUtils.getDateString(finishRegisteredDate), courseID, userID);
+    }
+
+    public void setRegisteredCourseID(String registeredCourseID) {
+        this.registeredCourseID = registeredCourseID;
     }
 
     public void setRegisteredDate(String registeredDate) throws InvalidDataException {
@@ -46,10 +63,6 @@ public class RegisteredCourse {
         }
     }
 
-    public Date getFinishRegisteredDate() {
-        return finishRegisteredDate;
-    }
-
     public void setFinishRegisteredDate(String finishRegisteredDate) throws InvalidDataException {
         try {
             this.finishRegisteredDate = GlobalUtils.getDate(finishRegisteredDate);
@@ -58,31 +71,22 @@ public class RegisteredCourse {
         }
     }
 
-    public String getCourseID() {
-        return courseID;
-    }
-
     public void setCourseID(String courseID) {
         this.courseID = courseID;
-    }
-
-    public String getUserID() {
-        return userID;
     }
 
     public void setUserID(String userID) {
         this.userID = userID;
     }
 
-    public String getInfo() {
-        return String.format("Registered Course ID: %s, Registered Date: %s, Finish Registered Date: %s, Course ID: %s, User ID: %s",
-                registeredCourseID, GlobalUtils.getDateString(registeredDate), GlobalUtils.getDateString(finishRegisteredDate), courseID, userID);
-    }
-
-    public void validate() throws InvalidDataException {
+    public void runValidate() throws InvalidDataException {
+        if (registeredCourseID == null || registeredCourseID.isEmpty()) {
+            throw new InvalidDataException("-> Registered Course ID must not be null or empty.");
+        }
         if (!ObjectUtils.validCourseRegistedID(registeredCourseID)) {
             throw new InvalidDataException("-> Registered Course ID must be RCyyyy.");
         }
+
         if (!ObjectUtils.validCourseID(courseID)) {
             throw new InvalidDataException("-> Course ID must be CSyyyy.");
         }
@@ -90,10 +94,10 @@ public class RegisteredCourse {
             throw new InvalidDataException("-> User ID must be Uyyyy.");
         }
         if (!GlobalUtils.validDateNow(registeredDate)) {
-            throw new InvalidDataException("-> Registered Date must not be in the future.");
+            throw new InvalidDataException("-> Registered Date Must Not Be In The Future.");
         }
-        if (finishRegisteredDate != null && registeredDate.after(finishRegisteredDate)) {
-            throw new InvalidDataException("-> Finish Registered Date must be after Registered Date.");
+        if (finishRegisteredDate != null && !ObjectUtils.isRegisteredDateBeforeFinishDate(registeredDate, finishRegisteredDate)) {
+            throw new InvalidDataException("-> Finish Registered Date Must Be After Registered Date.");
         }
     }
 }
