@@ -53,7 +53,6 @@ public class CourseService implements ICourseService {
         }
         try {
             courseList.add(course);
-            System.out.println("-> Course Added Successfully!");
         } catch (Exception e) {
             throw new EventException("-> Error Occurred While Adding Course - " + e.getMessage());
         }
@@ -61,16 +60,33 @@ public class CourseService implements ICourseService {
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
-        courseList.remove(findById(id));
-        System.out.println("-> Course With ID - " + id + " - Removed Successfully");
+        if (findById(id) == null) {
+            throw new NotFoundException("-> Course With ID - " + id + " - Not Found!");
+        }
+        try {
+            courseList.remove(findById(id));
+            System.out.println("-> Course With ID - " + id + " - Removed Successfully");
+        } catch (Exception e) {
+            throw new EventException("-> Error While Deleting Course With ID - " + id + " - " + e.getMessage());
+        }
     }
 
     @Override
     public void update(Course course) throws EventException, NotFoundException {
         Course existCourse = findById(course.getCourseId());
-        courseList.remove(existCourse);
-        courseList.add(course);
-        System.out.println("-> Update Course - " + course.getCourseId() + " - Successfully");
+        if (existCourse == null) {
+            throw new NotFoundException("-> Course with ID - " + course.getCourseId() + " - Not Found.");
+        }
+        try {
+            existCourse.setCourseName(course.getCourseName());
+            existCourse.setGenerateDate(String.valueOf(course.getGenerateDate()));
+            existCourse.setPrice(String.valueOf(course.getPrice()));
+            existCourse.setComboID(course.getComboID());
+            existCourse.setCoachId(course.getCoachId());
+            System.out.println("-> Update Course - " + course.getCourseId() + " - Successfully");
+        } catch (Exception e) {
+            throw new EventException("-> Error While Updating Course With ID - " + course.getCourseId() + " - " + e.getMessage());
+        }
     }
 
     @Override

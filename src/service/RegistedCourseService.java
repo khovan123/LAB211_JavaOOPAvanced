@@ -52,7 +52,6 @@ public class RegistedCourseService implements IRegistedCourseService {
         }
         try {
             registeredCourseList.add(registeredCourse);
-            System.out.println("-> Registed Course Added Successfully!");
         } catch (Exception e) {
             throw new EventException("-> Error While Adding Registed Course - " + e.getMessage());
         }
@@ -60,19 +59,24 @@ public class RegistedCourseService implements IRegistedCourseService {
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
-        if (!registeredCourseList.remove(search(course -> course.getRegisteredCourseID().equalsIgnoreCase(id)))) {
+        if (findById(id) == null) {
             throw new NotFoundException("-> Registed Course with ID - " + id + " - Not Found.");
         }
+        registeredCourseList.remove(findById(id));
         System.out.println("-> Registed Course With ID - " + id + " - Removed Successfully");
     }
 
     @Override
     public void update(RegisteredCourse registeredCourse) throws EventException, NotFoundException {
-        if (!registeredCourseList.remove(search(course -> course.getRegisteredCourseID().equalsIgnoreCase(registeredCourse.getRegisteredCourseID())))) {
+        RegisteredCourse existRegisteredCourse = findById(registeredCourse.getRegisteredCourseID());
+        if (existRegisteredCourse == null) {
             throw new NotFoundException("-> Registed Course with ID - " + registeredCourse.getRegisteredCourseID() + " - Not Found.");
         }
         try {
-            registeredCourseList.add(registeredCourse);
+            existRegisteredCourse.setRegisteredDate(String.valueOf(registeredCourse.getRegisteredDate()));
+            existRegisteredCourse.setRegisteredCourseID(String.valueOf(registeredCourse.getFinishRegisteredDate()));
+            existRegisteredCourse.setCourseID(registeredCourse.getCourseID());
+            existRegisteredCourse.setUserID(registeredCourse.getUserID());
             System.out.println("-> Updated Registed Course - " + registeredCourse.getRegisteredCourseID() + " - Successfully");
         } catch (Exception e) {
             throw new EventException("-> Error While Updating Registed Course With ID - " + registeredCourse.getRegisteredCourseID() + " - " + e.getMessage());

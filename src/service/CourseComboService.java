@@ -51,7 +51,6 @@ public class CourseComboService implements ICourseComboService {
         }
         try {
             courseComboList.add(courseCombo);
-            System.out.println("-> Course Combo Added Successfully!");
         } catch (Exception e) {
             throw new EventException("-> Error While Adding Course Combo - " + e.getMessage());
         }
@@ -59,19 +58,28 @@ public class CourseComboService implements ICourseComboService {
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
-        if (!courseComboList.remove(search(combo -> combo.getComboId().equalsIgnoreCase(id)))) {
-            throw new NotFoundException("-> Course Combo with ID - " + id + " - Not Found.");
+        try {
+            CourseCombo courseCombo = findById(id);
+            if (courseCombo == null) {
+                throw new NotFoundException("-> Course With ID - " + id + " - Not Found.");
+            }
+            courseComboList.remove(courseCombo);
+            System.out.println("-> Course With ID - " + id + " - Removed Successfully");
+        } catch (Exception e) {
+            throw new EventException("-> Error While Deleting Course With ID - " + id + " - " + e.getMessage());
         }
-        System.out.println("-> Course Combo With ID - " + id + " - Removed Successfully");
     }
+
 
     @Override
     public void update(CourseCombo courseCombo) throws EventException, NotFoundException {
-        if (!courseComboList.remove(search(combo -> combo.getComboId().equalsIgnoreCase(courseCombo.getComboId())))) {
+        CourseCombo existingCombo = search(combo -> combo.getComboId().equalsIgnoreCase(courseCombo.getComboId()));
+        if (existingCombo == null) {
             throw new NotFoundException("-> Course Combo with ID - " + courseCombo.getComboId() + " - Not Found.");
         }
         try {
-            courseComboList.add(courseCombo);
+            existingCombo.setComboName(courseCombo.getComboName());
+            existingCombo.setSales(String.valueOf(courseCombo.getSales()));
             System.out.println("-> Update Course Combo - " + courseCombo.getComboId() + " - Successfully");
         } catch (Exception e) {
             throw new EventException("-> Error While Updating Course Combo With ID - " + courseCombo.getComboId() + " - " + e.getMessage());
