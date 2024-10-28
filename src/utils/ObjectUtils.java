@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.Date;
+
 public class ObjectUtils {
 
     public static boolean validID(String id) {
@@ -41,4 +43,18 @@ public class ObjectUtils {
     public static boolean validUserID(String code){
         return code.matches("^U\\d*$");
     }
+
+    public static boolean isRegisteredDateBeforeFinishDate(Date registeredDate, Date finishRegisteredDate) {
+        return registeredDate.before(finishRegisteredDate);
+    }
+
+    public static boolean checkSales(String sales) {
+        try {
+            double saleValue = Double.parseDouble(sales);
+            return saleValue >= 0 && saleValue <= 1;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
 }
