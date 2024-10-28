@@ -37,7 +37,7 @@ CREATE TABLE CourseModel(
 	Addventor BIT,
 	GenerateDate DATE,
 	Price DECIMAL(10,2),
-	ComboID NVARCHAR(250) UNIQUE DEFAULT NULL,
+	ComboID NVARCHAR(250) DEFAULT NULL,
 	CoachID NVARCHAR(250),
 	CHECK (CourseID LIKE 'CS[0-9]%'),
 	CHECK (CoachID LIKE 'C[0-9]%'),
