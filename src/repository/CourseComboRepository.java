@@ -12,8 +12,21 @@ public class CourseComboRepository implements ICourseComboRepository {
     public static final String ComboName_Column = "ComboName";
     public static final String Sales_Column = "Sales";
     private static final List<String> COURSECOMBOMODELCOLUMN = new ArrayList<>(Arrays.asList(ComboID_Column, ComboName_Column, Sales_Column));
-    private Connection conn = SQLServerConnection.getConnection();
 
+    private static Connection connectToSQLServer() {
+        var user = "minh";
+        var password = "Minh@1807";
+        var url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=FitnessCourse;encrypt=true";
+
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+            System.out.println("Connected to SQL Server successfully!");
+        } catch (SQLException e) {
+            System.err.println("Connection to SQL Server failed: " + e.getMessage());
+        }
+        return conn;
+    }
 
     @Override
     public List<CourseCombo> readData() {
@@ -116,7 +129,7 @@ public class CourseComboRepository implements ICourseComboRepository {
         courseComboQuery = courseComboQuery.replace("Y", modelValue).replace("X", modelColumn);
 
         try {
-            PreparedStatement ps = conn.prepareStatement(courseComboQuery);
+            PreparedStatement ps = connectToSQLServer().prepareStatement(courseComboQuery);
             int i = 1;
             for (String column : entries.keySet()) {
                 if (COURSECOMBOMODELCOLUMN.contains(column)) {
@@ -143,7 +156,7 @@ public class CourseComboRepository implements ICourseComboRepository {
         query = query.replace("X", modelColumn.toString());
 
         try {
-            PreparedStatement ps = conn.prepareStatement(query);
+            PreparedStatement ps = connectToSQLServer().prepareStatement(query);
             int i = 1;
             for (String column : entries.keySet()) {
                 if (COURSECOMBOMODELCOLUMN.contains(column)) {
@@ -161,7 +174,7 @@ public class CourseComboRepository implements ICourseComboRepository {
     public void deleteOne(String ID) throws SQLException {
         String query = "DELETE FROM CourseComboModel WHERE ComboID = ?";
         try {
-            PreparedStatement ps = conn.prepareStatement(query);
+            PreparedStatement ps = connectToSQLServer().prepareStatement(query);
             ps.setString(1, ID);
             ps.executeUpdate();
         } catch (SQLException e) {

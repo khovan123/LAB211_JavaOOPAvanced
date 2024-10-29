@@ -18,9 +18,23 @@ public class CourseRepository implements ICourseRepository {
     public static final String ComboID_Column = "ComboID";
     public static final String CoachID_Column = "CoachID";
     private static final List<String> COURSEMODELCOLUMN = new ArrayList<>(Arrays.asList(CourseID_Column, CourseName_Column, Boolean.toString(Addventor_Column), GenerateDate_Column, ComboID_Column, CoachID_Column));
-    private Connection conn = SQLServerConnection.getConnection();
     private static List<Course> courses = new ArrayList<>();
     //data sample: CS-YYYY, 30 days full body master, CA-YYYY
+
+    private static Connection connectToSQLServer() {
+        var user = "minh";
+        var password = "Minh@1807";
+        var url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=FitnessCourse;encrypt=true";
+
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+            System.out.println("Connected to SQL Server successfully!");
+        } catch (SQLException e) {
+            System.err.println("Connection to SQL Server failed: " + e.getMessage());
+        }
+        return conn;
+    }
 
     @Override
     public List<Course> readData() {
@@ -119,7 +133,7 @@ public class CourseRepository implements ICourseRepository {
         List<String> list = new ArrayList<>();
         try {
             StringBuilder row = new StringBuilder();
-            Statement stmt = conn.createStatement();
+            Statement stmt = connectToSQLServer().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT c.CourseID, c.CourseName, c.Addventor, c.GenerateDate, c.Price, c.ComboID, c.CoachID FROM CourseModel c");
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
@@ -151,7 +165,7 @@ public class CourseRepository implements ICourseRepository {
         courseQuery = courseQuery.replace("Y", courseModelValues).replace("X", courseModelColumn);
 
         try {
-            PreparedStatement coursePS = conn.prepareStatement(courseQuery);
+            PreparedStatement coursePS = connectToSQLServer().prepareStatement(courseQuery);
             int i = 1;
             for (String column : entries.keySet()) {
                 if (COURSEMODELCOLUMN.contains(column)) {
@@ -179,7 +193,7 @@ public class CourseRepository implements ICourseRepository {
 
         try {
             if (!courseModelColumn.isEmpty()) {
-                PreparedStatement coursePS = conn.prepareStatement(courseQuery);
+                PreparedStatement coursePS = connectToSQLServer().prepareStatement(courseQuery);
                 int i = 1;
                 for (String column : entries.keySet()) {
                     if (COURSEMODELCOLUMN.contains(column)) {
@@ -198,7 +212,7 @@ public class CourseRepository implements ICourseRepository {
     public void deleteOne(String ID) throws SQLException {
         String courseQuery = "DELETE FROM CourseModel WHERE CourseID = ?";
         try {
-            PreparedStatement coursePS = conn.prepareStatement(courseQuery);
+            PreparedStatement coursePS = connectToSQLServer().prepareStatement(courseQuery);
             coursePS.setString(1, ID);
             coursePS.executeUpdate();
         } catch (SQLException e) {
