@@ -9,6 +9,8 @@ import java.util.List;
 
 import model.Workout;
 import repository.interfaces.IWorkoutRepository;
+import utils.GlobalUtils;
+
 import java.sql.*;
 import java.util.Map;
 import java.util.logging.Level;
@@ -82,25 +84,12 @@ public class WorkoutRepository implements IWorkoutRepository {
     }
 
     @Override
-    public void updateToDB(String workoutID, Map<String, Object> entry) throws SQLException {
-        Map<String, String> entries = new HashMap<>();
-        if (entry.containsKey(WorkoutName_Column)) {
-            entries.put(WorkoutName_Column, (String) entry.get(WorkoutName_Column));
+    public void updateToDB(String workoutID, Map<String, Object> workout) throws SQLException {
+        Map<String, String> workoutMap = new HashMap<>();
+        for(String column: workoutMap.keySet()){
+            workoutMap.putIfAbsent(column, GlobalUtils.convertToString(workout.get(column)));
         }
-        if (entry.containsKey(Repetition_Column)) {
-            entries.put(Repetition_Column, String.valueOf(entry.get(Repetition_Column)));
-        }
-        if (entry.containsKey(Sets_Column)) {
-            entries.put(Sets_Column, String.valueOf(entry.get(Sets_Column)));
-        }
-        if (entry.containsKey(Duration_Column)) {
-            entries.put(Duration_Column, String.valueOf(entry.get(Duration_Column)));
-        }
-        if (entry.containsKey(CourseID_Column)) {
-            entries.put(CourseID_Column, (String) entry.get(CourseID_Column));
-        }
-
-        updateOne(workoutID, entries);
+        updateOne(workoutID, workoutMap);
     }
 
     @Override

@@ -34,7 +34,7 @@ public class PracticalDay implements Comparator<PracticalDay> {
     }
 
     public void setPracticeDate(String practiceDate) throws InvalidDataException {
-        this.practiceDate = GlobalUtils.getDate(practiceDate);
+        this.practiceDate = GlobalUtils.dateParse(practiceDate);
     }
 
     public String getScheduleId() {
@@ -54,7 +54,7 @@ public class PracticalDay implements Comparator<PracticalDay> {
     }
 
     public String getInfo() {
-        return String.format("%s\t%s\t%s", getPracticalDayId(), GlobalUtils.getDateString(getPracticeDate()), getScheduleId());
+        return String.format("%s\t%s\t%s", getPracticalDayId(), GlobalUtils.dateFormat(getPracticeDate()), getScheduleId());
     }
 
     public void runValidate () throws InvalidDataException {
