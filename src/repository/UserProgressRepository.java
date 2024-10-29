@@ -22,8 +22,10 @@ public class UserProgressRepository implements IUserProgressRepository {
 
     public static final String UserProgressID_Column = "UserProgressID";
     public static final String RegistedCourseID_Column = "RegistedCourseID";
-    private static final List<String> USERPROGRESS_COLUMNS = new ArrayList<>(Arrays.asList(UserProgressID_Column, RegistedCourseID_Column));
+    public static final String Active_Column = "Active";
+    private static final List<String> USERPROGRESS_COLUMNS = new ArrayList<>(Arrays.asList(UserProgressID_Column, RegistedCourseID_Column, Active_Column));
     private Connection conn = SQLServerConnection.getConnection();
+    private static final String path = "";
 
     //generate with id: CP-YYYY in scheduleRepository
     static {
@@ -32,47 +34,38 @@ public class UserProgressRepository implements IUserProgressRepository {
 
     @Override
     public List<UserProgress> readData() {
-        List<UserProgress> userProgresses = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            String line;
-            List<String> databaseData = getData();
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(",");
-                if (data.length == 2) {
-                    String userProgressID = data[0].trim();
-                    String registeredCourseID = data[1].trim();
+        List<UserProgress> userProgressList = new ArrayList<>();
+        String query = "SELECT * FROM UserProgress WHERE Active = 1";
 
-                    UserProgress userProgress = new UserProgress(userProgressID, registeredCourseID);
-                    userProgress.runValidate();
-                    userProgresses.add(userProgress);
-                }
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                UserProgress userProgress = new UserProgress();
+                userProgress.setUserProgressId(rs.getString(UserProgressID_Column));
+                userProgress.setRegistedCourseID(rs.getString(RegistedCourseID_Column));
+                userProgressList.add(userProgress);
             }
-        } catch (Exception e) {
-            throw new IOException(e);
+        } catch (SQLException e) {
+            try {
+                throw new SQLException( e);
+            } catch (SQLException ex) {
+                Logger.getLogger(UserProgressRepository.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-
-        return userProgresses;
+        return userProgressList;
     }
 
     @Override
     public List<String> getMany() throws SQLException {
         List<String> list = new ArrayList<>();
         String query = "SELECT UserProgressID, RegisteredCourseID FROM UserProgress WHERE Active = 1";
-        try {
-            StringBuilder row = new StringBuilder();
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            ResultSetMetaData metaData = rs.getMetaData();
-            int columnCount = metaData.getColumnCount();
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+
             while (rs.next()) {
-                for (int i = 1; i <= columnCount; i++) {
-                    row.append(rs.getString(i)).append(i < columnCount ? ", " : "");
-                }
-                list.add(row.toString());
-                row = new StringBuilder();
+                String row = rs.getString(UserProgressID_Column) + ", " + rs.getString(RegistedCourseID_Column);
+                list.add(row);
             }
         } catch (SQLException e) {
-            throw new SQLException("Error fetching data: " + e.getMessage(), e);
+            throw new SQLException(e);
         }
         return list;
     }
@@ -96,7 +89,7 @@ public class UserProgressRepository implements IUserProgressRepository {
             }
         }
 
-        query = query.replace("X", columnBuilder).replace("Y", valueBuilder);
+        query = query.replace("X", columnBuilder.toString()).replace("Y", valueBuilder.toString());
 
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             int i = 1;
@@ -107,7 +100,7 @@ public class UserProgressRepository implements IUserProgressRepository {
             }
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("Error inserting data: " + e.getMessage(), e);
+            throw new SQLException( e);
         }
     }
 
@@ -137,7 +130,7 @@ public class UserProgressRepository implements IUserProgressRepository {
             ps.setString(i, ID);
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("Error updating data: " + e.getMessage(), e);
+            throw new SQLException( e);
         }
     }
 
@@ -153,7 +146,7 @@ public class UserProgressRepository implements IUserProgressRepository {
     }
 
     @Override
-    public void insert(UserProgress entry) throws SQLException {
+    public void insertToDB(UserProgress entry) throws SQLException {
         Map<String, String> entries = new HashMap<>();
         entries.put(UserProgressID_Column, entry.getUserProgressId());
         entries.put(RegistedCourseID_Column, entry.getRegistedCourseID());
@@ -161,15 +154,24 @@ public class UserProgressRepository implements IUserProgressRepository {
     }
 
     @Override
-    public void update(UserProgress entry) throws SQLException {
-        Map<String, String> entries = new HashMap<>();
-        entries.put(RegistedCourseID_Column, entry.getRegistedCourseID());
-        updateOne(entry.getUserProgressId(), entries);
+    public void updateToDB(String id, Map<String, Object> entry) throws SQLException {
+        Map<String, String> stringEntry = new HashMap<>();
+        for (Map.Entry<String, Object> e : entry.entrySet()) {
+            stringEntry.put(e.getKey(), e.getValue() == null ? "" : e.getValue().toString());
+        }
+        updateOne(id, stringEntry);
     }
 
     @Override
-    public void delete(UserProgress entry) throws SQLException {
-        deleteOne(entry.getUserProgressId());
+    public void deleteToDB(String ID) throws SQLException {
+        String query = "DELETE FROM UserProgress WHERE " + UserProgressID_Column + " = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, ID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException("Error deleting data: " + e.getMessage(), e);
+        }
     }
 
 }

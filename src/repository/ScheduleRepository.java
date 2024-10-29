@@ -3,11 +3,11 @@ package repository;
 import exception.IOException;
 import exception.NotFoundException;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
+import java.sql.*;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +22,11 @@ import repository.interfaces.IScheduleRepository;
 import service.PracticalDayService;
 
 public class ScheduleRepository implements IScheduleRepository {
+
+    public static final String ScheduleID_Column = "ScheduleID";
+    public static final String UserProgressID_Column = "UserProgressID";
+    private static final List<String> SCHEDULE_COLUMNS = Arrays.asList(ScheduleID_Column, UserProgressID_Column);
+    private Connection conn = SQLServerConnection.getConnection();
     //no path, just handle practicalRepository
 
     //generate Schdule with id of CP-YYYY in practicalDayRepository
@@ -30,55 +35,140 @@ public class ScheduleRepository implements IScheduleRepository {
     }
 
     @Override
-    public List<Schedule> readFile() throws IOException {
+    public List<Schedule> readData() {
         List<Schedule> schedules = new ArrayList<>();
-        Map<String, List<PracticalDay>> coursePacketMap = new HashMap<>();
-        File file = new File(path);
-        if (!file.exists()) {
-            throw new IOException("File not found at " + path);
-        }
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                try {
-                    line = line.trim();
-                    String[] data = line.split(",");
-                    String userProgressID = data[0];
-                    String coursePacketID = data[1];
-                    List<PracticalDay> practicalDays = coursePacketMap.getOrDefault(coursePacketID, new ArrayList<>());
-                    PracticalDayService practicalDayService = new PracticalDayService();
-                    TreeSet<PracticalDay> practicalDayTreeSet = new TreeSet<>();
-                    for (int i = 2; i < data.length; i++) {
-                        PracticalDay practicalDay = practicalDayService.findById(data[i]);
-                        if (practicalDay != null) {
-                            practicalDayTreeSet.add(practicalDay);
-                            practicalDays.add(practicalDay);
-                        } else {
-                            System.out.println("Practical Day with ID " + data[i] + " not found, skipping....");
-                        }
-                    }
-                    coursePacketMap.put(coursePacketID, practicalDays);
-                    Schedule schedule = new Schedule(userProgressID, practicalDayTreeSet);
-                    schedules.add(schedule);
-
-                } catch (Exception e) {
-                    throw new IOException("Add failed " + e.getMessage());
-                }
+        try {
+            String query = "SELECT * FROM ScheduleModel";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                Schedule schedule = new Schedule();
+                schedule.setScheduleId(rs.getString(ScheduleID_Column));
+                schedule.setUserProgressId(rs.getString(UserProgressID_Column));
+                schedules.add(schedule);
             }
-        } catch (java.io.IOException e) {
-            throw new IOException("Error reading file: " + e.getMessage());
+        } catch (SQLException e) {
+            try {
+                throw new SQLException(e);
+            } catch (SQLException ex) {
+                Logger.getLogger(ScheduleRepository.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        coursePacketMap.forEach((key, value) -> {
-            System.out.println("Course Packet ID: " + key + ", Practical Days: " + value);
-        });
-
         return schedules;
-
     }
 
     @Override
-    public void writeFile(List<Schedule> entry) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void insertToDB(Schedule entry) throws SQLException {
+        Map<String, String> entryMap = new HashMap<>();
+        entryMap.put(ScheduleID_Column, entry.getScheduleId());
+        entryMap.put(UserProgressID_Column, entry.getUserProgressId());
+        insertOne(entryMap);
+    }
+
+    @Override
+    public void updateToDB(String id, Map<String, Object> entry) throws SQLException {
+        Map<String, String> stringEntry = new HashMap<>();
+        for (Map.Entry<String, Object> e : entry.entrySet()) {
+            stringEntry.put(e.getKey(), e.getValue() == null ? "" : e.getValue().toString());
+        }
+        updateOne(id, stringEntry);
+    }
+
+    @Override
+    public void deleteToDB(String ID) throws SQLException {
+        deleteOne(ID);
+    }
+
+    @Override
+    public List<String> getMany() throws SQLException {
+        List<String> list = new ArrayList<>();
+        try {
+            StringBuilder row = new StringBuilder();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM ScheduleModel");
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            while (rs.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    row.append(rs.getString(i)).append(i < columnCount ? ", " : "");
+                }
+                list.add(row.toString());
+                row = new StringBuilder();
+            }
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+        return list;
+    }
+
+    @Override
+    public void insertOne(Map<String, String> entry) throws SQLException {
+        String scheduleQuery = "INSERT INTO ScheduleModel(X) VALUES(Y)";
+        StringBuilder scheduleColumns = new StringBuilder();
+        StringBuilder scheduleValues = new StringBuilder();
+
+        for (String column : entry.keySet()) {
+            if (SCHEDULE_COLUMNS.contains(column)) {
+                scheduleColumns.append((scheduleColumns.length() == 0 ? "" : ", ")).append(column);
+                scheduleValues.append((scheduleValues.length() == 0 ? "?" : ", ?"));
+            }
+        }
+
+        scheduleQuery = scheduleQuery.replace("Y", scheduleValues).replace("X", scheduleColumns);
+
+        try {
+            PreparedStatement schedulePS = conn.prepareStatement(scheduleQuery);
+            int i = 1;
+            for (String column : entry.keySet()) {
+                if (SCHEDULE_COLUMNS.contains(column)) {
+                    schedulePS.setString(i++, entry.get(column));
+                }
+            }
+            schedulePS.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateOne(String ID, Map<String, String> entry) throws SQLException {
+        String scheduleQuery = "UPDATE ScheduleModel SET X WHERE ScheduleID = ?";
+        StringBuilder scheduleColumns = new StringBuilder();
+
+        for (String column : entry.keySet()) {
+            if (SCHEDULE_COLUMNS.contains(column)) {
+                scheduleColumns.append((scheduleColumns.isEmpty() ? "" : ", ")).append(column).append(" = ?");
+            }
+        }
+        scheduleQuery = scheduleQuery.replace("X", scheduleColumns.toString());
+
+        try {
+            if (!scheduleColumns.isEmpty()) {
+                PreparedStatement schedulePS = conn.prepareStatement(scheduleQuery);
+                int i = 1;
+                for (String column : entry.keySet()) {
+                    if (SCHEDULE_COLUMNS.contains(column)) {
+                        schedulePS.setString(i++, entry.get(column));
+                    }
+                }
+                schedulePS.setString(i, ID);
+                schedulePS.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    @Override
+    public void deleteOne(String ID) throws SQLException {
+        String scheduleQuery = "DELETE FROM ScheduleModel WHERE ScheduleID = ?";
+        try {
+            PreparedStatement schedulePS = conn.prepareStatement(scheduleQuery);
+            schedulePS.setString(1, ID);
+            schedulePS.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
     }
 
 }

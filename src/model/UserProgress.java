@@ -13,9 +13,14 @@ public class UserProgress {
     private String userProgressId;
     private String registedCourseID;
 
-    public UserProgress(String userProgressId, String registedCourseID) {
+    public UserProgress(String userProgressId, String registedCourseID) throws InvalidDataException {
         this.userProgressId = userProgressId;
         this.registedCourseID = registedCourseID;
+        this.runValidate();
+    }
+
+    public UserProgress() {
+        
     }
 
     public String getUserProgressId() {

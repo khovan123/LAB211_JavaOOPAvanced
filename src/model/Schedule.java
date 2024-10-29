@@ -13,9 +13,14 @@ public class Schedule {
     private String scheduleId;
     private String userProgressId;
 
-    public Schedule(String scheduleId, String userProgressId) {
+    public Schedule(String scheduleId, String userProgressId) throws InvalidDataException {
         this.scheduleId = scheduleId;
         this.userProgressId = userProgressId;
+        this.runValidate();
+    }
+
+    public Schedule() {
+       
     }
 
     public String getUserProgressId() {
