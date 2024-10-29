@@ -22,7 +22,12 @@ public class RegistedCourseRepository implements IRegistedCourseRepository {
 
     @Override
     public List<RegisteredCourse> readData() {
-        List<String> rawData = getData();
+        List<String> rawData = null;
+        try {
+            rawData = getMany();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         List<RegisteredCourse> processData = new ArrayList<>();
         for (String row : rawData) {
             String[] col = row.split(", ");
