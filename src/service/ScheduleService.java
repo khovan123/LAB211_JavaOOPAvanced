@@ -4,17 +4,22 @@ import exception.EmptyDataException;
 import exception.EventException;
 import exception.IOException;
 import exception.NotFoundException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 import service.interfaces.IScheduleService;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.sql.SQLException;
 import model.Schedule;
 import model.Workout;
 import repository.ScheduleRepository;
+import utils.FieldUtils;
 
 public class ScheduleService implements IScheduleService {
 
@@ -24,22 +29,13 @@ public class ScheduleService implements IScheduleService {
 
     public ScheduleService() {
         scheduleTreeSet = new TreeSet<>();
-        readFromDatabase();
+        scheduleList = scheduleRepository.readData();
     }
 
     public ScheduleService(TreeSet<Schedule> scheduleTreeSet) {
         this.scheduleTreeSet = scheduleTreeSet;
-        readFromDatabase();
     }
-
-    public void readFromDatabase() {
-        try {
-            scheduleTreeSet.addAll(scheduleRepository.readFile());
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
+    
     @Override
     public void display() throws EmptyDataException {
         if (scheduleList.isEmpty()) {
@@ -63,27 +59,6 @@ public class ScheduleService implements IScheduleService {
     @Override
     public void delete(String id) throws EventException, NotFoundException {
         scheduleList.remove(findById(id));
-    }
-
-    @Override
-    public void update(Schedule schedule) throws EventException, NotFoundException {
-        boolean found = false;
-
-        for (int i = 0; i < scheduleList.size(); i++) {
-            if (scheduleList.get(i).getScheduleId().equals(schedule.getScheduleId())) {
-                scheduleList.set(i, schedule);
-                try {
-                    scheduleRepository.writeFile(scheduleList);
-                } catch (IOException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            throw new NotFoundException("Customer not found with ID: " + schedule.getScheduleId());
-        }
     }
 
     @Override
@@ -116,15 +91,30 @@ public class ScheduleService implements IScheduleService {
         return false;
     }
 
-    public void addWorkoutToSchedule(Date date, Workout workout) {
-
+    @Override
+    public void update(String id, Map<String, Object> entry) throws EventException, NotFoundException {
+        for (String fieldName : entry.keySet()) {
+            Schedule schedule = findById(id);
+            Field field = FieldUtils.getFieldByName(schedule.getClass(), fieldName);
+            try {
+                field.set(schedule, entry.get(fieldName));
+                Map<String, Object> updatedMap = new HashMap<>();
+                updatedMap.putIfAbsent(getColumnByFieldName(fieldName), entry.get(fieldName));
+                scheduleRepository.updateToDB(id, updatedMap);
+            } catch (IllegalAccessException | IllegalArgumentException | SQLException e) {
+                throw new EventException(e);
+            }
+        }
     }
 
-    public void removeWorkoutFromSchedule(Date date, Workout workout) {
-
-    }
-
-    public void viewSchedule() {
-
+    private String getColumnByFieldName(String fieldName) throws NotFoundException {
+        switch (fieldName) {
+            case "scheduleId":
+                return ScheduleRepository.ScheduleID_Column;
+            case "userProgressId":
+                return ScheduleRepository.UserProgressID_Column;
+            default:
+                throw new NotFoundException("Not found any field");
+        }
     }
 }
