@@ -128,7 +128,7 @@ public class UserProgressService implements IUserProgressService {
         switch (fieldName) {
             case "userProgressId":
                 return UserProgressRepository.UserProgressID_Column;
-            case "registedCourseID":
+            case "registedCourseId":
                 return UserProgressRepository.RegistedCourseID_Column;
             default:
                 throw new NotFoundException("Not found any field");
