@@ -1,11 +1,7 @@
 package repository;
 
 import exception.IOException;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +14,7 @@ import service.PracticalDayService;
 import service.ScheduleService;
 import java.sql.ResultSet;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,7 +31,7 @@ public class UserProgressRepository implements IUserProgressRepository {
     }
 
     @Override
-    public List<UserProgress> readFile() throws IOException {
+    public List<UserProgress> readData() {
         List<UserProgress> userProgresses = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String line;
@@ -58,17 +55,7 @@ public class UserProgressRepository implements IUserProgressRepository {
     }
 
     @Override
-    public void writeFile(List<UserProgress> entries) throws IOException {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
-            for (UserProgress progress : entries) {
-                bw.write(String.format("%s,%s%n", progress.getUserProgressId(), progress.getRegistedCourseID()));
-            }
-        } catch (Exception e) {
-            throw new IOException("Error write file: " + e.getMessage(), e);
-        }
-    }
-
-    public List<String> getData() throws SQLException {
+    public List<String> getMany() throws SQLException {
         List<String> list = new ArrayList<>();
         String query = "SELECT UserProgressID, RegisteredCourseID FROM UserProgress WHERE Active = 1";
         try {
@@ -90,7 +77,8 @@ public class UserProgressRepository implements IUserProgressRepository {
         return list;
     }
 
-    public void insert(Map<String, String> entries) throws SQLException {
+    @Override
+    public void insertOne(Map<String, String> entries) throws SQLException {
         String query = "INSERT INTO UserProgress (X) VALUES (Y)";
         StringBuilder columnBuilder = new StringBuilder();
         StringBuilder valueBuilder = new StringBuilder();
@@ -123,7 +111,8 @@ public class UserProgressRepository implements IUserProgressRepository {
         }
     }
 
-    public void update(String ID, Map<String, String> entries) throws SQLException {
+    @Override
+    public void updateOne(String ID, Map<String, String> entries) throws SQLException {
         String query = "UPDATE UserProgress SET X WHERE UserProgressID = ?";
         StringBuilder columnBuilder = new StringBuilder();
 
@@ -152,7 +141,8 @@ public class UserProgressRepository implements IUserProgressRepository {
         }
     }
 
-    public void delete(String ID) throws SQLException {
+    @Override
+    public void deleteOne(String ID) throws SQLException {
         String query = "DELETE FROM UserProgress WHERE UserProgressID = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, ID);
@@ -160,6 +150,26 @@ public class UserProgressRepository implements IUserProgressRepository {
         } catch (SQLException e) {
             throw new SQLException(e);
         }
+    }
+
+    @Override
+    public void insert(UserProgress entry) throws SQLException {
+        Map<String, String> entries = new HashMap<>();
+        entries.put(UserProgressID_Column, entry.getUserProgressId());
+        entries.put(RegistedCourseID_Column, entry.getRegistedCourseID());
+        insertOne(entries);
+    }
+
+    @Override
+    public void update(UserProgress entry) throws SQLException {
+        Map<String, String> entries = new HashMap<>();
+        entries.put(RegistedCourseID_Column, entry.getRegistedCourseID());
+        updateOne(entry.getUserProgressId(), entries);
+    }
+
+    @Override
+    public void delete(UserProgress entry) throws SQLException {
+        deleteOne(entry.getUserProgressId());
     }
 
 }
