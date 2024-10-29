@@ -22,6 +22,26 @@ public class CourseRepository implements ICourseRepository {
 
     private final Connection conn = SQLServerConnection.getConnection();
 
+    public static void main(String[] args) {
+        CourseRepository courseRepository = new CourseRepository();
+        String courseId = "CS002"; // ID của khóa học cần cập nhật
+        Map<String, Object> updatedEntries = new HashMap<>();
+
+        updatedEntries.put(CourseRepository.CourseName_Column, "Strength and Conditioning Updated");
+        updatedEntries.put(CourseRepository.Price_Column, "250.00");
+
+        try {
+            courseRepository.updateToDB(courseId, updatedEntries);
+            System.out.println("Update successful!");
+
+            String row = courseRepository.getOne(courseId);
+            System.out.println("Course Details: " + row);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
     @Override
     public List<Course> readData() throws SQLException {
         List<Course> processData = new ArrayList<>();
@@ -124,6 +144,31 @@ public class CourseRepository implements ICourseRepository {
         } catch (SQLException e) {
             throw new SQLException(e);
         }
+    }
+
+    public String getOne(String courseId) throws SQLException {
+        String query = "SELECT CourseID, CourseName, Addventor, GenerateDate, Price, ComboID, CoachID FROM CourseModel WHERE CourseID = ?";
+        StringBuilder result = new StringBuilder();
+
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, courseId);
+            try (ResultSet rs = ps.executeQuery()) {
+                ResultSetMetaData metaData = rs.getMetaData();
+                int columnCount = metaData.getColumnCount();
+
+                if (rs.next()) {
+                    for (int i = 1; i <= columnCount; i++) {
+                        result.append(rs.getString(i)).append(i < columnCount ? ", " : "");
+                    }
+                } else {
+                    throw new SQLException("No Course found with ID: " + courseId);
+                }
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Failed to retrieve Course: " + e.getMessage());
+        }
+
+        return result.toString();
     }
 
     @Override

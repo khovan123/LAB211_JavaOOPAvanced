@@ -1,6 +1,13 @@
 package service;
 
 import exception.*;
+import model.Course;
+import model.Workout;
+import repository.CourseRepository;
+import service.interfaces.ICourseService;
+import utils.FieldUtils;
+import utils.GlobalUtils;
+import utils.ObjectUtils;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;
@@ -9,14 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-
-import model.Course;
-import model.Workout;
-import repository.CourseRepository;
-import service.interfaces.ICourseService;
-import utils.FieldUtils;
-import utils.GlobalUtils;
-import utils.ObjectUtils;
 
 public class CourseService implements ICourseService {
 
@@ -37,18 +36,19 @@ public class CourseService implements ICourseService {
     public void display() throws EmptyDataException {
         if (courseList.isEmpty()) {
             throw new EmptyDataException("-> Course List Is Empty.");
-        } else {
-            for (Course course : courseList) {
-                course.getInfo();
-            }
         }
+        System.out.println("CourseID\tCourseName\tAddventor\tGenerateDate\tPrice\tComboID\tCoachID\tWorkoutService");
+        for (Course course : courseList) {
+            course.getInfo();
+        }
+
     }
 
-    public void readFromDatabase()  {
+    public void readFromDatabase() {
         try {
             courseList.addAll(courseRepository.readData());
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            // Handle exception if necessary
         }
     }
 
@@ -60,7 +60,7 @@ public class CourseService implements ICourseService {
         try {
             courseList.add(course);
         } catch (Exception e) {
-            throw new EventException("-> Error Occurred While Adding Course - " + e.getMessage());
+            throw new EventException("-> Error Occurred While Adding Course");
         }
     }
 
@@ -72,7 +72,7 @@ public class CourseService implements ICourseService {
         try {
             courseList.remove(findById(id));
         } catch (Exception e) {
-            throw new EventException("-> Error While Deleting Course With ID - " + id + " - " + e.getMessage());
+            throw new EventException("-> Error While Deleting Course With ID - " + id);
         }
     }
 
@@ -89,7 +89,7 @@ public class CourseService implements ICourseService {
             existCourse.setComboID(course.getComboID());
             existCourse.setCoachId(course.getCoachId());
         } catch (Exception e) {
-            throw new EventException("-> Error While Updating Course With ID - " + course.getCourseId() + " - " + e.getMessage());
+            throw new EventException("-> Error While Updating Course With ID - " + course.getCourseId());
         }
     }
 
@@ -118,7 +118,7 @@ public class CourseService implements ICourseService {
                 updatedMap.put(fieldName, entry.get(fieldName));
                 courseRepository.updateToDB(id, updatedMap);
             } catch (IllegalAccessException | IllegalArgumentException | SQLException e) {
-                throw new EventException(e);
+                throw new EventException("-> Error While Updating Course");
             }
         }
     }
@@ -160,7 +160,7 @@ public class CourseService implements ICourseService {
                                 System.out.println("Update successfully");
                                 break;
                             } catch (Exception ex) {
-                                System.out.println(ex.getMessage());
+                                System.out.println("An error occurred.");
                             }
                         }
                     }

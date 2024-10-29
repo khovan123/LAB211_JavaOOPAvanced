@@ -3,7 +3,6 @@ package service;
 import exception.*;
 import model.CourseCombo;
 import repository.CourseComboRepository;
-
 import service.interfaces.ICourseComboService;
 import utils.FieldUtils;
 import utils.GlobalUtils;
@@ -36,7 +35,7 @@ public class CourseComboService implements ICourseComboService {
         try {
             courseComboList.add((CourseCombo) courseComboRepository.readData());
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            // Handle exception if necessary
         }
     }
 
@@ -45,6 +44,7 @@ public class CourseComboService implements ICourseComboService {
         if (courseComboList.isEmpty()) {
             throw new EmptyDataException("-> No Course Combo Found");
         }
+        System.out.println("ComboID\tComboName\tSale");
         for (CourseCombo courseCombo : courseComboList) {
             courseCombo.getInfo();
         }
@@ -56,9 +56,10 @@ public class CourseComboService implements ICourseComboService {
             throw new EventException("-> Course Combo With ID - " + courseCombo.getComboId() + " - Already Exist");
         }
         try {
+            courseComboList.add(courseCombo);
             courseComboRepository.insertToDB(courseCombo);
         } catch (Exception e) {
-            throw new EventException("-> Error While Adding Course Combo - " + e.getMessage());
+            throw new EventException("-> Error While Adding Course Combo");
         }
     }
 
@@ -68,12 +69,12 @@ public class CourseComboService implements ICourseComboService {
             if (findById(id) == null) {
                 throw new NotFoundException("-> Course With ID - " + id + " - Not Found.");
             }
+            courseComboList.remove(findById(id));
             courseComboRepository.deleteToDB(id);
         } catch (Exception e) {
-            throw new EventException("-> Error While Deleting Course With ID - " + id + " - " + e.getMessage());
+            throw new EventException("-> Error While Deleting Course With ID - " + id);
         }
     }
-
 
     @Override
     public void update(CourseCombo courseCombo) throws EventException, NotFoundException {
@@ -85,7 +86,7 @@ public class CourseComboService implements ICourseComboService {
             existingCombo.setComboName(courseCombo.getComboName());
             existingCombo.setSales(String.valueOf(courseCombo.getSales()));
         } catch (Exception e) {
-            throw new EventException("-> Error While Updating Course Combo With ID - " + courseCombo.getComboId() + " - " + e.getMessage());
+            throw new EventException("-> Error While Updating Course Combo With ID - " + courseCombo.getComboId());
         }
     }
 
@@ -111,7 +112,7 @@ public class CourseComboService implements ICourseComboService {
                 updatedMap.putIfAbsent(getColumnByFieldName(fieldName), entry.get(fieldName));
                 courseComboRepository.updateToDB(id, updatedMap);
             } catch (IllegalAccessException | IllegalArgumentException | SQLException e) {
-                throw new EventException(e);
+                throw new EventException("-> Error While Updating Course Combo");
             }
         }
     }
@@ -153,7 +154,7 @@ public class CourseComboService implements ICourseComboService {
                                 System.out.println("Update successfully");
                                 break;
                             } catch (Exception ex) {
-                                System.out.println(ex.getMessage());
+                                System.out.println("An error occurred.");
                             }
                         }
                     }

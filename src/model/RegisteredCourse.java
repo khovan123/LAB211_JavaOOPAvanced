@@ -48,9 +48,11 @@ public class RegisteredCourse {
     }
 
     public String getInfo() {
-        return String.format("Registered Course ID: %s, Registered Date: %s, Finish Registered Date: %s, Course ID: %s, User ID: %s",
-                registeredCourseID, GlobalUtils.getDateString(registeredDate), GlobalUtils.getDateString(finishRegisteredDate), courseID, userID);
+        return String.format("%s, %s, %s, %s, %s",
+                registeredCourseID, GlobalUtils.getDateString(registeredDate), GlobalUtils.getDateString(finishRegisteredDate), courseID, userID
+        );
     }
+
 
     public void setRegisteredCourseID(String registeredCourseID) {
         this.registeredCourseID = registeredCourseID;

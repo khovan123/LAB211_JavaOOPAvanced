@@ -72,9 +72,12 @@ public class Course {
     }
 
     public String getInfo() {
-        return String.format("Course ID: %s, Course Name: %s, Adventor: %b, Generate Date: %s, Price: %.2f, Combo ID: %s, Coach ID: %s",
-                courseId, courseName, addventor, GlobalUtils.getDateString(generateDate), price, comboID, coachId);
+        return String.format(
+                "%s, %s, %b, %s, %.2f, %s, %s",
+                courseId, courseName, addventor, GlobalUtils.getDateString(generateDate), price, comboID, coachId
+        );
     }
+
 
     public void setCourseId(String courseId) throws InvalidDataException {
         if (!ObjectUtils.validCourseID(courseId)) {

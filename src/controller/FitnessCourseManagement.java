@@ -124,7 +124,7 @@ public class FitnessCourseManagement extends Menu<String> {
                         try {
                             courseService.display();
                         } catch (EmptyDataException e) {
-                            System.out.println(e.getMessage());
+                            System.err.println(e);
                         }
                     }
                     case 3 -> {
@@ -152,48 +152,56 @@ public class FitnessCourseManagement extends Menu<String> {
     private void addCourseFromConsole() {
         while (true) {
             try {
-                System.out.println("Please enter course data follow this format for add: Course ID, Course Name, Addventor (true/false), Generate Date (dd/MM/yyyy), Price, Combo ID, Coach ID, Workouts (format: WorkoutID, WorkoutName, Description, Repetition, Sets, Duration, Done, CourseSegmentID; separate multiple workouts with '|')");
-                String input = GlobalUtils.getValue("Enter course: ", "Cannot be left blank");
-                String data[] = input.split(",");
+                System.out.println("Please enter course data as follows:");
 
-                String courseId = data[0].trim();
-                String courseName = data[1].trim();
-                String addventor = data[2].trim();
-                String generateDate = data[3].trim();
-                String price = data[4].trim();
-                String comboID = data[5].trim();
-                String coachId = data[6].trim();
+                String courseId = GlobalUtils.getValue("Course ID: ", "Cannot be left blank");
+                String courseName = GlobalUtils.getValue("Course Name: ", "Cannot be left blank");
+                String addventor = GlobalUtils.getValue("Addventor (true/false): ", "Cannot be left blank");
+                String generateDate = GlobalUtils.getValue("Generate Date (dd/MM/yyyy): ", "Cannot be left blank");
+                String price = GlobalUtils.getValue("Price: ", "Cannot be left blank");
+                String comboID = GlobalUtils.getValue("Combo ID: ", "Cannot be left blank");
+                String coachId = GlobalUtils.getValue("Coach ID: ", "Cannot be left blank");
 
                 List<Workout> workouts = new ArrayList<>();
-                String[] workoutData = data[7].trim().split("\\|");
-                for (String workoutStr : workoutData) {
-                    String[] workoutInfo = workoutStr.split(",");
-                    String workoutId = workoutInfo[0].trim();
-                    String workoutName = workoutInfo[1].trim();
-                    String description = workoutInfo[2].trim();
-                    String repetition = workoutInfo[3].trim();
-                    String sets = workoutInfo[4].trim();
-                    String duration = (workoutInfo[5].trim());
-                    String done = workoutInfo[6].trim();
-                    String courseSegmentId = workoutInfo[7].trim();
+                System.out.println("Please enter workout data as follows:");
 
-                    Workout workout = new Workout(workoutId, workoutName, description, repetition, sets, duration, done, courseSegmentId);
+                while (true) {
+                    String input = GlobalUtils.getValue("Enter workout details (or 'done' to finish adding workouts): ", "Cannot be left blank");
+                    if (input.trim().equalsIgnoreCase("done")) {
+                        break;
+                    }
+                    Workout workout = getWorkoutDetails();
+                    workout.runValidate();
                     workouts.add(workout);
                 }
 
                 Course course = new Course(courseId, courseName, addventor, generateDate, price, comboID, coachId, workouts);
                 course.runValidate();
                 courseService.add(course);
-                System.out.println("Course added successfully");
+                System.out.println("Course added successfully.");
                 break;
-            } catch (InvalidDataException e) {
+
+            } catch (InvalidDataException | IllegalArgumentException e) {
                 System.err.println(e.getMessage());
-            } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            } catch (IndexOutOfBoundsException e) {
                 System.err.println("Invalid input format. Please check your data.");
             } catch (EventException e) {
                 System.err.println(e);
             }
         }
+    }
+
+    private Workout getWorkoutDetails() {
+        String workoutId = GlobalUtils.getValue("Workout ID: ", "Cannot be left blank");
+        String workoutName = GlobalUtils.getValue("Workout Name: ", "Cannot be left blank");
+        String description = GlobalUtils.getValue("Description: ", "Cannot be left blank");
+        String repetition = GlobalUtils.getValue("Repetition: ", "Cannot be left blank");
+        String sets = GlobalUtils.getValue("Sets: ", "Cannot be left blank");
+        String duration = GlobalUtils.getValue("Duration: ", "Cannot be left blank");
+        String done = GlobalUtils.getValue("Done (true/false): ", "Cannot be left blank");
+        String courseSegmentId = GlobalUtils.getValue("Course Segment ID: ", "Cannot be left blank");
+
+        return new Workout(workoutId, workoutName, description, repetition, sets, duration, done, courseSegmentId);
     }
 
     //before run UserMenu, request enter ID
@@ -326,7 +334,7 @@ public class FitnessCourseManagement extends Menu<String> {
                         courseComboService.updateOrDeleteCourseComboFromConsoleCustomize();
                     }
                     case 4 -> {
-
+                        createNewComboForCourseFromConsole();
                     }
                     case 5 -> {
                         exitMenu();
@@ -341,28 +349,45 @@ public class FitnessCourseManagement extends Menu<String> {
     private void createNewComboFromConsole() {
         while (true) {
             try {
-                System.out.println("Please enter combo data in this format: Combo ID, Combo Name, Sales (percentage between 0 and 1)");
-                String input = GlobalUtils.getValue("Enter combo: ", "Cannot be left blank");
-                String[] data = input.split(",");
+                System.out.println("Please enter combo data:");
 
-                if (data.length != 3) {
-                    throw new InvalidDataException("Combo data must include 3 fields: Combo ID, Combo Name, Sales.");
-                }
-
-                String comboId = data[0].trim();
-                String comboName = data[1].trim();
-                String sales = data[2].trim();
+                String comboId = GlobalUtils.getValue("Combo ID: ", "Cannot be left blank");
+                String comboName = GlobalUtils.getValue("Combo Name: ", "Cannot be left blank");
+                String sales = GlobalUtils.getValue("Sales (percentage between 0 and 1): ", "Cannot be left blank");
 
                 CourseCombo courseCombo = new CourseCombo(comboId, comboName, sales);
                 courseCombo.runValidate();
                 courseComboService.add(courseCombo);
                 System.out.println("Combo added successfully.");
-                break;
             } catch (InvalidDataException e) {
                 System.err.println(e.getMessage());
             } catch (Exception e) {
-                System.err.println("Invalid input format. Please check your data.");
+                System.err.println("An error occurred. Please check your data.");
             }
+        }
+    }
+
+    private void createNewComboForCourseFromConsole() {
+        try {
+            String courseId = GlobalUtils.getValue("Enter the Course ID to assign a new combo: ", "Course ID cannot be left blank");
+            Course course = courseService.findById(courseId);
+            if (course == null) {
+                System.err.println("Course not found with the given ID.");
+            }
+            String comboId = GlobalUtils.getValue("Enter Combo ID: ", "Combo ID cannot be left blank");
+            String comboName = GlobalUtils.getValue("Enter Combo Name: ", "Combo name cannot be left blank");
+            String sales = GlobalUtils.getValue("Enter Sales percentage (0 - 1): ", "Sales percentage cannot be left blank");
+
+            CourseCombo newCombo = new CourseCombo(comboId, comboName, sales);
+            newCombo.runValidate();
+            courseComboService.add(newCombo);
+            course.setComboID(comboId);
+            courseService.update(course);
+            System.out.println("New combo created and assigned to course successfully.");
+        } catch (InvalidDataException e) {
+            System.err.println("Data validation failed: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("An error occurred while creating a new combo for the course: " + e.getMessage());
         }
     }
 

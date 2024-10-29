@@ -6,14 +6,30 @@ import java.util.*;
 import exception.InvalidDataException;
 import model.CourseCombo;
 import repository.interfaces.ICourseComboRepository;
+import service.CourseComboService;
 
 public class CourseComboRepository implements ICourseComboRepository {
     public static final String ComboID_Column = "ComboID";
     public static final String ComboName_Column = "ComboName";
     public static final String Sales_Column = "Sales";
     private static final List<String> COURSECOMBOMODELCOLUMN = new ArrayList<>(Arrays.asList(ComboID_Column, ComboName_Column, Sales_Column));
-
     private final Connection conn = SQLServerConnection.getConnection();
+
+    public static void main(String[] args) {
+        CourseComboRepository courseComboRepository = new CourseComboRepository();
+        try {
+            Map<String, Object> updatedEntries = new HashMap<>();
+            updatedEntries.put(CourseComboRepository.ComboName_Column, "CBUM Advancedpack");
+            updatedEntries.put(CourseComboRepository.Sales_Column, 0.25);
+            courseComboRepository.updateToDB("CB001", updatedEntries);
+            System.out.println("Update successful!");
+            String courseComboDetails = courseComboRepository.getOne("CB001");
+            System.out.println("Updated Course Combo Details: " + courseComboDetails);
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+    }
+
 
     @Override
     public List<CourseCombo> readData() throws SQLException {
@@ -97,6 +113,30 @@ public class CourseComboRepository implements ICourseComboRepository {
             throw new SQLException(e);
         }
         return list;
+    }
+
+    public String getOne(String comboID) throws SQLException {
+        String query = "SELECT ComboID, ComboName, Sales FROM CourseComboModel WHERE ComboID = ?";
+        StringBuilder result = new StringBuilder();
+
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, comboID);
+            try (ResultSet rs = ps.executeQuery()) {
+                ResultSetMetaData metaData = rs.getMetaData();
+                int columnCount = metaData.getColumnCount();
+
+                if (rs.next()) {
+                    for (int i = 1; i <= columnCount; i++) {
+                        result.append(rs.getString(i)).append(i < columnCount ? ", " : "");
+                    }
+                } else {
+                    throw new SQLException("No CourseCombo found with ID: " + comboID);
+                }
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Failed to retrieve CourseCombo: " + e.getMessage());
+        }
+        return result.toString();
     }
 
     @Override

@@ -31,7 +31,7 @@ public class CourseCombo {
     }
 
     public String getInfo() {
-        return String.format("Combo ID: %s, Combo Name: %s, Sales: %.2f", comboId, comboName, sales);
+        return String.format("%s, %s, %.2f", comboId, comboName, sales);
     }
 
     public void setComboId(String comboId) {

@@ -4,9 +4,7 @@ import exception.EmptyDataException;
 import exception.EventException;
 import exception.InvalidDataException;
 import exception.NotFoundException;
-import model.Course;
 import model.RegisteredCourse;
-import repository.CourseRepository;
 import repository.RegistedCourseRepository;
 import service.interfaces.IRegistedCourseService;
 import utils.FieldUtils;
@@ -34,15 +32,16 @@ public class RegistedCourseService implements IRegistedCourseService {
         try {
             registeredCourseList.addAll(registedCourseRepository.readData());
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            // Handle exception if necessary
         }
     }
 
     @Override
     public void display() throws EmptyDataException {
         if (registeredCourseList.isEmpty()) {
-            throw new EmptyDataException("-> No Registed Course Found");
+            throw new EmptyDataException("-> No Registered Course Found");
         }
+        System.out.println("registeredCourseID\tRegistedDate\tFinishRegistedDate\tCourseID\tUserID");
         for (RegisteredCourse registeredCourse : registeredCourseList) {
             registeredCourse.getInfo();
         }
@@ -51,33 +50,32 @@ public class RegistedCourseService implements IRegistedCourseService {
     @Override
     public void add(RegisteredCourse registeredCourse) throws EventException, InvalidDataException {
         if (existID(registeredCourse)) {
-            throw new EventException("-> Registed Course With ID - " + registeredCourse.getRegisteredCourseID() + " - Already Exist");
+            throw new EventException("-> Registered Course With ID - " + registeredCourse.getRegisteredCourseID() + " - Already Exist");
         }
         try {
             registedCourseRepository.insertToDB(registeredCourse);
         } catch (Exception e) {
-            throw new EventException("-> Error While Adding Registed Course - " + e.getMessage());
+            throw new EventException("-> Error While Adding Registered Course");
         }
     }
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
         if (findById(id) == null) {
-            throw new NotFoundException("-> Registed Course with ID - " + id + " - Not Found.");
+            throw new NotFoundException("-> Registered Course with ID - " + id + " - Not Found.");
         }
         try {
             registedCourseRepository.deleteToDB(id);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("-> Error While Deleting Registered Course");
         }
-
     }
 
     @Override
     public void update(RegisteredCourse registeredCourse) throws EventException, NotFoundException {
         RegisteredCourse existRegisteredCourse = findById(registeredCourse.getRegisteredCourseID());
         if (existRegisteredCourse == null) {
-            throw new NotFoundException("-> Registed Course with ID - " + registeredCourse.getRegisteredCourseID() + " - Not Found.");
+            throw new NotFoundException("-> Registered Course with ID - " + registeredCourse.getRegisteredCourseID() + " - Not Found.");
         }
         try {
             existRegisteredCourse.setRegisteredDate(String.valueOf(registeredCourse.getRegisteredDate()));
@@ -85,7 +83,7 @@ public class RegistedCourseService implements IRegistedCourseService {
             existRegisteredCourse.setCourseID(registeredCourse.getCourseID());
             existRegisteredCourse.setUserID(registeredCourse.getUserID());
         } catch (Exception e) {
-            throw new EventException("-> Error While Updating Registed Course With ID - " + registeredCourse.getRegisteredCourseID() + " - " + e.getMessage());
+            throw new EventException("-> Error While Updating Registered Course With ID - " + registeredCourse.getRegisteredCourseID());
         }
     }
 
@@ -113,7 +111,7 @@ public class RegistedCourseService implements IRegistedCourseService {
                 updatedMap.put(fieldName, entry.get(fieldName));
                 registedCourseRepository.updateToDB(id, updatedMap);
             } catch (IllegalAccessException | IllegalArgumentException | SQLException e) {
-                throw new EventException(e);
+                throw new EventException("-> Error While Updating Registered Course");
             }
         }
     }
@@ -155,7 +153,7 @@ public class RegistedCourseService implements IRegistedCourseService {
                                 System.out.println("Update successfully");
                                 break;
                             } catch (Exception ex) {
-                                System.out.println(ex.getMessage());
+                                System.out.println("An error occurred.");
                             }
                         }
                     }
@@ -173,7 +171,7 @@ public class RegistedCourseService implements IRegistedCourseService {
                 return registeredCourse;
             }
         }
-        throw new NotFoundException("-> Registed Course not found matching the given criteria.");
+        throw new NotFoundException("-> Registered Course not found matching the given criteria.");
     }
 
     @Override
