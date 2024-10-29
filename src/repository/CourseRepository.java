@@ -24,7 +24,7 @@ public class CourseRepository implements ICourseRepository {
 
     public static void main(String[] args) {
         CourseRepository courseRepository = new CourseRepository();
-        String courseId = "CS002"; // ID của khóa học cần cập nhật
+        String courseId = "CS002";
         Map<String, Object> updatedEntries = new HashMap<>();
 
         updatedEntries.put(CourseRepository.CourseName_Column, "Strength and Conditioning Updated");
