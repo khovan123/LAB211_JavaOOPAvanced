@@ -1,14 +1,11 @@
 package repository;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import model.Coach;
-import repository.interfaces.ICoachRepository;
+import repository.interfaces.ISampleCoachRepository;
 
-public class SampleCoachRepository implements ICoachRepository {
+public class SampleCoachRepository implements ISampleCoachRepository {
 
     public static final String PersonID_Column = "PersonID";
     public static final String FullName_Column = "FullName";
@@ -27,24 +24,28 @@ public class SampleCoachRepository implements ICoachRepository {
     }
 
     @Override
-    public void insert(Coach entry) throws SQLException {
+    public void insertToDB(Coach entry) throws SQLException {
+//        Map a;
+//        a.put(PersonID_Column, entry.getCoachId());
+//        insertOne(a);
         //convert entry match with parameters of method insertOne();
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void update(Coach entry) throws SQLException {
+    public void updateToDB(String id, Map<String, Object> entry) throws SQLException {
         //convert entry match with parameters of method updateOne();
         //just update what change if posible (you can do or not)
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void delete(Coach entry) throws SQLException {
+    public void deleteToDB(String ID) throws SQLException {
         //convert entry match with parameters of method deletetOne();
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    @Override
     public List<String> getMany() throws SQLException {
         List<String> list = new ArrayList<>();
         try {
@@ -66,6 +67,7 @@ public class SampleCoachRepository implements ICoachRepository {
         }
     }
 
+    @Override
     public void insertOne(Map<String, String> entries) throws SQLException {
         String personQuery = "INSERT INTO PersonModel(X) VALUES(Y)";
         String coachQuery = "INSERT INTO CoachModel(X) VALUES(Y)";
@@ -107,6 +109,7 @@ public class SampleCoachRepository implements ICoachRepository {
         }
     }
 
+    @Override
     public void updateOne(String ID, Map<String, String> entries) throws SQLException {
         String coachQuery = "UPDATE CoachModel SET X WHERE PersonID = ?";
         String personQuery = "UPDATE PersonModel SET X WHERE PersonID = ?";
@@ -153,6 +156,7 @@ public class SampleCoachRepository implements ICoachRepository {
         }
     }
 
+    @Override
     public void deleteOne(String ID) throws SQLException {
         String personQuery = "UPDATE PersonModel SET Active = 0 WHERE PersonID = ?";
         try {
