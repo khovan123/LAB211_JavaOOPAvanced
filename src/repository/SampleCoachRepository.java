@@ -1,15 +1,11 @@
 package repository;
 
-import exception.IOException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import model.Coach;
-import repository.interfaces.ICoachRepository;
+import repository.interfaces.ISampleCoachRepository;
 
-public class SampleCoachRepository implements ICoachRepository {
+public class SampleCoachRepository implements ISampleCoachRepository {
 
     public static final String PersonID_Column = "PersonID";
     public static final String FullName_Column = "FullName";
@@ -17,21 +13,40 @@ public class SampleCoachRepository implements ICoachRepository {
     public static final String Phone_Column = "Phone";
     public static final boolean Active_Column = true;
     public static final String Certificate_Column = "Certificate";
-    private static final List<String> PERSONMODELCOLUMN = new ArrayList<>(Arrays.asList(PersonID_Column, FullName_Column, DoB_Column, Phone_Column,Boolean.toString(Active_Column)));
+    private static final List<String> PERSONMODELCOLUMN = new ArrayList<>(Arrays.asList(PersonID_Column, FullName_Column, DoB_Column, Phone_Column, Boolean.toString(Active_Column)));
     private static final List<String> COACHMODELCOLUMN = new ArrayList<>(Arrays.asList(PersonID_Column, Certificate_Column));
     private Connection conn = SQLServerConnection.getConnection();
-    
+
     @Override
-    public List<Coach> readFile() throws IOException {
+    public List<Coach> readData() {
+        //use getMany()
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void writeFile(List<Coach> entry) throws IOException {
+    public void insertToDB(Coach entry) throws SQLException {
+//        Map a;
+//        a.put(PersonID_Column, entry.getCoachId());
+//        insertOne(a);
+        //convert entry match with parameters of method insertOne();
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public List<String> getData() throws SQLException {
+    @Override
+    public void updateToDB(String id, Map<String, Object> entry) throws SQLException {
+        //convert entry match with parameters of method updateOne();
+        //just update what change if posible (you can do or not)
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void deleteToDB(String ID) throws SQLException {
+        //convert entry match with parameters of method deletetOne();
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<String> getMany() throws SQLException {
         List<String> list = new ArrayList<>();
         try {
             StringBuilder row = new StringBuilder();
@@ -52,7 +67,8 @@ public class SampleCoachRepository implements ICoachRepository {
         }
     }
 
-    public void insert(Map<String, String> entries) throws SQLException {
+    @Override
+    public void insertOne(Map<String, String> entries) throws SQLException {
         String personQuery = "INSERT INTO PersonModel(X) VALUES(Y)";
         String coachQuery = "INSERT INTO CoachModel(X) VALUES(Y)";
         StringBuilder personModelColumn = new StringBuilder();
@@ -93,7 +109,8 @@ public class SampleCoachRepository implements ICoachRepository {
         }
     }
 
-    public void update(String ID, Map<String, String> entries) throws SQLException {
+    @Override
+    public void updateOne(String ID, Map<String, String> entries) throws SQLException {
         String coachQuery = "UPDATE CoachModel SET X WHERE PersonID = ?";
         String personQuery = "UPDATE PersonModel SET X WHERE PersonID = ?";
         StringBuilder coachModelColumn = new StringBuilder();
@@ -139,7 +156,8 @@ public class SampleCoachRepository implements ICoachRepository {
         }
     }
 
-    public void delete(String ID) throws SQLException {
+    @Override
+    public void deleteOne(String ID) throws SQLException {
         String personQuery = "UPDATE PersonModel SET Active = 0 WHERE PersonID = ?";
         try {
             PreparedStatement personPS = conn.prepareStatement(personQuery);
