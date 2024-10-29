@@ -4,7 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="" />
+=======
+    <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/FitnessCourseManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/FitnessCourseManagement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Nutrition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Nutrition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/PracticalDay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/PracticalDay.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Workout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Workout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/PracticalDayService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/PracticalDayService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/WorkoutService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/WorkoutService.java" afterDir="false" />
+    </list>
+>>>>>>> 5e753a6c8cdc761536c8152efa7f984d1242fca9
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,6 +34,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -33,7 +47,41 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.appearance&quot;
   }
 }</component>
+=======
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "khang",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "E:/FPT/Semester_III/LAB211/ResortManagement",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "terminal"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="ShConfigurationType">
+      <option name="SCRIPT_TEXT" value="" />
+      <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+      <option name="SCRIPT_PATH" value="" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+      <option name="INTERPRETER_PATH" value="powershell.exe" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="EXECUTE_IN_TERMINAL" value="true" />
+      <option name="EXECUTE_SCRIPT_FILE" value="true" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+>>>>>>> 5e753a6c8cdc761536c8152efa7f984d1242fca9
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\LENOVO\AppData\Roaming\Subversion</configuration>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="" />
