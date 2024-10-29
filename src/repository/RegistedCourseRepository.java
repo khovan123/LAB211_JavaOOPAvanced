@@ -21,20 +21,14 @@ public class RegistedCourseRepository implements IRegistedCourseRepository {
 
     private final Connection conn = SQLServerConnection.getConnection();
 
-    @Override
-    public List<RegisteredCourse> readData() {
-        List<String> rawData;
-        try {
-            rawData = getMany();
-        } catch (SQLException e) {
-            throw new RuntimeException("Data fetch error", e);
-        }
 
+    @Override
+    public List<RegisteredCourse> readData() throws SQLException {
         List<RegisteredCourse> processData = new ArrayList<>();
-        for (String row : rawData) {
-            String[] col = row.split(", ");
-            if (col.length == 5) {
-                try {
+        try {
+            for (String row : getMany()) {
+                String[] col = row.split(", ");
+                if (col.length == 5) {
                     RegisteredCourse registeredCourse = new RegisteredCourse(
                             col[0].trim(),
                             col[1].trim(),
@@ -42,12 +36,13 @@ public class RegistedCourseRepository implements IRegistedCourseRepository {
                             col[3].trim(),
                             col[4].trim()
                     );
+
                     registeredCourse.runValidate();
                     processData.add(registeredCourse);
-                } catch (InvalidDataException e) {
-                    throw new RuntimeException("Data validation failed", e);
                 }
             }
+        } catch (SQLException | InvalidDataException e) {
+            throw new SQLException("Data retrieval error", e);
         }
         return processData;
     }
@@ -83,7 +78,7 @@ public class RegistedCourseRepository implements IRegistedCourseRepository {
     public List<String> getMany() throws SQLException {
         List<String> list = new ArrayList<>();
         try (Statement statement = conn.createStatement()) {
-            ResultSet rs = statement.executeQuery("SELECT RegisteredCourseID, RegisteredDate, FinishRegisteredDate, CourseID, UserID FROM RegisteredCourseModel");
+            ResultSet rs = statement.executeQuery("SELECT RegistedCourseID, RegistedDate, FinishRegistedDate, CourseID, UserID FROM RegistedCourseModel");
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
             while (rs.next()) {

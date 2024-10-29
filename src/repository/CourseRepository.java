@@ -23,35 +23,29 @@ public class CourseRepository implements ICourseRepository {
     private final Connection conn = SQLServerConnection.getConnection();
 
     @Override
-    public List<Course> readData() {
-        List<String> rawData = null;
-        try {
-            rawData = getMany();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public List<Course> readData() throws SQLException {
         List<Course> processData = new ArrayList<>();
-        for (String row : rawData) {
-            String[] col = row.split(", ");
-            if (col.length == 15) {
-                List<Workout> workoutList = new ArrayList<>();
-                try {
-                    Workout workout = new Workout(
-                            col[8].trim(),
-                            col[9].trim(),
-                            col[10].trim(),
-                            col[11].trim(),
-                            col[12].trim(),
-                            col[13].trim(),
-                            col[14].trim(),
-                            col[0].trim()
-                    );
-                    workout.runValidate();
-                    workoutList.add(workout);
-                } catch (InvalidDataException e) {
-                    throw new RuntimeException(e);
-                }
-                try {
+        try {
+            for (String row : getMany()) {
+                String[] col = row.split(", ");
+                if (col.length == 15) {
+                    List<Workout> workoutList = new ArrayList<>();
+                    try {
+                        Workout workout = new Workout(
+                                col[8].trim(),
+                                col[9].trim(),
+                                col[10].trim(),
+                                col[11].trim(),
+                                col[12].trim(),
+                                col[13].trim(),
+                                col[14].trim(),
+                                col[0].trim()
+                        );
+                        workout.runValidate();
+                        workoutList.add(workout);
+                    } catch (InvalidDataException e) {
+                        System.err.println("Workout data validation failed: " + e.getMessage());
+                    }
                     Course course = new Course(
                             col[0].trim(),
                             col[1].trim(),
@@ -64,13 +58,14 @@ public class CourseRepository implements ICourseRepository {
                     );
                     course.runValidate();
                     processData.add(course);
-                } catch (InvalidDataException e) {
-                    throw new RuntimeException(e);
                 }
             }
+        } catch (SQLException | InvalidDataException e) {
+            throw new SQLException("Data retrieval error", e);
         }
         return processData;
     }
+
 
     @Override
     public void insertToDB(Course entry) throws SQLException {

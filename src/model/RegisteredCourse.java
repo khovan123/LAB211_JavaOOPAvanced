@@ -24,6 +24,7 @@ public class RegisteredCourse {
         this.setFinishRegisteredDate(finishRegisteredDate);
         this.courseID = courseID;
         this.userID = userID;
+        this.runValidate();
     }
 
     public String getRegisteredCourseID() {

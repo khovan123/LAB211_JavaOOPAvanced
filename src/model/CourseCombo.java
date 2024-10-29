@@ -15,6 +15,7 @@ public class CourseCombo {
         this.comboId = comboId;
         this.comboName = comboName;
         this.setSales(sales);
+        this.runValidate();
     }
 
     public String getComboId() {

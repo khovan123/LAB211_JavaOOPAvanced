@@ -2,6 +2,7 @@ package controller;
 
 import exception.*;
 import model.Course;
+import model.CourseCombo;
 import model.Workout;
 import repository.*;
 import service.*;
@@ -20,10 +21,10 @@ public class FitnessCourseManagement extends Menu<String> {
 
     static String title = "FITNESS COURSE\nHOME";
     static String[] menuOptions = {
-        "Admin",
-        "Coach",
-        "User",
-        "Exit"
+            "Admin",
+            "Coach",
+            "User",
+            "Exit"
     };
 
     public FitnessCourseManagement() {
@@ -73,10 +74,10 @@ public class FitnessCourseManagement extends Menu<String> {
 
     public void runAdminMenu() {
         String[] adminMenuOptions = {
-            "User Management",
-            "Coach Management",
-            "Course Combo Management",
-            "Return home"
+                "User Management",
+                "Coach Management",
+                "Course Combo Management",
+                "Return home"
         };
         Menu<String> adminMenu = new Menu("HOME >> ADMIN", adminMenuOptions) {
             @Override
@@ -104,13 +105,13 @@ public class FitnessCourseManagement extends Menu<String> {
     //before run CoachMenu, request enter ID
     public void runCoachMenu() {
         String[] coachMenuOptions = {
-            "Personal information",
-            "Show all courses",
-            "Show all member in courses",
-            "Create new course",
-            "Update personal infromation",
-            "Update course",
-            "Return home"
+                "Personal information",
+                "Show all courses",
+                "Show all member in courses",
+                "Create new course",
+                "Update personal infromation",
+                "Update course",
+                "Return home"
         };
         Menu<String> coachMenu = new Menu("HOME >> COACH", coachMenuOptions) {
             @Override
@@ -130,12 +131,13 @@ public class FitnessCourseManagement extends Menu<String> {
 
                     }
                     case 4 -> {
+                        addCourseFromConsole();
                     }
                     case 5 -> {
 
                     }
                     case 6 -> {
-
+                        courseService.updateOrDeleteCourseFromConsoleCustomize();
                     }
                     case 7 -> {
                         exitMenu();
@@ -147,7 +149,7 @@ public class FitnessCourseManagement extends Menu<String> {
         continueExecution = true;
     }
 
-    public void addCourseFromConsole() {
+    private void addCourseFromConsole() {
         while (true) {
             try {
                 System.out.println("Please enter course data follow this format for add: Course ID, Course Name, Addventor (true/false), Generate Date (dd/MM/yyyy), Price, Combo ID, Coach ID, Workouts (format: WorkoutID, WorkoutName, Description, Repetition, Sets, Duration, Done, CourseSegmentID; separate multiple workouts with '|')");
@@ -162,12 +164,29 @@ public class FitnessCourseManagement extends Menu<String> {
                 String comboID = data[5].trim();
                 String coachId = data[6].trim();
 
-                Course course = new Course(courseId, courseName, addventor, GlobalUtils.getDateString(generateDate), price, comboID, coachId, workouts);
+                List<Workout> workouts = new ArrayList<>();
+                String[] workoutData = data[7].trim().split("\\|");
+                for (String workoutStr : workoutData) {
+                    String[] workoutInfo = workoutStr.split(",");
+                    String workoutId = workoutInfo[0].trim();
+                    String workoutName = workoutInfo[1].trim();
+                    String description = workoutInfo[2].trim();
+                    String repetition = workoutInfo[3].trim();
+                    String sets = workoutInfo[4].trim();
+                    String duration = (workoutInfo[5].trim());
+                    String done = workoutInfo[6].trim();
+                    String courseSegmentId = workoutInfo[7].trim();
+
+                    Workout workout = new Workout(workoutId, workoutName, description, repetition, sets, duration, done, courseSegmentId);
+                    workouts.add(workout);
+                }
+
+                Course course = new Course(courseId, courseName, addventor, generateDate, price, comboID, coachId, workouts);
                 course.runValidate();
                 courseService.add(course);
                 System.out.println("Course added successfully");
                 break;
-            } catch (InvalidDataException | ParseException e) {
+            } catch (InvalidDataException e) {
                 System.err.println(e.getMessage());
             } catch (IndexOutOfBoundsException | NumberFormatException e) {
                 System.err.println("Invalid input format. Please check your data.");
@@ -177,18 +196,16 @@ public class FitnessCourseManagement extends Menu<String> {
         }
     }
 
-
-
     //before run UserMenu, request enter ID
     public void runUserMenu() {
         String[] userMenuOptions = {
-            "Personal information",
-            "Show all courses which joined",
-            "Show all progresses",
-            "Register course",
-            "Update personal information",
-            "Update schedule",
-            "Return home"
+                "Personal information",
+                "Show all courses which joined",
+                "Show all progresses",
+                "Register course",
+                "Update personal information",
+                "Update schedule",
+                "Return home"
         };
         Menu<String> userMenu = new Menu("HOME >> USER", userMenuOptions) {
             @Override
@@ -222,13 +239,13 @@ public class FitnessCourseManagement extends Menu<String> {
     }
 //----------------------------------------------------------end main menu--------------------------------------------------------
 
-//----------------------------------------------------------start admin menu-----------------------------------------------------
+    //----------------------------------------------------------start admin menu-----------------------------------------------------
     public void runUserManagementMenu() {
         String admin_UserOptions[] = {
-            "Show all users",
-            "Create new user",
-            "Update user",
-            "Return admin menu"
+                "Show all users",
+                "Create new user",
+                "Update user",
+                "Return admin menu"
         };
         Menu<String> admin_UserMenu = new Menu("HOME >> ADMIN >> USER", admin_UserOptions) {
             @Override
@@ -255,10 +272,10 @@ public class FitnessCourseManagement extends Menu<String> {
 
     public void runCoachManagementMenu() {
         String admin_CoachMenuOptions[] = {
-            "Display all coach",
-            "Create new coach",
-            "Update coach",
-            "Return admin menu"
+                "Display all coach",
+                "Create new coach",
+                "Update coach",
+                "Return admin menu"
         };
         Menu<String> admin_CoachMenu = new Menu("HOME >> ADMIN >> COACH", admin_CoachMenuOptions) {
             @Override
@@ -285,26 +302,31 @@ public class FitnessCourseManagement extends Menu<String> {
 
     public void runCourseComboManagementMenu() {
         String courseComboMenuOptions[] = {
-            "Show all combo",
-            "Create new combo",
-            "Update combo",
-            "Update combo for course",
-            "Return admin menu"
+                "Show all combo",
+                "Create new combo",
+                "Update combo",
+                "Update combo for course",
+                "Return admin menu"
         };
         Menu<String> courseComboMenu = new Menu("HOME >> ADMIN >> COURSE COMBO", courseComboMenuOptions) {
             @Override
             public void execute(int selection) {
                 switch (selection) {
                     case 1 -> {
-
+                        try {
+                            courseComboService.display();
+                        } catch (EmptyDataException e) {
+                            System.err.println(e);
+                        }
                     }
                     case 2 -> {
-
+                        createNewComboFromConsole();
                     }
                     case 3 -> {
-
+                        courseComboService.updateOrDeleteCourseComboFromConsoleCustomize();
                     }
                     case 4 -> {
+
                     }
                     case 5 -> {
                         exitMenu();
@@ -316,7 +338,35 @@ public class FitnessCourseManagement extends Menu<String> {
         continueExecution = true;
     }
 
-//----------------------------------------------------------end admin menu-----------------------------------------------------
+    private void createNewComboFromConsole() {
+        while (true) {
+            try {
+                System.out.println("Please enter combo data in this format: Combo ID, Combo Name, Sales (percentage between 0 and 1)");
+                String input = GlobalUtils.getValue("Enter combo: ", "Cannot be left blank");
+                String[] data = input.split(",");
+
+                if (data.length != 3) {
+                    throw new InvalidDataException("Combo data must include 3 fields: Combo ID, Combo Name, Sales.");
+                }
+
+                String comboId = data[0].trim();
+                String comboName = data[1].trim();
+                String sales = data[2].trim();
+
+                CourseCombo courseCombo = new CourseCombo(comboId, comboName, sales);
+                courseCombo.runValidate();
+                courseComboService.add(courseCombo);
+                System.out.println("Combo added successfully.");
+                break;
+            } catch (InvalidDataException e) {
+                System.err.println(e.getMessage());
+            } catch (Exception e) {
+                System.err.println("Invalid input format. Please check your data.");
+            }
+        }
+    }
+
+    //----------------------------------------------------------end admin menu-----------------------------------------------------
 //----------------------------------------------------------start coach menu---------------------------------------------------
 //----------------------------------------------------------end coach menu-----------------------------------------------------
 //----------------------------------------------------------start user menu----------------------------------------------------

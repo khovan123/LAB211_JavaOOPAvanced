@@ -44,8 +44,12 @@ public class CourseService implements ICourseService {
         }
     }
 
-    public void readFromDatabase() {
-        courseList.addAll(courseRepository.readData());
+    public void readFromDatabase()  {
+        try {
+            courseList.addAll(courseRepository.readData());
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @Override

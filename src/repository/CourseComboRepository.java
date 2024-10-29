@@ -15,41 +15,29 @@ public class CourseComboRepository implements ICourseComboRepository {
 
     private final Connection conn = SQLServerConnection.getConnection();
 
-    public static void main(String[] args) {
-        CourseComboRepository courseComboRepository = new CourseComboRepository();
-        try {
-            for (String row : courseComboRepository.getMany()){
-                System.out.println(row);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Override
-    public List<CourseCombo> readData() {
-        List<String> rawData = null;
-        try {
-            rawData = getMany();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public List<CourseCombo> readData() throws SQLException {
         List<CourseCombo> processData = new ArrayList<>();
-        for (String row : rawData) {
-            String[] col = row.split(", ");
-            if (col.length == 3) {
-                try {
-                    CourseCombo courseCombo = new CourseCombo(
-                            col[0].trim(),
-                            col[1].trim(),
-                            col[2].trim()
-                    );
-                    courseCombo.runValidate();
-                    processData.add(courseCombo);
-                } catch (InvalidDataException e) {
-                    throw new RuntimeException(e);
+        try {
+            for (String row : getMany()) {
+                String[] col = row.split(", ");
+                if (col.length == 3) {
+                    CourseCombo courseCombo = null;
+                    try {
+                        courseCombo = new CourseCombo(
+                                col[0].trim(),
+                                col[1].trim(),
+                                col[2].trim()
+                        );
+                        courseCombo.runValidate();
+                        processData.add(courseCombo);
+                    } catch (Exception e) {
+//                        throw new RuntimeException(e);
+                    }
                 }
             }
+        } catch (SQLException e) {
+            throw new SQLException(e);
         }
         return processData;
     }
@@ -94,7 +82,7 @@ public class CourseComboRepository implements ICourseComboRepository {
         try {
             StringBuilder row = new StringBuilder();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT cb.ComboId, cb.ComboName, cb.Sale FROM CourseComboModel cb");
+            ResultSet rs = stmt.executeQuery("SELECT cb.ComboId, cb.ComboName, cb.Sales FROM CourseComboModel cb");
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
 

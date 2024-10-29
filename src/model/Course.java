@@ -32,6 +32,7 @@ public class Course {
         this.setComboID(comboID);
         this.setCoachId(coachId);
         this.setWorkoutService(workouts);
+        this.runValidate();
     }
 
     public String getCourseId() {

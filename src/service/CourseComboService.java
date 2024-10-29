@@ -116,7 +116,7 @@ public class CourseComboService implements ICourseComboService {
         }
     }
 
-    public void updateOrDeleteCourseComboFromConsoleCustomize(Object obj) {
+    public void updateOrDeleteCourseComboFromConsoleCustomize() {
         if (courseComboList.isEmpty()) {
             System.out.println("Please create new course combo ^^");
             return;
