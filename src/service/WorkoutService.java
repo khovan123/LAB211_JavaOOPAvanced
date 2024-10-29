@@ -70,14 +70,13 @@ public class WorkoutService implements IWorkoutService {
     public void add(Workout workout) throws EventException {
         try {
             if (!existID(workout)) {
-
                 workoutList.add(workout);
                 workoutRepository.insertToDB(workout);
             } else {
-                throw new EventException(workout.getWorkoutId() + " already exist.");
+                throw new EventException("Workout with id: " + workout.getWorkoutId() + " already exist.");
             }
-        } catch (Exception e) {
-            throw new EventException("Failed to add Workout");
+        } catch (SQLException e) {
+            throw new EventException(e);
         }
     }
 

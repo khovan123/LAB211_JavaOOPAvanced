@@ -69,10 +69,10 @@ public class PracticalDayService implements IPracticalDayService {
                 practicalDayTreeSet.add(practiceDay);
                 practicalDayRepository.insertToDB(practiceDay);
             } else {
-                throw new EventException(practiceDay.getPracticalDayId() + " already exist.");
+                throw new EventException("PracticalDay with id: " + practiceDay.getPracticalDayId() + " already exist.");
             }
-        } catch (Exception e) {
-            throw new EventException("Failed to add Practical Day");
+        } catch (SQLException e) {
+            throw new EventException(e);
         }
     }
 
