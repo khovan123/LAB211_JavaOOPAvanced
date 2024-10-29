@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 public class GlobalUtils {
 
     static Scanner sc = new Scanner(System.in);
-    static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public static String getValue(String label, String messageError) {
         try {
