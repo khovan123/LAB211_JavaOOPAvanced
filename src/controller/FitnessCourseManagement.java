@@ -346,7 +346,7 @@ public class FitnessCourseManagement extends Menu<String> {
             try {
                 String id = GlobalUtils.getValue("Enter id for update: ", "Cannot leave blank");
                 PracticalDay practicalDay;
-                if (!ObjectUtils.validID(id)) {
+                if (!ObjectUtils.validCodePracticalDay(id)) {
                     System.out.println("Id must be in correct form.");
                 } else if ((practicalDay = practicalDayService.findById(id)) != null) {
                     System.out.println(practicalDay.getInfo());
@@ -395,7 +395,7 @@ public class FitnessCourseManagement extends Menu<String> {
             try {
                 String id = GlobalUtils.getValue("Enter id for update: ", "Cannot leave blank");
                 Workout workout;
-                if (!ObjectUtils.validID(id)) {
+                if (!ObjectUtils.validCodeWorkout(id)) {
                     System.out.println("Id must be in correct form.");
                 } else if ((workout = workoutService.findById(id)) != null) {
                     System.out.println(workout.getInfo());
