@@ -1,9 +1,6 @@
 package repository;
 
-import com.sun.jdi.connect.spi.Connection;
 import exception.IOException;
-
-import java.beans.Statement;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,23 +11,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
-
 import model.Schedule;
 import model.UserProgress;
 import repository.interfaces.IUserProgressRepository;
 import service.PracticalDayService;
 import service.ScheduleService;
-
 import java.sql.ResultSet;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class UserProgressRepository implements IUserProgressRepository {
 
     public static final String UserProgressID_Column = "UserProgressID";
     public static final String RegistedCourseID_Column = "RegistedCourseID";
-    private static final String path = "path_to_user_progress_file.txt";
     private static final List<String> USERPROGRESS_COLUMNS = new ArrayList<>(Arrays.asList(UserProgressID_Column, RegistedCourseID_Column));
-    private Connection conn = (Connection) SQLServerConnection.getConnection();
+    private Connection conn = SQLServerConnection.getConnection();
 
     //generate with id: CP-YYYY in scheduleRepository
     static {
@@ -40,18 +36,16 @@ public class UserProgressRepository implements IUserProgressRepository {
     @Override
     public List<UserProgress> readFile() throws IOException {
         List<UserProgress> userProgresses = new ArrayList<>();
-        File file = new File(path);
-        if (!file.exists()) {
-            throw new IOException("File not found at " + path);
-        }
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String line;
+            List<String> databaseData = getData();
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
                 if (data.length == 2) {
                     String userProgressID = data[0].trim();
-                    String registedCourseID = data[1].trim();
-                    UserProgress userProgress = new UserProgress(userProgressID, registedCourseID);
+                    String registeredCourseID = data[1].trim();
+
+                    UserProgress userProgress = new UserProgress(userProgressID, registeredCourseID);
                     userProgress.runValidate();
                     userProgresses.add(userProgress);
                 }
