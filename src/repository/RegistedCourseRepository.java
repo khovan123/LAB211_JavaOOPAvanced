@@ -1,6 +1,7 @@
 package repository;
 
 import exception.IOException;
+import exception.InvalidDataException;
 import model.RegisteredCourse;
 import repository.interfaces.IRegistedCourseRepository;
 
@@ -8,10 +9,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RegistedCourseRepository implements IRegistedCourseRepository {
     public static final String RegistedCourseID_Column = "RegistedCourseID";
@@ -24,38 +22,72 @@ public class RegistedCourseRepository implements IRegistedCourseRepository {
 
     @Override
     public List<RegisteredCourse> readFile() throws IOException {
-        List<RegisteredCourse> registeredCourses = new ArrayList<>();
-        File file = new File(path);
-        if (!file.exists()) {
-            throw new IOException("-> File not found at Path: " + path);
-        }
-        try (BufferedReader bf = new BufferedReader(new FileReader(path))) {
-            String line;
-            while ((line = bf.readLine()) != null) {
-                String[] data = line.split(",");
-                try {
-                    RegisteredCourse registeredCourse = new RegisteredCourse(
-                            data[0].trim(),
-                            data[1].trim(),
-                            data[2].trim(),
-                            data[3].trim(),
-                            data[4].trim()
-                    );
-                    registeredCourse.runValidate();
-                    registeredCourses.add(registeredCourse);
-                } catch (Exception e) {
-                    throw new IOException("-> Error While Adding Registered Course - " + e.getMessage());
-                }
-            }
-        } catch (Exception e) {
-            throw new IOException("-> Error While Reading File - " + e.getMessage());
-        }
-        return registeredCourses;
+        return new ArrayList<>();
     }
 
     @Override
     public void writeFile(List<RegisteredCourse> entry) throws IOException {
 
+    }
+
+    public List<RegisteredCourse> getProcessData() throws SQLException {
+        List<String> rawData = getData();
+        List<RegisteredCourse> processData = new ArrayList<>();
+        for (String row : rawData) {
+            String[] col = row.split(", ");
+            if (col.length == 4) {
+                try {
+                    RegisteredCourse registeredCourse = new RegisteredCourse(
+                            col[0].trim(),
+                            col[1].trim(),
+                            col[2].trim(),
+                            col[3].trim(),
+                            col[4].trim()
+                    );
+                    registeredCourse.runValidate();
+                    processData.add(registeredCourse);
+                } catch (InvalidDataException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        }
+        return processData;
+    }
+
+    public void insertRegistedCourse(RegisteredCourse registeredCourse) throws SQLException {
+        Map<String, String> entries = new HashMap<>();
+        try {
+            entries.put(RegistedCourseID_Column, registeredCourse.getRegisteredCourseID());
+            entries.put(RegistedDate_Column, String.valueOf(registeredCourse.getRegisteredDate()));
+            entries.put(FinishRegistedDate_Column, String.valueOf(registeredCourse.getFinishRegisteredDate()));
+            entries.put(CourseID_Column, registeredCourse.getCourseID());
+            entries.put(UserID_Column, registeredCourse.getUserID());
+            insert(entries);
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    public void updateRegistedCourse(String registedCourseID, RegisteredCourse registeredCourse) {
+        Map<String, String> entries = new HashMap<>();
+        try {
+            entries.put(RegistedDate_Column, String.valueOf(registeredCourse.getRegisteredDate()));
+            entries.put(FinishRegistedDate_Column, String.valueOf(registeredCourse.getFinishRegisteredDate()));
+            entries.put(CourseID_Column, registeredCourse.getCourseID());
+            entries.put(UserID_Column, registeredCourse.getUserID());
+            update(registedCourseID, entries);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteRegistedCourse(String registedCourseID) throws SQLException {
+        try {
+            delete(registedCourseID);
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
     }
 
     public List<String> getData() throws SQLException {
