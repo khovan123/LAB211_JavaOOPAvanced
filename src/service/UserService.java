@@ -30,6 +30,7 @@ public class UserService implements IUserService {
         } catch (SQLException e) {
 
         }
+
     }
 
     @Override
@@ -50,6 +51,10 @@ public class UserService implements IUserService {
         } else {
             throw new InvalidDataException("User with id: " + user.getPersonId() + " was existed");
         }
+    }
+
+    @Override
+    public void add(User entry) throws EventException, InvalidDataException {
     }
 
     @Override
@@ -84,5 +89,4 @@ public class UserService implements IUserService {
             return false;
         }
     }
-
 }

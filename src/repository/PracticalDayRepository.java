@@ -1,77 +1,182 @@
 package repository;
 
 import exception.IOException;
-
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeSet;
+import java.sql.*;
+import java.util.*;
+import java.util.Date;
 
 import exception.InvalidDataException;
-import model.Nutrition;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.PracticalDay;
-import model.Workout;
 import repository.interfaces.IPracticalDayRepository;
 import utils.GlobalUtils;
 
 public class PracticalDayRepository implements IPracticalDayRepository {
 
     private static TreeSet<PracticalDay> practicalDays = new TreeSet<>();
-
-    static {
-        try {
-            Nutrition nutrition1 = new Nutrition("NT-2024", "18");
-            Nutrition nutrition2 = new Nutrition("NT-2025", "22");
-
-            practicalDays.add(new PracticalDay("PD-2024", "14/10/2024", nutrition1, "CP-2024"));
-            practicalDays.add(new PracticalDay("PD-2025", "15/10/2024", nutrition2, "CP-2025"));
-        } catch (InvalidDataException e) {
-            System.out.println("Error initializing sample data: " + e.getMessage());
-        }
-    }
+    private Connection conn = SQLServerConnection.getConnection();
+    public static final String PracticalDayID_Column = "PracticalDayID";
+    public static final String PracticeDate_Column = "PracticalDate";
+    public static final String ScheduleID_Column = "ScheduleID";
 
     public TreeSet<PracticalDay> getPracticalDays() {
         return practicalDays;
     }
 
-    @Override
-    public TreeSet<PracticalDay> readFile() throws IOException {
-        TreeSet<PracticalDay> practicalDaysFromFile = new TreeSet<>();
-        File file = new File(path);
-        if (!file.exists()) {
-            throw new IOException("File not found at path: " + path);
+    public static void main(String[] args) {
+        PracticalDayRepository practicalDayRepository = new PracticalDayRepository();
+        String practicalDayID = "PD001";
+        Map<String, String> updatedEntries = new HashMap<>();
+        updatedEntries.put(PracticalDayRepository.PracticeDate_Column, "2023-03-10");
+        updatedEntries.put(PracticalDayRepository.ScheduleID_Column, "SD002");
+        try {
+            practicalDayRepository.updateOne(practicalDayID, updatedEntries);
+            System.out.println("Update successful!");
+            String row = practicalDayRepository.getOne(practicalDayID);
+            System.out.println("Practical Day Details: " + row);
+        } catch (SQLException ex) {
+            Logger.getLogger(PracticalDayRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            String line;
-            while ((line = br.readLine()) != null) {
+    @Override
+    public TreeSet<PracticalDay> readData() throws SQLException {
+        TreeSet<PracticalDay> practicalDaysFromFile = new TreeSet<>();
+        try {
+            for (String row : getMany()) {
                 try {
-                    String[] data = line.split(",");
+                    String[] data = row.split(",");
 
                     String practicalDayID = data[0];
                     String practiceDate = data[1];
-                    Nutrition nutrition = new Nutrition(data[2], data[3]);
-                    List<Workout> workoutList = new ArrayList<>();
-                    for(int i = 5; i < data.length; i++){
-                        workoutList.add(new Workout(data[i]));
-                    }
 
-                    PracticalDay practicalDay = new PracticalDay(practicalDayID, practiceDate, nutrition, workoutList, data[4]);
-
+                    PracticalDay practicalDay = new PracticalDay(practicalDayID, practiceDate, data[2]);
+                    practicalDay.runValidate();
                     practicalDaysFromFile.add(practicalDay);
                 } catch (Exception e) {
-                    throw new IOException("Add failed (" + e.getMessage() + ")");
                 }
             }
-        } catch (java.io.IOException e) {
-            throw new IOException("Read file failed!!! (" + e.getMessage() + ")");
+        } catch (SQLException e) {
+            throw new SQLException(e);
         }
+
         return practicalDaysFromFile;
     }
 
     @Override
-    public void writeFile(TreeSet<PracticalDay> practicalDays) throws IOException {
-        System.out.println("Not yet supported!!!");
+    public void insertToDB(PracticalDay practicalDay) throws SQLException {
+        Map<String, String> entries = new HashMap<>();
+        entries.put(PracticalDayID_Column, practicalDay.getPracticalDayId());
+        entries.put(PracticeDate_Column, GlobalUtils.getDateString(practicalDay.getPracticeDate()));
+        entries.put(ScheduleID_Column, practicalDay.getScheduleId());
+        insertOne(entries);
+    }
+
+    @Override
+    public void updateToDB(String id, Map<String, Object> entry) throws SQLException {
+        Map<String, String> entries = new HashMap<>();
+        if (entry.containsKey(PracticeDate_Column)) {
+            entries.put(PracticeDate_Column, GlobalUtils.getDateString((Date) entry.get(PracticeDate_Column)));
+        }
+        if (entry.containsKey(ScheduleID_Column)) {
+            entries.put(ScheduleID_Column, (String) entry.get(ScheduleID_Column));
+        }
+        updateOne(id, entries);
+    }
+
+    @Override
+    public void deleteToDB(String ID) throws SQLException {
+        deleteOne(ID);
+    }
+
+    @Override
+    public List<String> getMany() throws SQLException {
+        List<String> list = new ArrayList<>();
+        try {
+            StringBuilder row = new StringBuilder();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT PracticalDayID, PracticalDate, ScheduleID FROM PracticalDayModel");
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            while (rs.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    row.append(rs.getString(i)).append(i < columnCount ? ", " : "");
+                }
+                list.add(row.toString());
+                row = new StringBuilder();
+            }
+            return list;
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+    
+    public String getOne(String practicalDayID) throws SQLException {
+    String query = "SELECT PracticalDayID, PracticalDate, ScheduleID FROM PracticalDayModel WHERE PracticalDayID = ?";
+    StringBuilder result = new StringBuilder();
+
+    try (PreparedStatement ps = conn.prepareStatement(query)) {
+        ps.setString(1, practicalDayID);
+        try (ResultSet rs = ps.executeQuery()) {
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            
+            // Nếu tìm thấy bản ghi
+            if (rs.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    result.append(rs.getString(i)).append(i < columnCount ? ", " : "");
+                }
+            } else {
+                throw new SQLException("No Practical Day found with ID: " + practicalDayID);
+            }
+        }
+    } catch (SQLException e) {
+        throw new SQLException("Failed to retrieve Practical Day: " + e.getMessage());
+    }
+
+    return result.toString();
+}
+
+    @Override
+    public void insertOne(Map<String, String> entries) throws SQLException {
+        String query = "INSERT INTO PracticalDayModel (PracticalDayID, PracticalDate, ScheduleID) VALUES (?, ?, ?)";
+        try {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, entries.get(PracticalDayID_Column));
+            ps.setString(2, entries.get(PracticeDate_Column));
+            ps.setString(3, entries.get(ScheduleID_Column));
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException("Failed to insert PracticalDay: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateOne(String ID, Map<String, String> entries) throws SQLException {
+        String query = "UPDATE PracticalDayModel SET PracticalDate = ?, ScheduleID = ? WHERE PracticalDayID = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, entries.get(PracticeDate_Column));
+            ps.setString(2, entries.get(ScheduleID_Column));
+            ps.setString(3, ID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException("Failed to update PracticalDay: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteOne(String ID) throws SQLException {
+        String query = "DELETE FROM PracticalDayModel WHERE PracticalDayID = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, ID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException("Failed to delete PracticalDay: " + e.getMessage());
+        }
     }
 
 }
