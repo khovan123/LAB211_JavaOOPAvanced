@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.function.Predicate;
 
 public class GlobalUtils {
 
@@ -75,6 +76,30 @@ public class GlobalUtils {
         } else {
             throw new IllegalArgumentException("Unsupported object type: " + obj.getClass().getName());
         }
+    }
+
+    /**
+     * Prompts the user for input and validates it using a provided predicate.
+     * If the input is invalid, an error message is displayed. The user is
+     * repeatedly prompted until valid input is received.
+     *
+     * @param inputPrompt The message to display when asking for input.
+     * @param errorPrompt The message to display when the input is invalid.
+     * @param validator   A predicate that defines the validation logic for the
+     *                    input.
+     * @return The validated input string that meets the validation criteria.
+     */
+    public static String getValidatedInput(String inputPrompt, String errorPrompt, Predicate<String> validator) {
+        String input;
+        do {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print(inputPrompt);
+            input = scanner.nextLine();
+            if (!validator.test(input)) {
+                System.out.println(errorPrompt);
+            }
+        } while (!validator.test(input));
+        return input;
     }
 
 }

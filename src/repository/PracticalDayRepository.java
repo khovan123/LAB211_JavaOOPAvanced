@@ -69,7 +69,7 @@ public class PracticalDayRepository implements IPracticalDayRepository {
     public void insertToDB(PracticalDay practicalDay) throws SQLException {
         Map<String, String> entries = new HashMap<>();
         entries.put(PracticalDayID_Column, practicalDay.getPracticalDayId());
-        entries.put(PracticeDate_Column, GlobalUtils.getDateString(practicalDay.getPracticeDate()));
+        entries.put(PracticeDate_Column, GlobalUtils.dateFormat(practicalDay.getPracticeDate()));
         entries.put(ScheduleID_Column, practicalDay.getScheduleId());
         insertOne(entries);
     }

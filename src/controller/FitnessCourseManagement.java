@@ -8,6 +8,7 @@ import model.Workout;
 import repository.*;
 import service.*;
 import utils.FieldUtils;
+import utils.GettingUtils;
 import utils.GlobalUtils;
 import utils.ObjectUtils;
 import view.Menu;
@@ -354,7 +355,7 @@ public class FitnessCourseManagement extends Menu<String> {
                         System.out.println((i + 1) + ". " + editMenuOptions[i]);
                     }
                     while (true) {
-                        int selection = GlobalUtils.getInteger("Enter selection: ", "Please enter a valid option!");
+                        int selection = GettingUtils.getInteger("Enter selection: ", "Please enter a valid option!");
                         if (selection == editMenuOptions.length - 1) {
                             try {
                                 practicalDayService.delete(practicalDay.getPracticalDayId());
@@ -403,7 +404,7 @@ public class FitnessCourseManagement extends Menu<String> {
                         System.out.println((i + 1) + ". " + editMenuOptions[i]);
                     }
                     while (true) {
-                        int selection = GlobalUtils.getInteger("Enter selection: ", "Please enter a valid option!");
+                        int selection = GettingUtils.getInteger("Enter selection: ", "Please enter a valid option!");
                         if (selection == editMenuOptions.length - 1) {
                             try {
                                 workoutService.delete(workout.getWorkoutId());

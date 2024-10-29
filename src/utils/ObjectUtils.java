@@ -49,8 +49,5 @@ public class ObjectUtils {
     public static boolean validCodeRegistedCourse(String code) {
         return code.matches("^RC[0-9]{3}");
     }
-    public static boolean validCodeSchedule(String code) {
-        return code.matches("^SD[0-9]{3}");
-    }
 
 }
