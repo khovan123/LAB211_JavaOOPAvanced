@@ -9,9 +9,7 @@ import java.util.function.Predicate;
 
 import exception.EmptyDataException;
 import exception.EventException;
-import exception.IOException;
 import exception.NotFoundException;
-import model.Coach;
 import model.PracticalDay;
 import repository.PracticalDayRepository;
 import service.interfaces.IPracticalDayService;
@@ -32,6 +30,10 @@ public class PracticalDayService implements IPracticalDayService {
     public PracticalDayService(TreeSet<PracticalDay> practicalDayTreeSet) {
         this.practicalDayTreeSet = practicalDayTreeSet;
         readFromDatabase();
+    }
+
+    public TreeSet<PracticalDay> getPractialDayTreeSet(){
+        return practicalDayTreeSet;
     }
 
     public void readFromDatabase() {
@@ -132,54 +134,5 @@ public class PracticalDayService implements IPracticalDayService {
         }
 
         throw new NotFoundException("Not found any field for: " + fieldName);
-    }
-
-    public void updateOrDeletePracticalDayFromConsoleCustomize() {
-        if (practicalDayTreeSet.isEmpty()) {
-            System.out.println("Please create new practical day ^^");
-            return;
-        }
-        while (true) {
-            try {
-                String id = GlobalUtils.getValue("Enter id for update: ", "Cannot leave blank");
-                PracticalDay practicalDay;
-                if (!ObjectUtils.validID(id)) {
-                    System.out.println("Id must be in correct form.");
-                } else if ((practicalDay = findById(id)) != null) {
-                    System.out.println(practicalDay.getInfo());
-                    String[] editMenuOptions = FieldUtils.getEditOptions(practicalDay.getClass());
-                    for (int i = 0; i < editMenuOptions.length; i++) {
-                        System.out.println((i + 1) + ". " + editMenuOptions[i]);
-                    }
-                    while (true) {
-                        int selection = GlobalUtils.getInteger("Enter selection: ", "Please enter a valid option!");
-                        if (selection == editMenuOptions.length - 1) {
-                            try {
-                                delete(practicalDay.getPracticalDayId());
-                                System.out.println("Delete successfully");
-                            } catch (EventException | NotFoundException e) {
-                                System.err.println(e.getMessage());
-                            }
-                            return;
-                        } else if (selection == editMenuOptions.length) {
-                            return;
-                        }
-                        while (true) {
-                            try {
-                                String newValue = GlobalUtils.getValue("Enter new value: ", "Can not be blank");
-                                Map<String, Object> fieldUpdateMap = FieldUtils.getFieldValueByName(practicalDay, editMenuOptions[selection - 1], newValue);
-                                update(id, fieldUpdateMap);
-                                System.out.println("Update successfully");
-                                break;
-                            } catch (Exception ex) {
-                                System.out.println(ex.getMessage());
-                            }
-                        }
-                    }
-                }
-            } catch (NotFoundException ex) {
-                System.err.println(ex.getMessage());
-            }
-        }
     }
 }

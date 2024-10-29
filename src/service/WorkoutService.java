@@ -39,6 +39,10 @@ public class WorkoutService implements IWorkoutService {
         readFromDatabase();
     }
 
+    public List<Workout> getWorkoutList(){
+        return workoutList;
+    }
+
     public void readFromDatabase() {
         try {
             workoutList.addAll(workoutRepository.readData());
@@ -145,54 +149,4 @@ public class WorkoutService implements IWorkoutService {
                 throw new NotFoundException("Not found any field for: " + fieldName);
         }
     }
-
-    public void updateOrDeleteWorkoutFromConsoleCustomize() {
-        if (workoutList.isEmpty()) {
-            System.out.println("Please create new workout ^^");
-            return;
-        }
-        while (true) {
-            try {
-                String id = GlobalUtils.getValue("Enter id for update: ", "Cannot leave blank");
-                Workout workout;
-                if (!ObjectUtils.validID(id)) {
-                    System.out.println("Id must be in correct form.");
-                } else if ((workout = findById(id)) != null) {
-                    System.out.println(workout.getInfo());
-                    String[] editMenuOptions = FieldUtils.getEditOptions(workout.getClass());
-                    for (int i = 0; i < editMenuOptions.length; i++) {
-                        System.out.println((i + 1) + ". " + editMenuOptions[i]);
-                    }
-                    while (true) {
-                        int selection = GlobalUtils.getInteger("Enter selection: ", "Please enter a valid option!");
-                        if (selection == editMenuOptions.length - 1) {
-                            try {
-                                delete(workout.getWorkoutId());
-                                System.out.println("Delete successfully");
-                            } catch (EventException | NotFoundException e) {
-                                System.err.println(e.getMessage());
-                            }
-                            return;
-                        } else if (selection == editMenuOptions.length) {
-                            return;
-                        }
-                        while (true) {
-                            try {
-                                String newValue = GlobalUtils.getValue("Enter new value: ", "Can not be blank");
-                                Map<String, Object> fieldUpdateMap = FieldUtils.getFieldValueByName(workout, editMenuOptions[selection - 1], newValue);
-                                update(id, fieldUpdateMap);
-                                System.out.println("Update successfully");
-                                break;
-                            } catch (Exception ex) {
-                                System.out.println(ex.getMessage());
-                            }
-                        }
-                    }
-                }
-            } catch (NotFoundException ex) {
-                System.err.println(ex.getMessage());
-            }
-        }
-    }
-
 }

@@ -1,9 +1,19 @@
 package controller;
 
 import exception.*;
+import jdk.jfr.Event;
+import model.Coach;
+import model.PracticalDay;
+import model.User;
+import model.Workout;
 import repository.*;
 import service.*;
+import utils.FieldUtils;
+import utils.GlobalUtils;
+import utils.ObjectUtils;
 import view.Menu;
+
+import java.util.Map;
 
 public class FitnessCourseManagement extends Menu<String> {
 
@@ -16,6 +26,9 @@ public class FitnessCourseManagement extends Menu<String> {
     };
 
     private final UserService userService;
+    private final CoachService coachService;
+    private final PracticalDayService practicalDayService;
+    private final WorkoutService workoutService;
 
     public FitnessCourseManagement() {
         this(title, menuOptions);
@@ -24,6 +37,9 @@ public class FitnessCourseManagement extends Menu<String> {
     public FitnessCourseManagement(String title, String[] menuOptions) {
         super(title, menuOptions);
         userService = new UserService();
+        coachService = new CoachService();
+        practicalDayService = new PracticalDayService();
+        workoutService = new WorkoutService();
     }
 
     @Override
@@ -193,12 +209,17 @@ public class FitnessCourseManagement extends Menu<String> {
                     case 1 -> {
                         try {
                             userService.display();
-                        } catch (EmptyDataException e){
+                        } catch (EmptyDataException e) {
                             System.err.println(e);
                         }
                     }
                     case 2 -> {
-
+                        try {
+                            User user = new User();
+                            userService.add(user);
+                        } catch (EventException | InvalidDataException e) {
+                            System.err.println(e);
+                        }
                     }
                     case 3 -> {
 
@@ -225,10 +246,20 @@ public class FitnessCourseManagement extends Menu<String> {
             public void execute(int selection) {
                 switch (selection) {
                     case 1 -> {
-
+                        try {
+                            Coach coach = new Coach();
+                            coachService.display();
+                        } catch (EmptyDataException e){
+                            System.err.println(e);
+                        }
                     }
                     case 2 -> {
-
+                        try {
+                            Coach coach = new Coach();
+                            coachService.add(coach);
+                        } catch (EventException | InvalidDataException e) {
+                            System.err.println(e);
+                        }
                     }
                     case 3 -> {
 
@@ -284,6 +315,104 @@ public class FitnessCourseManagement extends Menu<String> {
     public static void main(String[] args) {
         FitnessCourseManagement fitnessCourseManagement = new FitnessCourseManagement();
         fitnessCourseManagement.run();
+    }
+
+    public void updateOrDeletePracticalDayFromConsoleCustomize() {
+        if (practicalDayService.getPractialDayTreeSet().isEmpty()) {
+            System.out.println("Please create new practical day ^^");
+            return;
+        }
+        while (true) {
+            try {
+                String id = GlobalUtils.getValue("Enter id for update: ", "Cannot leave blank");
+                PracticalDay practicalDay;
+                if (!ObjectUtils.validID(id)) {
+                    System.out.println("Id must be in correct form.");
+                } else if ((practicalDay = practicalDayService.findById(id)) != null) {
+                    System.out.println(practicalDay.getInfo());
+                    String[] editMenuOptions = FieldUtils.getEditOptions(practicalDay.getClass());
+                    for (int i = 0; i < editMenuOptions.length; i++) {
+                        System.out.println((i + 1) + ". " + editMenuOptions[i]);
+                    }
+                    while (true) {
+                        int selection = GlobalUtils.getInteger("Enter selection: ", "Please enter a valid option!");
+                        if (selection == editMenuOptions.length - 1) {
+                            try {
+                                practicalDayService.delete(practicalDay.getPracticalDayId());
+                                System.out.println("Delete successfully");
+                            } catch (EventException | NotFoundException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            return;
+                        } else if (selection == editMenuOptions.length) {
+                            return;
+                        }
+                        while (true) {
+                            try {
+                                String newValue = GlobalUtils.getValue("Enter new value: ", "Can not be blank");
+                                Map<String, Object> fieldUpdateMap = FieldUtils.getFieldValueByName(practicalDay, editMenuOptions[selection - 1], newValue);
+                                practicalDayService.update(id, fieldUpdateMap);
+                                System.out.println("Update successfully");
+                                break;
+                            } catch (Exception ex) {
+                                System.out.println(ex.getMessage());
+                            }
+                        }
+                    }
+                }
+            } catch (NotFoundException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
+    }
+
+    public void updateOrDeleteWorkoutFromConsoleCustomize() {
+        if (workoutService.getWorkoutList().isEmpty()) {
+            System.out.println("Please create new workout ^^");
+            return;
+        }
+        while (true) {
+            try {
+                String id = GlobalUtils.getValue("Enter id for update: ", "Cannot leave blank");
+                Workout workout;
+                if (!ObjectUtils.validID(id)) {
+                    System.out.println("Id must be in correct form.");
+                } else if ((workout = workoutService.findById(id)) != null) {
+                    System.out.println(workout.getInfo());
+                    String[] editMenuOptions = FieldUtils.getEditOptions(workout.getClass());
+                    for (int i = 0; i < editMenuOptions.length; i++) {
+                        System.out.println((i + 1) + ". " + editMenuOptions[i]);
+                    }
+                    while (true) {
+                        int selection = GlobalUtils.getInteger("Enter selection: ", "Please enter a valid option!");
+                        if (selection == editMenuOptions.length - 1) {
+                            try {
+                                workoutService.delete(workout.getWorkoutId());
+                                System.out.println("Delete successfully");
+                            } catch (EventException | NotFoundException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            return;
+                        } else if (selection == editMenuOptions.length) {
+                            return;
+                        }
+                        while (true) {
+                            try {
+                                String newValue = GlobalUtils.getValue("Enter new value: ", "Can not be blank");
+                                Map<String, Object> fieldUpdateMap = FieldUtils.getFieldValueByName(workout, editMenuOptions[selection - 1], newValue);
+                                workoutService.update(id, fieldUpdateMap);
+                                System.out.println("Update successfully");
+                                break;
+                            } catch (Exception ex) {
+                                System.out.println(ex.getMessage());
+                            }
+                        }
+                    }
+                }
+            } catch (NotFoundException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
     }
 
 }
