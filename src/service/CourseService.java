@@ -6,6 +6,7 @@ import model.Workout;
 import repository.CourseRepository;
 import service.interfaces.ICourseService;
 import utils.FieldUtils;
+import utils.GettingUtils;
 import utils.GlobalUtils;
 import utils.ObjectUtils;
 
@@ -76,7 +77,6 @@ public class CourseService implements ICourseService {
         }
     }
 
-    @Override
     public void update(Course course) throws EventException, NotFoundException {
         Course existCourse = findById(course.getCourseId());
         if (existCourse == null) {
@@ -141,7 +141,7 @@ public class CourseService implements ICourseService {
                         System.out.println((i + 1) + ". " + editMenuOptions[i]);
                     }
                     while (true) {
-                        int selection = GlobalUtils.getInteger("Enter selection: ", "Please enter a valid option!");
+                        int selection = GettingUtils.getInteger("Enter selection: ", "Please enter a valid option!");
                         if (selection == editMenuOptions.length - 1) {
                             try {
                                 delete(course.getCourseId());

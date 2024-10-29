@@ -217,9 +217,9 @@ public class FitnessCourseManagement extends Menu<String> {
         String sets = GlobalUtils.getValue("Sets: ", "Cannot be left blank");
         String duration = GlobalUtils.getValue("Duration: ", "Cannot be left blank");
         String done = GlobalUtils.getValue("Done (true/false): ", "Cannot be left blank");
-        String courseSegmentId = GlobalUtils.getValue("Course Segment ID: ", "Cannot be left blank");
+        String courseId = GlobalUtils.getValue("Course Segment ID: ", "Cannot be left blank");
 
-        return new Workout(workoutId, workoutName, description, repetition, sets, duration, done, courseSegmentId);
+        return new Workout(workoutId, workoutName, description, repetition, sets, duration, done, courseId);
     }
 
     //before run UserMenu, request enter ID

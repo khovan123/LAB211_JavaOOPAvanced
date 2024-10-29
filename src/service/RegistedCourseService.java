@@ -8,6 +8,7 @@ import model.RegisteredCourse;
 import repository.RegistedCourseRepository;
 import service.interfaces.IRegistedCourseService;
 import utils.FieldUtils;
+import utils.GettingUtils;
 import utils.GlobalUtils;
 import utils.ObjectUtils;
 
@@ -71,7 +72,6 @@ public class RegistedCourseService implements IRegistedCourseService {
         }
     }
 
-    @Override
     public void update(RegisteredCourse registeredCourse) throws EventException, NotFoundException {
         RegisteredCourse existRegisteredCourse = findById(registeredCourse.getRegisteredCourseID());
         if (existRegisteredCourse == null) {
@@ -134,7 +134,7 @@ public class RegistedCourseService implements IRegistedCourseService {
                         System.out.println((i + 1) + ". " + editMenuOptions[i]);
                     }
                     while (true) {
-                        int selection = GlobalUtils.getInteger("Enter selection: ", "Please enter a valid option!");
+                        int selection = GettingUtils.getInteger("Enter selection: ", "Please enter a valid option!");
                         if (selection == editMenuOptions.length - 1) {
                             try {
                                 delete(registeredCourse.getRegisteredCourseID());

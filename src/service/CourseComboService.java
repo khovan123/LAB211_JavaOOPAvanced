@@ -5,6 +5,7 @@ import model.CourseCombo;
 import repository.CourseComboRepository;
 import service.interfaces.ICourseComboService;
 import utils.FieldUtils;
+import utils.GettingUtils;
 import utils.GlobalUtils;
 import utils.ObjectUtils;
 
@@ -76,7 +77,6 @@ public class CourseComboService implements ICourseComboService {
         }
     }
 
-    @Override
     public void update(CourseCombo courseCombo) throws EventException, NotFoundException {
         CourseCombo existingCombo = search(combo -> combo.getComboId().equalsIgnoreCase(courseCombo.getComboId()));
         if (existingCombo == null) {
@@ -124,7 +124,7 @@ public class CourseComboService implements ICourseComboService {
         }
         while (true) {
             try {
-                String id = GlobalUtils.getValue("Enter id for update: ", "Cannot be left blank");
+                int id = GettingUtils.getInteger("Enter id for update: ", "Cannot be left blank");
                 CourseCombo courseCombo;
                 if (!ObjectUtils.validID(id)) {
                     System.out.println("Id must be correct form: CByyyy");
