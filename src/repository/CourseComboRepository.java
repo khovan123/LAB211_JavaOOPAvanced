@@ -1,15 +1,9 @@
 package repository;
 
-import exception.IOException;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.sql.*;
 import java.util.*;
 
 import exception.InvalidDataException;
-import model.Course;
 import model.CourseCombo;
 import repository.interfaces.ICourseComboRepository;
 
@@ -20,18 +14,15 @@ public class CourseComboRepository implements ICourseComboRepository {
     private static final List<String> COURSECOMBOMODELCOLUMN = new ArrayList<>(Arrays.asList(ComboID_Column, ComboName_Column, Sales_Column));
     private Connection conn = SQLServerConnection.getConnection();
 
-    @Override
-    public List<CourseCombo> readFile() throws IOException {
-        return new ArrayList<>();
-    }
 
     @Override
-    public void writeFile(List<CourseCombo> entry) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public List<CourseCombo> getProcessData() throws SQLException {
-        List<String> rawData = getData();
+    public List<CourseCombo> readData() {
+        List<String> rawData = null;
+        try {
+            rawData = getMany();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         List<CourseCombo> processData = new ArrayList<>();
         for (String row : rawData) {
             String[] col = row.split(", ");
@@ -52,38 +43,42 @@ public class CourseComboRepository implements ICourseComboRepository {
         return processData;
     }
 
-    public void insertCourseCombo(CourseCombo courseCombo) throws SQLException {
+    @Override
+    public void insert(CourseCombo entry) throws SQLException {
         Map<String, String> entries = new HashMap<>();
         try {
-            entries.put(ComboID_Column, courseCombo.getComboId());
-            entries.put(ComboName_Column, courseCombo.getComboName());
-            entries.put(Sales_Column, String.valueOf(courseCombo.getSales()));
-            insert(entries);
+            entries.put(ComboID_Column, entry.getComboId());
+            entries.put(ComboName_Column, entry.getComboName());
+            entries.put(Sales_Column, String.valueOf(entry.getSales()));
+            insert((CourseCombo) entries);
         } catch (SQLException e) {
             throw new SQLException(e);
         }
     }
 
-    public void updateCourseCombo(String courseComboID, CourseCombo courseCombo) throws SQLException {
+    @Override
+    public void update(CourseCombo entry) throws SQLException {
         Map<String, String> entries = new HashMap<>();
         try {
-            entries.put(ComboName_Column, courseCombo.getComboName());
-            entries.put(Sales_Column, String.valueOf(courseCombo.getSales()));
-            update(courseComboID, entries);
+            entries.put(ComboName_Column, entry.getComboName());
+            entries.put(Sales_Column, String.valueOf(entry.getSales()));
+            update(entry);
         } catch (SQLException e) {
             throw new SQLException(e);
         }
     }
 
-    public void deleteCourseCombo(String courseComboID) throws SQLException {
+    @Override
+    public void delete(CourseCombo entry) throws SQLException {
         try {
-            delete(courseComboID);
-        } catch (SQLException e){
+            deleteOne(entry.getComboId());
+        } catch (SQLException e) {
             throw new SQLException(e);
         }
     }
 
-    public List<String> getData() throws SQLException {
+    @Override
+    public List<String> getMany() throws SQLException {
         List<String> list = new ArrayList<>();
         try {
             StringBuilder row = new StringBuilder();
@@ -105,7 +100,8 @@ public class CourseComboRepository implements ICourseComboRepository {
         return list;
     }
 
-    private void insert(Map<String, String> entries) throws SQLException {
+    @Override
+    public void insertOne(Map<String, String> entries) throws SQLException {
         String courseComboQuery = "INSERT INTO CourseComboModel(X) VALUES(Y)";
         StringBuilder modelColumn = new StringBuilder();
         StringBuilder modelValue = new StringBuilder();
@@ -133,7 +129,8 @@ public class CourseComboRepository implements ICourseComboRepository {
         }
     }
 
-    private void update(String ID, Map<String, String> entries) throws SQLException {
+    @Override
+    public void updateOne(String ID, Map<String, String> entries) throws SQLException {
         String query = "UPDATE CourseComboModel SET X WHERE ComboID = ?";
         StringBuilder modelColumn = new StringBuilder();
 
@@ -160,7 +157,8 @@ public class CourseComboRepository implements ICourseComboRepository {
         }
     }
 
-    private void delete(String ID) throws SQLException {
+    @Override
+    public void deleteOne(String ID) throws SQLException {
         String query = "DELETE FROM CourseComboModel WHERE ComboID = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
@@ -171,3 +169,4 @@ public class CourseComboRepository implements ICourseComboRepository {
         }
     }
 }
+

@@ -21,16 +21,7 @@ public class RegistedCourseRepository implements IRegistedCourseRepository {
     private Connection conn = SQLServerConnection.getConnection();
 
     @Override
-    public List<RegisteredCourse> readFile() throws IOException {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public void writeFile(List<RegisteredCourse> entry) throws IOException {
-
-    }
-
-    public List<RegisteredCourse> getProcessData() throws SQLException {
+    public List<RegisteredCourse> readData() {
         List<String> rawData = getData();
         List<RegisteredCourse> processData = new ArrayList<>();
         for (String row : rawData) {
@@ -55,42 +46,46 @@ public class RegistedCourseRepository implements IRegistedCourseRepository {
         return processData;
     }
 
-    public void insertRegistedCourse(RegisteredCourse registeredCourse) throws SQLException {
+    @Override
+    public void insert(RegisteredCourse entry) throws SQLException {
         Map<String, String> entries = new HashMap<>();
         try {
-            entries.put(RegistedCourseID_Column, registeredCourse.getRegisteredCourseID());
-            entries.put(RegistedDate_Column, String.valueOf(registeredCourse.getRegisteredDate()));
-            entries.put(FinishRegistedDate_Column, String.valueOf(registeredCourse.getFinishRegisteredDate()));
-            entries.put(CourseID_Column, registeredCourse.getCourseID());
-            entries.put(UserID_Column, registeredCourse.getUserID());
-            insert(entries);
+            entries.put(RegistedCourseID_Column, entry.getRegisteredCourseID());
+            entries.put(RegistedDate_Column, String.valueOf(entry.getRegisteredDate()));
+            entries.put(FinishRegistedDate_Column, String.valueOf(entry.getFinishRegisteredDate()));
+            entries.put(CourseID_Column, entry.getCourseID());
+            entries.put(UserID_Column, entry.getUserID());
+            insert((RegisteredCourse) entries);
         } catch (SQLException e) {
             throw new SQLException(e);
         }
     }
 
-    public void updateRegistedCourse(String registedCourseID, RegisteredCourse registeredCourse) {
+    @Override
+    public void update(RegisteredCourse entry) throws SQLException {
         Map<String, String> entries = new HashMap<>();
         try {
-            entries.put(RegistedDate_Column, String.valueOf(registeredCourse.getRegisteredDate()));
-            entries.put(FinishRegistedDate_Column, String.valueOf(registeredCourse.getFinishRegisteredDate()));
-            entries.put(CourseID_Column, registeredCourse.getCourseID());
-            entries.put(UserID_Column, registeredCourse.getUserID());
-            update(registedCourseID, entries);
+            entries.put(RegistedDate_Column, String.valueOf(entry.getRegisteredDate()));
+            entries.put(FinishRegistedDate_Column, String.valueOf(entry.getFinishRegisteredDate()));
+            entries.put(CourseID_Column, entry.getCourseID());
+            entries.put(UserID_Column, entry.getUserID());
+            update((RegisteredCourse) entries);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void deleteRegistedCourse(String registedCourseID) throws SQLException {
+    @Override
+    public void delete(RegisteredCourse entry) throws SQLException {
         try {
-            delete(registedCourseID);
+            deleteOne(entry.getCourseID());
         } catch (SQLException e) {
             throw new SQLException(e);
         }
     }
 
-    public List<String> getData() throws SQLException {
+    @Override
+    public List<String> getMany() throws SQLException {
         List<String> list = new ArrayList<>();
         try {
             StringBuilder row = new StringBuilder();
@@ -111,7 +106,8 @@ public class RegistedCourseRepository implements IRegistedCourseRepository {
         }
     }
 
-    public void insert(Map<String, String> entries) throws SQLException {
+    @Override
+    public void insertOne(Map<String, String> entries) throws SQLException {
         String registeredCourseQuery = "INSERT INTO RegistedCourseModel(X) VALUES(Y)";
         StringBuilder rcModelColumn = new StringBuilder();
         StringBuilder rcModelValues = new StringBuilder();
@@ -138,7 +134,8 @@ public class RegistedCourseRepository implements IRegistedCourseRepository {
         }
     }
 
-    public void update(String ID, Map<String, String> entries) throws SQLException {
+    @Override
+    public void updateOne(String ID, Map<String, String> entries) throws SQLException {
         String rcQuery = "UPDATE RegistedCourseModel SET X WHERE RegistedCourseID = ?";
         StringBuilder rcModelColumn = new StringBuilder();
 
@@ -164,13 +161,14 @@ public class RegistedCourseRepository implements IRegistedCourseRepository {
         }
     }
 
-    public void delete(String ID) throws SQLException {
+    @Override
+    public void deleteOne(String ID) throws SQLException {
         String rcQuery = "DELETE FROM RegistedCourseModel WHERE RegistedCourseID = ?";
         try (PreparedStatement registedCoursePS = conn.prepareStatement(rcQuery)) {
             registedCoursePS.setString(1, ID);
             registedCoursePS.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("-> Error while deleting data - " + e.getMessage());
+            throw new SQLException(e);
         }
     }
 }

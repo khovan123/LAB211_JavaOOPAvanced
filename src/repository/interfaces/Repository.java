@@ -1,13 +1,25 @@
 package repository.interfaces;
 
-import exception.IOException;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 public interface Repository<T, C> {
+    
+    C readData();
+    
+    void insert(T entry)throws SQLException;
+    
+    void update(T entry) throws SQLException;
+    
+    void delete(T entry) throws SQLException;
 
-    final String path = "";
-  
-    C readFile() throws IOException;
+    List<String> getMany() throws SQLException;
 
-    void writeFile(C entry) throws IOException;
+    void insertOne(Map<String, String> entries) throws SQLException;
+
+    void updateOne(String ID, Map<String, String> entries) throws SQLException;
+
+    void deleteOne(String ID) throws SQLException;
 
 }

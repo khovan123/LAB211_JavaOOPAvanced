@@ -22,17 +22,14 @@ public class CourseRepository implements ICourseRepository {
     private static List<Course> courses = new ArrayList<>();
     //data sample: CS-YYYY, 30 days full body master, CA-YYYY
 
-    public List<Course> readFile() throws IOException {
-        return new ArrayList<>();
-    }
-
     @Override
-    public void writeFile(List<Course> courses) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public List<Course> getProcessData() throws SQLException {
-        List<String> rawData = getData();
+    public List<Course> readData() {
+        List<String> rawData = null;
+        try {
+            rawData = getMany();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         List<Course> processData = new ArrayList<>();
         for (String row : rawData) {
             String[] col = row.split(", ");
@@ -75,46 +72,50 @@ public class CourseRepository implements ICourseRepository {
         return processData;
     }
 
-    public void insertCourse(Course course) throws SQLException {
+    @Override
+    public void insert(Course entry) throws SQLException {
         Map<String, String> entries = new HashMap<>();
         try {
-            entries.put(CourseID_Column, course.getCourseId());
-            entries.put(CourseName_Column, course.getCourseName());
-            entries.put(String.valueOf(Addventor_Column), String.valueOf(course.isAddventor())); // Use "true"/"false"
-            entries.put(GenerateDate_Column, String.valueOf(course.getGenerateDate()));
-            entries.put(Price_Column, String.valueOf(course.getPrice()));
-            entries.put(ComboID_Column, course.getComboID());
-            entries.put(CoachID_Column, course.getCoachId());
-            insert(entries);
+            entries.put(CourseID_Column, entry.getCourseId());
+            entries.put(CourseName_Column, entry.getCourseName());
+            entries.put(String.valueOf(Addventor_Column), String.valueOf(entry.isAddventor())); // Use "true"/"false"
+            entries.put(GenerateDate_Column, String.valueOf(entry.getGenerateDate()));
+            entries.put(Price_Column, String.valueOf(entry.getPrice()));
+            entries.put(ComboID_Column, entry.getComboID());
+            entries.put(CoachID_Column, entry.getCoachId());
+            insert((Course) entries);
         } catch (SQLException e) {
             throw new SQLException(e);
         }
     }
 
-    public void updateCourse(String ID, Course course) throws SQLException {
+    @Override
+    public void update(Course entry) throws SQLException {
         Map<String, String> entries = new HashMap<>();
         try {
-            entries.put(CourseName_Column, course.getCourseName());
-            entries.put(String.valueOf(Addventor_Column), String.valueOf(course.isAddventor())); // Use "true"/"false"
-            entries.put(GenerateDate_Column, String.valueOf(course.getGenerateDate()));
-            entries.put(Price_Column, String.valueOf(course.getPrice()));
-            entries.put(ComboID_Column, course.getComboID());
-            entries.put(CoachID_Column, course.getCoachId());
-            update(ID, entries);
+            entries.put(CourseName_Column, entry.getCourseName());
+            entries.put(String.valueOf(Addventor_Column), String.valueOf(entry.isAddventor())); // Use "true"/"false"
+            entries.put(GenerateDate_Column, String.valueOf(entry.getGenerateDate()));
+            entries.put(Price_Column, String.valueOf(entry.getPrice()));
+            entries.put(ComboID_Column, entry.getComboID());
+            entries.put(CoachID_Column, entry.getCoachId());
+            update((Course) entries);
         } catch (SQLException e) {
             throw new SQLException(e);
         }
     }
 
-    public void deleteCourse(String ID) throws SQLException {
+    @Override
+    public void delete(Course entry) throws SQLException {
         try {
-            delete(ID);
-        } catch (SQLException e ){
+            deleteOne(entry.getCourseId());
+        } catch (SQLException e) {
             throw new SQLException(e);
         }
     }
 
-    public List<String> getData() throws SQLException {
+    @Override
+    public List<String> getMany() throws SQLException {
         List<String> list = new ArrayList<>();
         try {
             StringBuilder row = new StringBuilder();
@@ -135,7 +136,8 @@ public class CourseRepository implements ICourseRepository {
         }
     }
 
-    public void insert(Map<String, String> entries) throws SQLException {
+    @Override
+    public void insertOne(Map<String, String> entries) throws SQLException {
         String courseQuery = "INSERT INTO CourseModel(X) VALUES (Y)";
         StringBuilder courseModelColumn = new StringBuilder();
         StringBuilder courseModelValues = new StringBuilder();
@@ -162,7 +164,8 @@ public class CourseRepository implements ICourseRepository {
         }
     }
 
-    public void update(String ID, Map<String, String> entries) throws SQLException {
+    @Override
+    public void updateOne(String ID, Map<String, String> entries) throws SQLException {
         String courseQuery = "UPDATE CourseModel SET X WHERE CourseID = ? ";
         StringBuilder courseModelColumn = new StringBuilder();
 
@@ -191,7 +194,8 @@ public class CourseRepository implements ICourseRepository {
         }
     }
 
-    public void delete(String ID) throws SQLException {
+    @Override
+    public void deleteOne(String ID) throws SQLException {
         String courseQuery = "DELETE FROM CourseModel WHERE CourseID = ?";
         try {
             PreparedStatement coursePS = conn.prepareStatement(courseQuery);
@@ -201,5 +205,4 @@ public class CourseRepository implements ICourseRepository {
             throw new SQLException(e);
         }
     }
-
 }

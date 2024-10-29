@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/repository/RegistedCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/RegistedCourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/SampleCoachRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/SampleCoachRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/interfaces/Repository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/interfaces/Repository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,30 +44,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;huy&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Dec/Downloads/ResortManagementSystem&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "Merging huy",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Dec/Downloads/ResortManagementSystem",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;sqlserver&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlserver"
     ]
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -102,6 +103,7 @@
       <workItem from="1730102813742" duration="17182000" />
       <workItem from="1730141145165" duration="4210000" />
       <workItem from="1730166525354" duration="738000" />
+      <workItem from="1730169107778" duration="1831000" />
     </task>
     <servers />
   </component>
