@@ -2,14 +2,20 @@ package service;
 
 import exception.*;
 
+import java.lang.reflect.Field;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 import model.Course;
 import model.Workout;
 import repository.CourseRepository;
 import service.interfaces.ICourseService;
+import utils.FieldUtils;
+import utils.GlobalUtils;
 import utils.ObjectUtils;
 
 public class CourseService implements ICourseService {
@@ -80,6 +86,84 @@ public class CourseService implements ICourseService {
             existCourse.setCoachId(course.getCoachId());
         } catch (Exception e) {
             throw new EventException("-> Error While Updating Course With ID - " + course.getCourseId() + " - " + e.getMessage());
+        }
+    }
+
+    private String getColumnByFieldName(String fieldName) throws NotFoundException {
+        return switch (fieldName.toLowerCase()) {
+            case "coursename" -> CourseRepository.CourseName_Column;
+            case "addventor" -> String.valueOf(CourseRepository.Addventor_Column);
+            case "generatedate" -> CourseRepository.GenerateDate_Column;
+            case "price" -> CourseRepository.Price_Column;
+            case "coachid" -> CourseRepository.CoachID_Column;
+            default -> throw new NotFoundException("Not found any field for name: " + fieldName);
+        };
+    }
+
+    public void update(String id, Map<String, Object> entry) throws EventException, NotFoundException {
+        Course existingCourse = findById(id);
+        if (existingCourse == null) {
+            throw new NotFoundException("-> Course with ID - " + id + " - Not Found.");
+        }
+
+        for (String fieldName : entry.keySet()) {
+            Field field = FieldUtils.getFieldByName(existingCourse.getClass(), fieldName);
+            try {
+                field.set(existingCourse, entry.get(fieldName));
+                Map<String, Object> updatedMap = new HashMap<>();
+                updatedMap.put(fieldName, entry.get(fieldName));
+                courseRepository.updateToDB(id, updatedMap);
+            } catch (IllegalAccessException | IllegalArgumentException | SQLException e) {
+                throw new EventException(e);
+            }
+        }
+    }
+
+    public void updateOrDeleteCourseFromConsoleCustomize() {
+        if (courseList.isEmpty()) {
+            System.out.println("Please create new course ^^");
+            return;
+        }
+        while (true) {
+            try {
+                String id = GlobalUtils.getValue("Enter id for update: ", "Cannot be left blank");
+                Course course;
+                if (!ObjectUtils.validID(id)) {
+                    System.out.println("Id must be in correct form: CByyyy");
+                } else if ((course = findById(id)) != null) {
+                    System.out.println(course.getInfo());
+                    String[] editMenuOptions = FieldUtils.getEditOptions(course.getClass());
+                    for (int i = 0; i < editMenuOptions.length; i++) {
+                        System.out.println((i + 1) + ". " + editMenuOptions[i]);
+                    }
+                    while (true) {
+                        int selection = GlobalUtils.getInteger("Enter selection: ", "Please enter a valid option!");
+                        if (selection == editMenuOptions.length - 1) {
+                            try {
+                                delete(course.getCourseId());
+                            } catch (EventException e) {
+                                throw new RuntimeException(e);
+                            }
+                            System.out.println("Delete successfully");
+                            return;
+                        } else if (selection == editMenuOptions.length) {
+                            return;
+                        }
+                        while (true) {
+                            try {
+                                String newValue = GlobalUtils.getValue("Enter new value: ", "Cannot be blank");
+                                update(id, FieldUtils.getFieldValueByName(course, editMenuOptions[selection - 1], newValue));
+                                System.out.println("Update successfully");
+                                break;
+                            } catch (Exception ex) {
+                                System.out.println(ex.getMessage());
+                            }
+                        }
+                    }
+                }
+            } catch (NotFoundException ex) {
+                System.err.println(ex.getMessage());
+            }
         }
     }
 

@@ -13,19 +13,17 @@ public class CourseComboRepository implements ICourseComboRepository {
     public static final String Sales_Column = "Sales";
     private static final List<String> COURSECOMBOMODELCOLUMN = new ArrayList<>(Arrays.asList(ComboID_Column, ComboName_Column, Sales_Column));
 
-    private static Connection connectToSQLServer() {
-        var user = "minh";
-        var password = "Minh@1807";
-        var url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=FitnessCourse;encrypt=true";
+    private final Connection conn = SQLServerConnection.getConnection();
 
-        Connection conn = null;
+    public static void main(String[] args) {
+        CourseComboRepository courseComboRepository = new CourseComboRepository();
         try {
-            conn = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to SQL Server successfully!");
+            for (String row : courseComboRepository.getMany()){
+                System.out.println(row);
+            }
         } catch (SQLException e) {
-            System.err.println("Connection to SQL Server failed: " + e.getMessage());
+            throw new RuntimeException(e);
         }
-        return conn;
     }
 
     @Override
@@ -57,34 +55,34 @@ public class CourseComboRepository implements ICourseComboRepository {
     }
 
     @Override
-    public void insert(CourseCombo entry) throws SQLException {
+    public void insertToDB(CourseCombo entry) throws SQLException {
         Map<String, String> entries = new HashMap<>();
         try {
             entries.put(ComboID_Column, entry.getComboId());
             entries.put(ComboName_Column, entry.getComboName());
             entries.put(Sales_Column, String.valueOf(entry.getSales()));
-            insert((CourseCombo) entries);
+            insertOne(entries);
         } catch (SQLException e) {
             throw new SQLException(e);
         }
     }
 
     @Override
-    public void update(CourseCombo entry) throws SQLException {
+    public void updateToDB(String id, Map<String, Object> entry) throws SQLException {
         Map<String, String> entries = new HashMap<>();
-        try {
-            entries.put(ComboName_Column, entry.getComboName());
-            entries.put(Sales_Column, String.valueOf(entry.getSales()));
-            update(entry);
-        } catch (SQLException e) {
-            throw new SQLException(e);
+        for (String column : entry.keySet()) {
+            if (COURSECOMBOMODELCOLUMN.contains(column)) {
+                entries.put(column, String.valueOf(entry.get(column)));
+            }
         }
+        updateOne(id, entries);
     }
 
+
     @Override
-    public void delete(CourseCombo entry) throws SQLException {
+    public void deleteToDB(String ID) throws SQLException {
         try {
-            deleteOne(entry.getComboId());
+            deleteOne(ID);
         } catch (SQLException e) {
             throw new SQLException(e);
         }
@@ -95,7 +93,7 @@ public class CourseComboRepository implements ICourseComboRepository {
         List<String> list = new ArrayList<>();
         try {
             StringBuilder row = new StringBuilder();
-            Statement stmt = connectToSQLServer().createStatement();
+            Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT cb.ComboId, cb.ComboName, cb.Sale FROM CourseComboModel cb");
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
@@ -129,7 +127,7 @@ public class CourseComboRepository implements ICourseComboRepository {
         courseComboQuery = courseComboQuery.replace("Y", modelValue).replace("X", modelColumn);
 
         try {
-            PreparedStatement ps = connectToSQLServer().prepareStatement(courseComboQuery);
+            PreparedStatement ps = conn.prepareStatement(courseComboQuery);
             int i = 1;
             for (String column : entries.keySet()) {
                 if (COURSECOMBOMODELCOLUMN.contains(column)) {
@@ -156,7 +154,7 @@ public class CourseComboRepository implements ICourseComboRepository {
         query = query.replace("X", modelColumn.toString());
 
         try {
-            PreparedStatement ps = connectToSQLServer().prepareStatement(query);
+            PreparedStatement ps = conn.prepareStatement(query);
             int i = 1;
             for (String column : entries.keySet()) {
                 if (COURSECOMBOMODELCOLUMN.contains(column)) {
@@ -174,7 +172,7 @@ public class CourseComboRepository implements ICourseComboRepository {
     public void deleteOne(String ID) throws SQLException {
         String query = "DELETE FROM CourseComboModel WHERE ComboID = ?";
         try {
-            PreparedStatement ps = connectToSQLServer().prepareStatement(query);
+            PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, ID);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -182,4 +180,3 @@ public class CourseComboRepository implements ICourseComboRepository {
         }
     }
 }
-

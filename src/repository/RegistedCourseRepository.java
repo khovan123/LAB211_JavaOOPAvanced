@@ -65,33 +65,18 @@ public class RegistedCourseRepository implements IRegistedCourseRepository {
 
     @Override
     public void updateToDB(String id, Map<String, Object> entry) throws SQLException {
-        Map<String, Object> entryMap = new HashMap<>();
-        entryMap.put(RegisteredCourseID_Column, entry.getRegisteredCourseID());
-        entryMap.put(RegisteredDate_Column, entry.getRegisteredDate());
-        entryMap.put(FinishRegisteredDate_Column, entry.getFinishRegisteredDate());
-        entryMap.put(CourseID_Column, entry.getCourseID());
-        entryMap.put(UserID_Column, entry.getUserID());
-        updateToDB(entry.getRegisteredCourseID(), entryMap);
+        Map<String, String> entries = new HashMap<>();
+        for (String column : entry.keySet()) {
+            if (REGISTEREDCOURSE_COLUMNS.contains(column)) {
+                entries.put(column, String.valueOf(entry.get(column)));
+            }
+        }
+        updateOne(id, entries);
     }
 
     @Override
     public void deleteToDB(String ID) throws SQLException {
         deleteOne(ID);
-    }
-
-    @Override
-    public void insert(RegisteredCourse entry) throws SQLException {
-        insertToDB(entry);
-    }
-
-    @Override
-    public void update(RegisteredCourse entry) throws SQLException {
-
-    }
-
-    @Override
-    public void delete(RegisteredCourse entry) throws SQLException {
-        deleteToDB(entry.getRegisteredCourseID());
     }
 
     @Override
