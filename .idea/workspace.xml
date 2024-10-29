@@ -4,6 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
+    <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="" />
+=======
     <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/FitnessCourseManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/FitnessCourseManagement.java" afterDir="false" />
@@ -18,6 +21,7 @@
       <change beforePath="$PROJECT_DIR$/src/repository/CourseComboRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/CourseComboRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/repository/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/CourseRepository.java" afterDir="false" />
     </list>
+>>>>>>> 5e753a6c8cdc761536c8152efa7f984d1242fca9
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -54,6 +58,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;duyen&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/FPT/Semester_III/LAB211/ResortManagement&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.appearance&quot;
+  }
+}</component>
+=======
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.CourseComboRepository.executor": "Run",
@@ -103,6 +121,7 @@
       <method v="2" />
     </configuration>
   </component>
+>>>>>>> 5e753a6c8cdc761536c8152efa7f984d1242fca9
   <component name="RunManager" selected="Application.CourseRepository">
     <configuration name="CourseComboRepository" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="repository.CourseComboRepository" />
@@ -184,45 +203,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1729569624839</updated>
-      <workItem from="1729728527679" duration="8581000" />
-      <workItem from="1729737802679" duration="5813000" />
-      <workItem from="1729743940940" duration="57000" />
-      <workItem from="1729744055062" duration="97000" />
-      <workItem from="1729762248316" duration="3790000" />
-      <workItem from="1729816982016" duration="5022000" />
-      <workItem from="1729826744696" duration="103000" />
-      <workItem from="1729826854718" duration="2242000" />
-      <workItem from="1729865489827" duration="12000" />
-      <workItem from="1730029024068" duration="67000" />
-      <workItem from="1730029099918" duration="371000" />
-      <workItem from="1730029481330" duration="6542000" />
-      <workItem from="1730036467963" duration="3957000" />
-      <workItem from="1730045484926" duration="24000" />
-      <workItem from="1730045519348" duration="7907000" />
-      <workItem from="1730102635152" duration="161000" />
-      <workItem from="1730102813742" duration="17182000" />
-      <workItem from="1730141145165" duration="4210000" />
-      <workItem from="1730166525354" duration="738000" />
-      <workItem from="1730169107778" duration="1831000" />
-      <workItem from="1730170966422" duration="5807000" />
-      <workItem from="1730198331790" duration="6647000" />
-      <workItem from="1730207072844" duration="10165000" />
     </task>
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="LAST_COMMIT_MESSAGE" value="" />

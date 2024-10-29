@@ -1,19 +1,28 @@
 package model;
 
 import exception.InvalidDataException;
+
+import java.util.TreeSet;
+
 import service.PracticalDayService;
+import utils.ObjectUtils;
 
 import java.util.TreeSet;
 
 public class Schedule {
-
+    private String scheduleId;
     private String userProgressId;
-    private PracticalDayService practicalDayService;
 
-    public Schedule(String userProgressId, TreeSet<PracticalDay> practicalDayTreeSet) {
+    public Schedule(String scheduleId, String userProgressId) throws InvalidDataException {
+        this.scheduleId = scheduleId;
         this.userProgressId = userProgressId;
-        this.practicalDayService = new PracticalDayService(practicalDayTreeSet);
+        this.runValidate();
     }
+
+    public Schedule() {
+       
+    }
+
     public String getUserProgressId() {
         return userProgressId;
     }
@@ -30,17 +39,17 @@ public class Schedule {
         this.userProgressId = userProgressId;
     }
 
-    public PracticalDayService getPracticalDayService() {
-        return practicalDayService;
-    }
 
     public String getInfo() {
-        return String.format("");
+        return String.format("%s\t%s\t%s", scheduleId, userProgressId);
     }
 
     public void runValidate() throws InvalidDataException {
-        if (userProgressId == null || userProgressId.isEmpty()) {
-            throw new InvalidDataException("User Progress ID cannot be null or empty.");
+        if (!ObjectUtils.validCodeSchedule(scheduleId)){
+            throw new InvalidDataException("Schedule ID must be RCYYY with YYY are numbers");
+        }
+        if (!ObjectUtils.validCodeUserProgress(userProgressId)){
+            throw new InvalidDataException("UserProgress ID must be UPYYY with YYY are numbers");
         }
     }
 
