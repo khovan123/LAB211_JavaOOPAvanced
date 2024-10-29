@@ -13,9 +13,10 @@ public class Nutrition {
     public Nutrition() {
     }
   
-    public Nutrition(String nutritionId, String calories) {
+    public Nutrition(String nutritionId, String calories) throws InvalidDataException {
         this.nutritionId = nutritionId;
         this.setCalories(calories);
+        this.runValidate();
     }
 
     public String getNutritionId() {

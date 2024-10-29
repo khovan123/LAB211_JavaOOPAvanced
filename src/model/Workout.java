@@ -16,13 +16,14 @@ public class Workout {
         this.workoutId = workoutId;
     }
 
-    public Workout(String workoutId, String workoutName, String repetition, String sets, String duration, String courseId) {
+    public Workout(String workoutId, String workoutName, String repetition, String sets, String duration, String courseId) throws InvalidDataException {
         this.workoutId = workoutId;
         this.workoutName = workoutName;
         this.setRepetition(repetition);
         this.setSets(sets);
         this.setDuration(duration);
         this.courseId = courseId;
+        this.runValidate();
     }
 
     public String getWorkoutId() {

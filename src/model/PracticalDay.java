@@ -18,6 +18,7 @@ public class PracticalDay implements Comparator<PracticalDay> {
         this.practicalDayId = practicalDayId;
         this.setPracticeDate(practiceDate);
         this.scheduleId = scheduleId;
+        this.runValidate();
     }
 
     public String getPracticalDayId() {
