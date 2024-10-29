@@ -1,22 +1,21 @@
 package controller;
 
 import exception.*;
-import model.Coach;
-import model.PracticalDay;
-import model.User;
-import model.Workout;
-import model.Course;
-import model.CourseCombo;
+import jdk.jfr.Event;
+import model.*;
 import model.Workout;
 import repository.*;
 import service.*;
 import utils.FieldUtils;
+import utils.GettingUtils;
 import utils.GlobalUtils;
 import utils.ObjectUtils;
 import utils.GlobalUtils;
 import view.Menu;
 
 import java.util.Map;
+
+import utils.GettingUtils;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -60,19 +59,31 @@ public class FitnessCourseManagement extends Menu<String> {
                 this.runAdminMenu();
             }
             case 2 -> {
-                try {
-                    verifyCoach("1");
-                    this.runCoachMenu();
-                } catch (VerifyFailedException e) {
-                    System.err.println(e.getMessage());
+                while (true) {
+                    try {
+                        String coachId = GlobalUtils.getValidatedInput("Enter CoachID for update or delete: ",
+                                "CoachID cannot be null, empty, or whitespace.",
+                                input -> input != null && !input.trim().isEmpty());
+                        verifyCoach(coachId);
+                        this.runCoachMenu();
+                        break;
+                    } catch (VerifyFailedException e) {
+                        System.err.println(e.getMessage());
+                    }
                 }
             }
             case 3 -> {
-                try {
-                    verifyUser("1");
-                    this.runUserMenu();
-                } catch (VerifyFailedException e) {
-                    System.err.println(e.getMessage());
+                while (true) {
+                    try {
+                        String userId = GlobalUtils.getValidatedInput("Enter UserID for update or delete: ",
+                                "UserID cannot be null, empty, or whitespace.",
+                                input -> input != null && !input.trim().isEmpty());
+                        verifyUser(userId);
+                        this.runUserMenu();
+                        break;
+                    } catch (VerifyFailedException e) {
+                        System.err.println(e.getMessage());
+                    }
                 }
             }
             case 4 -> {
@@ -82,11 +93,19 @@ public class FitnessCourseManagement extends Menu<String> {
     }
 
     public void verifyCoach(String coachID) throws VerifyFailedException {
-
+        try {
+            coachService.findById(coachID);
+        } catch (NotFoundException e) {
+            throw new VerifyFailedException("Verify failed!!!");
+        }
     }
 
     public void verifyUser(String userID) throws VerifyFailedException {
-
+        try {
+            userService.findById(userID);
+        } catch (NotFoundException e) {
+            throw new VerifyFailedException("Verify failed!!!");
+        }
     }
 //----------------------------------------------------------start main menu-----------------------------------------------------
 
@@ -102,7 +121,7 @@ public class FitnessCourseManagement extends Menu<String> {
             public void execute(int selection) {
                 switch (selection) {
                     case 1 -> {
-                        
+
                     }
                     case 2 -> {
 
@@ -155,7 +174,7 @@ public class FitnessCourseManagement extends Menu<String> {
 
                     }
                     case 6 -> {
-                        courseService.updateOrDeleteCourseFromConsoleCustomize();
+                        updateOrDeleteCourseFromConsoleCustomize();
                     }
                     case 7 -> {
                         exitMenu();
@@ -209,17 +228,15 @@ public class FitnessCourseManagement extends Menu<String> {
         }
     }
 
-    private Workout getWorkoutDetails() {
+    private Workout getWorkoutDetails() throws InvalidDataException {
         String workoutId = GlobalUtils.getValue("Workout ID: ", "Cannot be left blank");
         String workoutName = GlobalUtils.getValue("Workout Name: ", "Cannot be left blank");
-        String description = GlobalUtils.getValue("Description: ", "Cannot be left blank");
         String repetition = GlobalUtils.getValue("Repetition: ", "Cannot be left blank");
         String sets = GlobalUtils.getValue("Sets: ", "Cannot be left blank");
         String duration = GlobalUtils.getValue("Duration: ", "Cannot be left blank");
-        String done = GlobalUtils.getValue("Done (true/false): ", "Cannot be left blank");
         String courseId = GlobalUtils.getValue("Course Segment ID: ", "Cannot be left blank");
 
-        return new Workout(workoutId, workoutName, description, repetition, sets, duration, done, courseId);
+        return new Workout(workoutId, workoutName, repetition, sets, duration, courseId);
     }
 
     //before run UserMenu, request enter ID
@@ -286,9 +303,11 @@ public class FitnessCourseManagement extends Menu<String> {
                     }
                     case 2 -> {
                         try {
+                            System.out.println("Create new user");
+                            String userID = GettingUtils.getID("Enter user ID: ", "ID must be UXXXX", "U[0-9]{4}");
+                            String fullName = GettingUtils.getName("Enter full name: ", "Full Name must be letters");
                             User user = new User();
-                            userService.add(user);
-                        } catch (EventException | InvalidDataException e) {
+                        } catch (Exception e) {
                             System.err.println(e);
                         }
                     }
@@ -320,7 +339,7 @@ public class FitnessCourseManagement extends Menu<String> {
                         try {
                             Coach coach = new Coach();
                             coachService.display();
-                        } catch (EmptyDataException e){
+                        } catch (EmptyDataException e) {
                             System.err.println(e);
                         }
                     }
@@ -368,7 +387,7 @@ public class FitnessCourseManagement extends Menu<String> {
                         createNewComboFromConsole();
                     }
                     case 3 -> {
-                        courseComboService.updateOrDeleteCourseComboFromConsoleCustomize();
+                        updateOrDeleteCourseComboFromConsoleCustomize();
                     }
                     case 4 -> {
                         createNewComboForCourseFromConsole();
@@ -381,6 +400,54 @@ public class FitnessCourseManagement extends Menu<String> {
         };
         courseComboMenu.exitMenu();
         continueExecution = true;
+    }
+
+    public void updateOrDeleteCourseComboFromConsoleCustomize() {
+        if (courseComboService.getCourseComboList().isEmpty()) {
+            System.out.println("Please create new course combo ^^");
+            return;
+        }
+        while (true) {
+            try {
+                String id = GlobalUtils.getValue("Enter id for update: ", "Cannot be left blank");
+                CourseCombo courseCombo;
+                if (!ObjectUtils.valideCourseComboID(String.valueOf(id))) {
+                    System.out.println("Id must be correct form: CByyyy");
+                } else if ((courseCombo = courseComboService.findById(String.valueOf(id))) != null) {
+                    System.out.println(courseCombo.getInfo());
+                    String[] editMenuOptions = FieldUtils.getEditOptions(courseCombo.getClass());
+                    for (int i = 0; i < editMenuOptions.length; i++) {
+                        System.out.println((i + 1) + ". " + editMenuOptions[i]);
+                    }
+                    while (true) {
+                        int selection = GettingUtils.getInteger("Enter selection: ", "Please enter a valid option!");
+                        if (selection == editMenuOptions.length - 1) {
+                            try {
+                                courseComboService.delete(courseCombo.getComboId());
+                            } catch (EventException e) {
+                                throw new RuntimeException(e);
+                            }
+                            System.out.println("Delete successfully");
+                            return;
+                        } else if (selection == editMenuOptions.length) {
+                            return;
+                        }
+                        while (true) {
+                            try {
+                                String newValue = GlobalUtils.getValue("Enter new value: ", "Cannot be blank");
+                                courseComboService.update(id, FieldUtils.getFieldValueByName(courseCombo, editMenuOptions[selection - 1], newValue));
+                                System.out.println("Update successfully");
+                                break;
+                            } catch (Exception ex) {
+                                System.out.println("An error occurred.");
+                            }
+                        }
+                    }
+                }
+            } catch (NotFoundException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
     }
 
     private void createNewComboFromConsole() {
@@ -428,6 +495,53 @@ public class FitnessCourseManagement extends Menu<String> {
         }
     }
 
+    public void updateOrDeleteCourseFromConsoleCustomize() {
+        if (courseService.getCourseList().isEmpty()) {
+            System.out.println("Please create new course ^^");
+            return;
+        }
+        while (true) {
+            try {
+                String id = GlobalUtils.getValue("Enter id for update: ", "Cannot be left blank");
+                Course course;
+                if (!ObjectUtils.validCourseID(id)) {
+                    System.out.println("Id must be in correct form: CByyyy");
+                } else if ((course = courseService.findById(id)) != null) {
+                    System.out.println(course.getInfo());
+                    String[] editMenuOptions = FieldUtils.getEditOptions(course.getClass());
+                    for (int i = 0; i < editMenuOptions.length; i++) {
+                        System.out.println((i + 1) + ". " + editMenuOptions[i]);
+                    }
+                    while (true) {
+                        int selection = GettingUtils.getInteger("Enter selection: ", "Please enter a valid option!");
+                        if (selection == editMenuOptions.length - 1) {
+                            try {
+                                courseService.delete(course.getCourseId());
+                            } catch (EventException e) {
+                                throw new RuntimeException(e);
+                            }
+                            System.out.println("Delete successfully");
+                            return;
+                        } else if (selection == editMenuOptions.length) {
+                            return;
+                        }
+                        while (true) {
+                            try {
+                                String newValue = GlobalUtils.getValue("Enter new value: ", "Cannot be blank");
+                                courseService.update(id, FieldUtils.getFieldValueByName(course, editMenuOptions[selection - 1], newValue));
+                                System.out.println("Update successfully");
+                                break;
+                            } catch (Exception ex) {
+                                System.out.println("An error occurred.");
+                            }
+                        }
+                    }
+                }
+            } catch (NotFoundException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
+    }
     //----------------------------------------------------------end admin menu-----------------------------------------------------
 //----------------------------------------------------------start coach menu---------------------------------------------------
 //----------------------------------------------------------end coach menu-----------------------------------------------------
@@ -447,7 +561,7 @@ public class FitnessCourseManagement extends Menu<String> {
             try {
                 String id = GlobalUtils.getValue("Enter id for update: ", "Cannot leave blank");
                 PracticalDay practicalDay;
-                if (!ObjectUtils.validID(id)) {
+                if (!ObjectUtils.validCodePracticalDay(id)) {
                     System.out.println("Id must be in correct form.");
                 } else if ((practicalDay = practicalDayService.findById(id)) != null) {
                     System.out.println(practicalDay.getInfo());
@@ -456,7 +570,7 @@ public class FitnessCourseManagement extends Menu<String> {
                         System.out.println((i + 1) + ". " + editMenuOptions[i]);
                     }
                     while (true) {
-                        int selection = GlobalUtils.getInteger("Enter selection: ", "Please enter a valid option!");
+                        int selection = GettingUtils.getInteger("Enter selection: ", "Please enter a valid option!");
                         if (selection == editMenuOptions.length - 1) {
                             try {
                                 practicalDayService.delete(practicalDay.getPracticalDayId());
@@ -496,7 +610,7 @@ public class FitnessCourseManagement extends Menu<String> {
             try {
                 String id = GlobalUtils.getValue("Enter id for update: ", "Cannot leave blank");
                 Workout workout;
-                if (!ObjectUtils.validID(id)) {
+                if (!ObjectUtils.validCodeWorkout(id)) {
                     System.out.println("Id must be in correct form.");
                 } else if ((workout = workoutService.findById(id)) != null) {
                     System.out.println(workout.getInfo());
@@ -505,7 +619,7 @@ public class FitnessCourseManagement extends Menu<String> {
                         System.out.println((i + 1) + ". " + editMenuOptions[i]);
                     }
                     while (true) {
-                        int selection = GlobalUtils.getInteger("Enter selection: ", "Please enter a valid option!");
+                        int selection = GettingUtils.getInteger("Enter selection: ", "Please enter a valid option!");
                         if (selection == editMenuOptions.length - 1) {
                             try {
                                 workoutService.delete(workout.getWorkoutId());

@@ -74,7 +74,7 @@ public class Course {
     public String getInfo() {
         return String.format(
                 "%s, %s, %b, %s, %.2f, %s, %s",
-                courseId, courseName, addventor, GlobalUtils.getDateString(generateDate), price, comboID, coachId
+                courseId, courseName, addventor, GlobalUtils.dateFormat(generateDate), price, comboID, coachId
         );
     }
 
@@ -100,7 +100,7 @@ public class Course {
 
     public void setGenerateDate(String generateDate) throws InvalidDataException {
         try {
-            this.generateDate = GlobalUtils.getDate(generateDate);
+            this.generateDate = GlobalUtils.dateParse(generateDate);
             if (this.generateDate == null) throw new ParseException("", 0);
         } catch (ParseException e) {
             throw new InvalidDataException("-> Generate Date Must Be In Format dd/MM/yyyy.");

@@ -29,6 +29,10 @@ public class RegistedCourseService implements IRegistedCourseService {
         readFromDataBase();
     }
 
+    public List<RegisteredCourse> getRegisteredCourseList(){
+        return registeredCourseList;
+    }
+
     public void readFromDataBase() {
         try {
             registeredCourseList.addAll(registedCourseRepository.readData());
@@ -125,7 +129,7 @@ public class RegistedCourseService implements IRegistedCourseService {
             try {
                 String id = GlobalUtils.getValue("Enter id for update: ", "Cannot be left blank");
                 RegisteredCourse registeredCourse;
-                if (!ObjectUtils.validID(id)) {
+                if (!ObjectUtils.validCourseRegistedID(id)) {
                     System.out.println("Id must be in correct form: CByyyy");
                 } else if ((registeredCourse = findById(id)) != null) {
                     System.out.println(registeredCourse.getInfo());

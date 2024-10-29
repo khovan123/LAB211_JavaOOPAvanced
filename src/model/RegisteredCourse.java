@@ -49,7 +49,7 @@ public class RegisteredCourse {
 
     public String getInfo() {
         return String.format("%s, %s, %s, %s, %s",
-                registeredCourseID, GlobalUtils.getDateString(registeredDate), GlobalUtils.getDateString(finishRegisteredDate), courseID, userID
+                registeredCourseID, GlobalUtils.dateFormat(registeredDate), GlobalUtils.dateFormat(finishRegisteredDate), courseID, userID
         );
     }
 
@@ -59,11 +59,11 @@ public class RegisteredCourse {
     }
 
     public void setRegisteredDate(String registeredDate) throws InvalidDataException {
-        this.registeredDate = GlobalUtils.getDate(registeredDate);
+        this.registeredDate = GlobalUtils.dateParse(registeredDate);
     }
 
     public void setFinishRegisteredDate(String finishRegisteredDate) throws InvalidDataException {
-        this.finishRegisteredDate = GlobalUtils.getDate(finishRegisteredDate);
+        this.finishRegisteredDate = GlobalUtils.dateParse(finishRegisteredDate);
     }
 
     public void setCourseID(String courseID) {

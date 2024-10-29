@@ -28,6 +28,10 @@ public class CourseService implements ICourseService {
         readFromDatabase();
     }
 
+    public List<Course> getCourseList(){
+        return courseList;
+    }
+
     public CourseService(List<Course> courseList) {
         this.courseList = courseList;
         readFromDatabase();
@@ -123,53 +127,7 @@ public class CourseService implements ICourseService {
         }
     }
 
-    public void updateOrDeleteCourseFromConsoleCustomize() {
-        if (courseList.isEmpty()) {
-            System.out.println("Please create new course ^^");
-            return;
-        }
-        while (true) {
-            try {
-                String id = GlobalUtils.getValue("Enter id for update: ", "Cannot be left blank");
-                Course course;
-                if (!ObjectUtils.validID(id)) {
-                    System.out.println("Id must be in correct form: CByyyy");
-                } else if ((course = findById(id)) != null) {
-                    System.out.println(course.getInfo());
-                    String[] editMenuOptions = FieldUtils.getEditOptions(course.getClass());
-                    for (int i = 0; i < editMenuOptions.length; i++) {
-                        System.out.println((i + 1) + ". " + editMenuOptions[i]);
-                    }
-                    while (true) {
-                        int selection = GettingUtils.getInteger("Enter selection: ", "Please enter a valid option!");
-                        if (selection == editMenuOptions.length - 1) {
-                            try {
-                                delete(course.getCourseId());
-                            } catch (EventException e) {
-                                throw new RuntimeException(e);
-                            }
-                            System.out.println("Delete successfully");
-                            return;
-                        } else if (selection == editMenuOptions.length) {
-                            return;
-                        }
-                        while (true) {
-                            try {
-                                String newValue = GlobalUtils.getValue("Enter new value: ", "Cannot be blank");
-                                update(id, FieldUtils.getFieldValueByName(course, editMenuOptions[selection - 1], newValue));
-                                System.out.println("Update successfully");
-                                break;
-                            } catch (Exception ex) {
-                                System.out.println("An error occurred.");
-                            }
-                        }
-                    }
-                }
-            } catch (NotFoundException ex) {
-                System.err.println(ex.getMessage());
-            }
-        }
-    }
+
 
     @Override
     public Course search(Predicate<Course> p) throws NotFoundException {

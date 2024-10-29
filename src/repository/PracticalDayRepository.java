@@ -1,17 +1,14 @@
 package repository;
 
 import exception.IOException;
-
 import java.io.*;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
 
 import exception.InvalidDataException;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import model.PracticalDay;
 import repository.interfaces.IPracticalDayRepository;
 import utils.GlobalUtils;
@@ -78,15 +75,12 @@ public class PracticalDayRepository implements IPracticalDayRepository {
     }
 
     @Override
-    public void updateToDB(String id, Map<String, Object> entry) throws SQLException {
-        Map<String, String> entries = new HashMap<>();
-        if (entry.containsKey(PracticeDate_Column)) {
-            entries.put(PracticeDate_Column, GlobalUtils.dateFormat((Date) entry.get(PracticeDate_Column)));
-        }
-        if (entry.containsKey(ScheduleID_Column)) {
-            entries.put(ScheduleID_Column, (String) entry.get(ScheduleID_Column));
-        }
-        updateOne(id, entries);
+    public void updateToDB(String id, Map<String, Object> practicalDay) throws SQLException {
+        Map<String, String> practicalDayMap = new HashMap<>();
+       for(String column : practicalDayMap.keySet()){
+           practicalDayMap.putIfAbsent(column,GlobalUtils.convertToString(practicalDay.get(column)));
+       }
+        updateOne(id, practicalDayMap);
     }
 
     @Override
@@ -115,32 +109,32 @@ public class PracticalDayRepository implements IPracticalDayRepository {
             throw new SQLException(e);
         }
     }
-
+    
     public String getOne(String practicalDayID) throws SQLException {
-        String query = "SELECT PracticalDayID, PracticalDate, ScheduleID FROM PracticalDayModel WHERE PracticalDayID = ?";
-        StringBuilder result = new StringBuilder();
+    String query = "SELECT PracticalDayID, PracticalDate, ScheduleID FROM PracticalDayModel WHERE PracticalDayID = ?";
+    StringBuilder result = new StringBuilder();
 
-        try (PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setString(1, practicalDayID);
-            try (ResultSet rs = ps.executeQuery()) {
-                ResultSetMetaData metaData = rs.getMetaData();
-                int columnCount = metaData.getColumnCount();
-
-                // Nếu tìm thấy bản ghi
-                if (rs.next()) {
-                    for (int i = 1; i <= columnCount; i++) {
-                        result.append(rs.getString(i)).append(i < columnCount ? ", " : "");
-                    }
-                } else {
-                    throw new SQLException("No Practical Day found with ID: " + practicalDayID);
+    try (PreparedStatement ps = conn.prepareStatement(query)) {
+        ps.setString(1, practicalDayID);
+        try (ResultSet rs = ps.executeQuery()) {
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            
+            // Nếu tìm thấy bản ghi
+            if (rs.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    result.append(rs.getString(i)).append(i < columnCount ? ", " : "");
                 }
+            } else {
+                throw new SQLException("No Practical Day found with ID: " + practicalDayID);
             }
-        } catch (SQLException e) {
-            throw new SQLException("Failed to retrieve Practical Day: " + e.getMessage());
         }
-
-        return result.toString();
+    } catch (SQLException e) {
+        throw new SQLException("Failed to retrieve Practical Day: " + e.getMessage());
     }
+
+    return result.toString();
+}
 
     @Override
     public void insertOne(Map<String, String> entries) throws SQLException {

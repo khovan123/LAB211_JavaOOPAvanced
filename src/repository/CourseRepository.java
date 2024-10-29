@@ -48,7 +48,7 @@ public class CourseRepository implements ICourseRepository {
         try {
             for (String row : getMany()) {
                 String[] col = row.split(", ");
-                if (col.length == 15) {
+                if (col.length == 14) {
                     List<Workout> workoutList = new ArrayList<>();
                     try {
                         Workout workout = new Workout(
@@ -57,8 +57,6 @@ public class CourseRepository implements ICourseRepository {
                                 col[10].trim(),
                                 col[11].trim(),
                                 col[12].trim(),
-                                col[13].trim(),
-                                col[14].trim(),
                                 col[0].trim()
                         );
                         workout.runValidate();

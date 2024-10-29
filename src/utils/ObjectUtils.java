@@ -26,6 +26,7 @@ public class ObjectUtils {
         return code.matches("^SD[0-9]{3}");
     }
 
+
     public static boolean validCodeWorkout(String code) {
         return code.matches("^WK[0-9]{3}");
     }

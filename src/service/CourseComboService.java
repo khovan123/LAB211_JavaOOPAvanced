@@ -27,6 +27,10 @@ public class CourseComboService implements ICourseComboService {
         readFromDataBase();
     }
 
+    public List<CourseCombo> getCourseComboList(){
+        return courseComboList;
+    }
+
     public CourseComboService(List<CourseCombo> courseComboList) {
         this.courseComboList = courseComboList;
         readFromDataBase();
@@ -117,53 +121,7 @@ public class CourseComboService implements ICourseComboService {
         }
     }
 
-    public void updateOrDeleteCourseComboFromConsoleCustomize() {
-        if (courseComboList.isEmpty()) {
-            System.out.println("Please create new course combo ^^");
-            return;
-        }
-        while (true) {
-            try {
-                int id = GettingUtils.getInteger("Enter id for update: ", "Cannot be left blank");
-                CourseCombo courseCombo;
-                if (!ObjectUtils.validID(id)) {
-                    System.out.println("Id must be correct form: CByyyy");
-                } else if ((courseCombo = findById(id)) != null) {
-                    System.out.println(courseCombo.getInfo());
-                    String[] editMenuOptions = FieldUtils.getEditOptions(courseCombo.getClass());
-                    for (int i = 0; i < editMenuOptions.length; i++) {
-                        System.out.println((i + 1) + ". " + editMenuOptions[i]);
-                    }
-                    while (true) {
-                        int selection = GlobalUtils.getInteger("Enter selection: ", "Please enter a valid option!");
-                        if (selection == editMenuOptions.length - 1) {
-                            try {
-                                delete(courseCombo.getComboId());
-                            } catch (EventException e) {
-                                throw new RuntimeException(e);
-                            }
-                            System.out.println("Delete successfully");
-                            return;
-                        } else if (selection == editMenuOptions.length) {
-                            return;
-                        }
-                        while (true) {
-                            try {
-                                String newValue = GlobalUtils.getValue("Enter new value: ", "Cannot be blank");
-                                update(id, FieldUtils.getFieldValueByName(courseCombo, editMenuOptions[selection - 1], newValue));
-                                System.out.println("Update successfully");
-                                break;
-                            } catch (Exception ex) {
-                                System.out.println("An error occurred.");
-                            }
-                        }
-                    }
-                }
-            } catch (NotFoundException ex) {
-                System.err.println(ex.getMessage());
-            }
-        }
-    }
+
 
     @Override
     public CourseCombo search(Predicate<CourseCombo> p) throws NotFoundException {
