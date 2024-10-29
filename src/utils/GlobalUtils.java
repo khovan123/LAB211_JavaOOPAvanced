@@ -6,7 +6,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
-import java.util.function.Predicate;
 
 public class GlobalUtils {
 
@@ -24,28 +23,8 @@ public class GlobalUtils {
 
     }
 
-    public static String getDouble(String label, String messageError) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public static Date getDate(String date) throws InvalidDataException {
-        try {
-            return sdf.parse(date);
-        } catch (ParseException e) {
-            throw new InvalidDataException("Date must be dd/MM/yyyy");
-        }
-    }
-
-    public static String getDateString(Date date) {
-        return sdf.format(date);
-    }
-
-    public static int getInteger(String label, String messageError) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
     public static String dateFormat(Date date) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return sdf.format(date);
     }
 
     public static Date dateParse(String dateString) throws InvalidDataException {

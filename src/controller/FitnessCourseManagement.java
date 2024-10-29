@@ -1,7 +1,6 @@
 package controller;
 
 import exception.*;
-import jdk.jfr.Event;
 import model.Coach;
 import model.PracticalDay;
 import model.User;
@@ -103,7 +102,7 @@ public class FitnessCourseManagement extends Menu<String> {
             public void execute(int selection) {
                 switch (selection) {
                     case 1 -> {
-
+                        
                     }
                     case 2 -> {
 
