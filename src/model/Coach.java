@@ -1,49 +1,45 @@
 package model;
 
 import exception.InvalidDataException;
+import utils.GlobalUtils;
+import utils.ObjectUtils;
 
-public class Coach {
+public class Coach extends Person {
 
-    private String coachId;
-    private String coachName;
+    private String certificate;
 
     public Coach() {
     }
 
-    public Coach(String coachId, String coachName) throws InvalidDataException {
-        this.coachId = coachId;
-        this.coachName = coachName;
+    public Coach(String coachId, String coachName, String DoB, String phone, String certificate) throws InvalidDataException {
+        super(coachId, coachName, DoB, phone);
+        this.certificate = certificate;
         this.runValidate();
     }
 
-    public String getCoachId() {
-        return coachId;
+    public String getCertificate() {
+        return certificate;
     }
 
-    public void setCoachId(String coachId) throws InvalidDataException {
-        this.coachId = coachId;
-        this.runValidate();
+    public void setCertificate(String certificate) {
+        this.certificate = certificate;
     }
 
-    public String getCoachName() {
-        return coachName;
-    }
-
-    public void setCoachName(String coachName) throws InvalidDataException {
-        this.coachName = coachName;
-        this.runValidate();
-    }
-
+    @Override
     public String getInfo() {
-        return String.format("Coach ID: %s, Coach Name: %s", coachId, coachName);
+        return String.format("%s\t%s", super.getInfo(), certificate);
     }
 
+    @Override
     public void runValidate() throws InvalidDataException {
-        if (coachId == null || coachId.isEmpty()) {
-            throw new InvalidDataException("Coach ID is invalid");
+        super.runValidate();
+
+        if (!ObjectUtils.validCoachID(getPersonId())) {
+            throw new InvalidDataException("Coach ID must be CXXXX with XXXX are numbers");
         }
-        if (coachName == null || coachName.isEmpty()) {
-            throw new InvalidDataException("Coach Name is invalid");
+
+        if (!GlobalUtils.validText(certificate)) {
+            throw new InvalidDataException("Certificate must be letters");
         }
     }
 }
