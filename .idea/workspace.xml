@@ -5,45 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/controller/FitnessCourseManagement$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/controller/FitnessCourseManagement.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/exception/InvalidDataException.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/Coach.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/Course.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/CourseCombo.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/Nutrition.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/PracticalDay.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/RegisteredCourse.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/Schedule.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/Workout.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/CourseComboRepository.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/CourseRepository.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/RegistedCourseRepository.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/WorkoutRepository.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/ICourseComboRepository.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/ICourseRepository.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/IRegistedCourseRepository.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/IWorkoutRepository.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/Repository.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/CourseComboService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/CourseService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/PracticalDayService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/RegistedCourseService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/WorkoutService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/ICourseComboService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/ICourseService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/IPracticalDayService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/IRegistedCourseService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/IWorkoutService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/Service.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/repository/interfaces/ISampleCoachRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/service/SampleCoachService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/FieldUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/FitnessCourseManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/FitnessCourseManagement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/CourseComboRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/CourseComboRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/CourseComboService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CourseComboService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/CourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CourseService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/RegistedCourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/RegistedCourseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/exception/EventException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/exception/EventException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/RegistedCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/RegistedCourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/SampleCoachRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/SampleCoachRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/interfaces/Repository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/interfaces/Repository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,31 +50,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.RegistedCourseRepository.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;huy&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Dec/Downloads/ResortManagementSystem&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.RegistedCourseRepository.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "Merging huy",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Dec/Downloads/ResortManagementSystem",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;sqlserver&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlserver"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="RegistedCourseRepository" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="repository.RegistedCourseRepository" />
@@ -164,6 +133,7 @@
       <workItem from="1730169107778" duration="1831000" />
       <workItem from="1730170966422" duration="5807000" />
       <workItem from="1730198331790" duration="6647000" />
+      <workItem from="1730207072844" duration="681000" />
     </task>
     <servers />
   </component>
