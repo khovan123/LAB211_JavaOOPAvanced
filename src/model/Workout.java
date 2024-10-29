@@ -1,31 +1,29 @@
 package model;
 
 import exception.InvalidDataException;
+import utils.ObjectUtils;
 
 public class Workout {
 
     private String workoutId;
     private String workoutName;
-    private String description;
     private int repetition;
     private int sets;
     private int duration;
-    private boolean done;
-    private String courseSegmentId;
+    private String courseId;
 
     public Workout(String workoutId) {
         this.workoutId = workoutId;
     }
 
-    public Workout(String workoutId, String workoutName, String description, String repetition, String sets, String duration, String done, String courseSegmentId) {
+    public Workout(String workoutId, String workoutName, String repetition, String sets, String duration, String courseId) throws InvalidDataException {
         this.workoutId = workoutId;
         this.workoutName = workoutName;
-        this.description = description;
         this.setRepetition(repetition);
         this.setSets(sets);
         this.setDuration(duration);
-        this.setDone(done);
-        this.courseSegmentId = courseSegmentId;
+        this.courseId = courseId;
+        this.runValidate();
     }
 
     public String getWorkoutId() {
@@ -42,14 +40,6 @@ public class Workout {
 
     public void setWorkoutName(String workoutName) {
         this.workoutName = workoutName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public int getRepetition() {
@@ -76,27 +66,30 @@ public class Workout {
         this.duration = Integer.parseInt(duration);
     }
 
-    public boolean isDone() {
-        return done;
+    public String getCourseId() {
+        return courseId;
     }
 
-    public void setDone(String done) {
-        this.done = Boolean.parseBoolean(done);
-    }
-
-    public String getCourseSegmentId() {
-        return courseSegmentId;
-    }
-
-    public void setCourseSegmentId(String courseSegmentId) {
-        this.courseSegmentId = courseSegmentId;
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
     }
 
     public String getInfo() {
-        return String.format("");
+        return String.format("%s\t%s\t%d\t%d\t%d\t%s", getWorkoutId(), getWorkoutName(), getRepetition(), getSets(), getDuration(), getCourseId());
     }
 
     public void runValidate() throws InvalidDataException {
-
+        if(!ObjectUtils.validCodeWorkout(workoutId)){
+            throw new InvalidDataException("Workout ID must be WKYYY with YYY are numbers");
+        }
+        if(!ObjectUtils.validInteger(String.valueOf(repetition))){
+            throw new InvalidDataException("Repetition must be a positive number");
+        }
+        if(!ObjectUtils.validInteger(String.valueOf(sets))){
+            throw new InvalidDataException("Sets must be a positive number");
+        }
+        if(!ObjectUtils.validInteger(String.valueOf(duration))){
+            throw new InvalidDataException("Duration must be a positive number");
+        }
     }
 }

@@ -5,6 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/FitnessCourseManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/FitnessCourseManagement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Nutrition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Nutrition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/PracticalDay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/PracticalDay.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Workout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Workout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/PracticalDayService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/PracticalDayService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/WorkoutService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/WorkoutService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nbproject/project.properties" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/project.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/FitnessCourseManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/FitnessCourseManagement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/repository/CourseComboRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/CourseComboRepository.java" afterDir="false" />
@@ -64,7 +72,11 @@
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
+    "last_opened_file_path": "E:/FPT/Semester_III/LAB211/ResortManagement",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "terminal"
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   },
@@ -74,6 +86,23 @@
     ]
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="ShConfigurationType">
+      <option name="SCRIPT_TEXT" value="" />
+      <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+      <option name="SCRIPT_PATH" value="" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+      <option name="INTERPRETER_PATH" value="powershell.exe" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="EXECUTE_IN_TERMINAL" value="true" />
+      <option name="EXECUTE_SCRIPT_FILE" value="true" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="RunManager" selected="Application.CourseRepository">
     <configuration name="CourseComboRepository" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="repository.CourseComboRepository" />
@@ -145,6 +174,9 @@
     </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\LENOVO\AppData\Roaming\Subversion</configuration>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="" />

@@ -1,48 +1,79 @@
 package utils;
 
+import exception.InvalidDataException;
+
 import java.util.Date;
 
 public class ObjectUtils {
 
-    public static boolean validID(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public static boolean validCoachID(String id) {
+        return id.matches("C[0-9]{4}");
     }
 
-    public static boolean validCourseID(String code){
+    public static boolean validUserID(String id) {
+        return id.matches("U[0-9]{4}");
+    }
+
+    public static boolean validCodeNutrition(String code) {
+        return code.matches("^NT[0-9]{3}");
+    }
+
+    public static boolean validCodePracticalDay(String code) {
+        return code.matches("^PD[0-9]{3}");
+    }
+
+    public static boolean validCodeSchedule(String code) {
+        return code.matches("^SD[0-9]{3}");
+    }
+
+    public static boolean validCodeWorkout(String code) {
+        return code.matches("^WK[0-9]{3}");
+    }
+
+    public static boolean validDouble(String calories) throws InvalidDataException {
+        try {
+            return Double.parseDouble(calories) > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public static boolean validInteger(String repetition) throws InvalidDataException {
+        try {
+            return Integer.parseInt(repetition) > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public static boolean validCourseID(String code) {
         return code.matches("^CS\\d*$");
     }
 
-    public static boolean validCoursePrice(String coursePrice){
+    public static boolean validCoursePrice(String coursePrice) {
         try {
             return Double.parseDouble(coursePrice) > 0;
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
     }
 
-    public static boolean valideCourseComboID(String code){
+    public static boolean valideCourseComboID(String code) {
         return code.matches("^CB\\d*$");
     }
 
-    public static boolean validCoachID(String code){
-        return code.matches("^C\\d*$");
-    }
-
-    public static boolean validCourseComboSale(String sale){
+    public static boolean validCourseComboSale(String sale) {
         try {
             return Double.parseDouble(sale) > 0;
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
     }
 
-    public static boolean validCourseRegistedID(String code){
+    public static boolean validCourseRegistedID(String code) {
         return code.matches("^RC\\d*$");
     }
 
-    public static boolean validUserID(String code){
-        return code.matches("^U\\d*$");
-    }
 
     public static boolean isRegisteredDateBeforeFinishDate(Date registeredDate, Date finishRegisteredDate) {
         return registeredDate.before(finishRegisteredDate);

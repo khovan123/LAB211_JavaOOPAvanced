@@ -1,116 +1,133 @@
 package service;
 
-import exception.EmptyDataException;
-import exception.EventException;
-import exception.InvalidDataException;
-import exception.NotFoundException;
-import model.Course;
-import repository.CoachRepository;
-import repository.CourseRepository;
-import repository.UserRepository;
-import service.interfaces.ICoachService;
+import exception.*;
+import java.lang.reflect.Field;
+import java.sql.SQLException;
+import java.util.*;
 import java.util.function.Predicate;
-import model.Coach;
-import model.PracticalDay;
-import model.User;
+import model.*;
+import repository.CoachRepository;
+import service.interfaces.ICoachService;
+import utils.FieldUtils;
 
-public class CoachService implements ICoachService{
-    private static CoachRepository coachRepository = new CoachRepository();
-    private static CourseRepository courseRepository = new CourseRepository();
-//    private static CoursePacketRepository coursePacketRepository = new CoursePacketRepository();
-    private static UserRepository userRepository = new UserRepository();
+public class CoachService implements ICoachService {
 
-    public CoachService() {}
+    private CoachRepository coachRepository;
+    private List<Coach> coaches;
+
+    public CoachService() {
+        this.coachRepository = new CoachRepository();
+        this.coaches = new ArrayList<>();
+    }
+
+    public void readFromDatabase() {
+        try {
+            for (Coach coach : coachRepository.readData()) {
+                try {
+                    this.add(coach);
+                } catch (EventException | InvalidDataException e) {
+
+                }
+            }
+        } catch (SQLException e) {
+
+        }
+    }
 
     @Override
     public void display() throws EmptyDataException {
-     for (Coach coach : coachRepository.getCoachList()){
-         System.out.println(coach.getInfo());
-     }
-
+        if (coaches.isEmpty()) {
+            throw new EmptyDataException("List of coach is empty");
+        }
+        System.out.println("Coach ID\tFull Name\tDoB\tPhone\tCertificate");
+        for (Coach coach : coaches) {
+            System.out.println(coach.getInfo());
+        }
     }
 
     @Override
     public void add(Coach coach) throws EventException, InvalidDataException {
-     coachRepository.add(coach);
-
+        if (!existed(coach.getPersonId())) {
+            try {
+                coaches.add(coach);
+                coachRepository.insertToDB(coach);
+            } catch (SQLException e) {
+                throw new EventException(e);
+            }
+        } else {
+            throw new InvalidDataException("Coach with id: " + coach.getPersonId() + "was existed");
+        }
     }
 
     @Override
-    public void delete(String id) throws EventException , NotFoundException {
-     coachRepository.delete(id);
+    public void delete(String id) throws EventException, NotFoundException {
+        try {
+            coachRepository.deleteToDB(id);
+            coaches.remove(this.findById(id));
+        } catch (NotFoundException | SQLException e) {
+            throw new EventException(e);
+        }
+    }
+
+    @Override
+    public void update(String id, Map<String, Object> entry) throws NotFoundException, EventException {
+        for (String fieldName : entry.keySet()) {
+            Coach coach = findById(id);
+            Field field = FieldUtils.getFieldByName(coach.getClass(), fieldName);
+            try {
+                Map<String, Object> updatedMap = new HashMap<>();
+                updatedMap.putIfAbsent(getColumnByFieldName(fieldName), entry.get(fieldName));
+                coachRepository.updateToDB(id, updatedMap);
+                field.set(coach, entry.get(fieldName));
+            } catch (IllegalAccessException | IllegalArgumentException | SQLException e) {
+                throw new EventException(e);
+            }
+        }
+    }
+
+    private String getColumnByFieldName(String fieldName) throws NotFoundException {
+        if (fieldName.equalsIgnoreCase("personId")) {
+            return CoachRepository.PersonID_Column;
+        }
+        if (fieldName.equalsIgnoreCase("fullName")) {
+            return CoachRepository.FullName_Column;
+        }
+        if (fieldName.equalsIgnoreCase("DoB")) {
+            return CoachRepository.DoB_Column;
+        }
+        if (fieldName.equalsIgnoreCase("phone")) {
+            return CoachRepository.Phone_Column;
+        }
+        if (fieldName.equalsIgnoreCase("certificate")) {
+            return CoachRepository.Certificate_Column;
+        }
+        if (fieldName.equalsIgnoreCase("active")) {
+            return CoachRepository.Active_Column;
+        }
+        throw new NotFoundException("Not found any field");
     }
 
     @Override
     public Coach search(Predicate<Coach> p) throws NotFoundException {
-     return coachRepository.search(p);
-    }
-
-    @Override
-    public Coach filter(String entry, String regex)  {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void update(Coach coach) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    //---------------------------------------------------------------------------------------------------------------------------------//
-    @Override
-    public void addCourse(Course course) throws EventException {
-
-        courseRepository.add(course);
-    }
-
-    @Override
-    public void deleteCourse(String id) throws EventException {
-        courseRepository.delete(id);
-    }
-
-    @Override
-    public void updateCourse(Course course) {
-
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Course searchCourse(Predicate<Course> p) throws NotFoundException {
-        courseRepository.search(p);
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void updateSchedule(Course course, PracticalDay practiceDay) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    //---------------------------------------------------------------------------------------------------------------------------------//
-    @Override
-    public void deleteUser(String id) throws EventException {
-        userRepository.delete(id);
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public User searchUser(Predicate<User> user) throws NotFoundException {
-        userRepository.search(user);
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void updateUser(User user) {
-
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void addUser(User user) throws EventException {
-        userRepository.add(user);
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (Coach coach : coaches) {
+            if (p.test(coach)) {
+                return coach;
+            }
+        }
+        throw new NotFoundException("Not found any coach");
     }
 
     @Override
     public Coach findById(String id) throws NotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.search(p -> p.getPersonId().equalsIgnoreCase(id));
+    }
+
+    public boolean existed(String id) {
+        try {
+            return this.findById(id) != null;
+        } catch (NotFoundException e) {
+            return false;
+        }
     }
 
 }
