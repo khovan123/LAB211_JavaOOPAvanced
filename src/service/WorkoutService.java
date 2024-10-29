@@ -5,16 +5,21 @@ import exception.EventException;
 import exception.IOException;
 import exception.NotFoundException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Field;
+import java.sql.SQLException;
+import java.util.*;
 
 import model.PracticalDay;
+import repository.PracticalDayRepository;
 import service.interfaces.IWorkoutService;
 
 import java.util.function.Predicate;
 
 import model.Workout;
 import repository.WorkoutRepository;
+import utils.FieldUtils;
+import utils.GlobalUtils;
+import utils.ObjectUtils;
 
 public class WorkoutService implements IWorkoutService {
 
@@ -31,11 +36,22 @@ public class WorkoutService implements IWorkoutService {
         readFromDatabase();
     }
 
+    public List<Workout> getWorkoutList() {
+        return workoutList;
+    }
+
     public void readFromDatabase() {
         try {
-            workoutList.addAll(workoutRepository.readFile());
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+            List<Workout> workoutFormDB = workoutRepository.readData();
+            for (Workout workout : workoutFormDB) {
+                try {
+                    this.add(workout);
+                } catch (EventException e) {
+//                    System.err.println("Error adding Workout from database: " + e.getMessage());
+                }
+            }
+        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
         }
     }
 
@@ -43,42 +59,51 @@ public class WorkoutService implements IWorkoutService {
     public void display() throws EmptyDataException {
         if (workoutList.isEmpty()) {
             throw new EmptyDataException("No workout found!!!");
-        } else {
-            for (Workout workout : workoutList) {
-                System.out.println(workout);
-            }
+        }
+        System.out.println("WorkoutID\tWorkoutName\tRepetition\tSets\tDuration\tCourseId");
+        for (Workout workout : workoutList) {
+            System.out.println(workout.getInfo());
         }
     }
 
     @Override
     public void add(Workout workout) throws EventException {
         try {
-            workoutList.add(workout);
-            System.out.println("Workout added successfully!");
+            if (!existID(workout)) {
+
+                workoutList.add(workout);
+                workoutRepository.insertToDB(workout);
+            } else {
+                throw new EventException(workout.getWorkoutId() + " already exist.");
+            }
         } catch (Exception e) {
-            throw new EventException("Failed to add Workout: " + e.getMessage());
+            throw new EventException("Failed to add Workout");
         }
     }
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
         try {
-            workoutList.remove(this.search(p -> p.getWorkoutId().equalsIgnoreCase(id)));
-            System.out.println("Deleted Workout with ID: " + id + " successfully!");
+            workoutList.remove(findById(id));
+            workoutRepository.deleteToDB(id);
         } catch (Exception e) {
-            throw new EventException("An error occurred while deleting Workout with ID: " + id + ". " + e.getMessage());
+            throw new EventException("An error occurred while deleting Workout with ID: " + id + ". ");
         }
     }
 
     @Override
-    public void update(Workout workout) throws EventException, NotFoundException {
-        try {
-            Workout existingWorkout = this.search(p -> p.getWorkoutId().equalsIgnoreCase(workout.getWorkoutId()));
-            int index = workoutList.indexOf(existingWorkout);
-            workoutList.set(index, existingWorkout);
-            System.out.println("Workout updated successfully!");
-        } catch (Exception e) {
-            throw new EventException("An error occurred while updating Workout with ID: " + workout.getWorkoutId() + e.getMessage());
+    public void update(String id, Map<String, Object> entry) throws NotFoundException, EventException {
+        Workout workout = findById(id);
+        for (String fieldName : entry.keySet()) {
+            Field field = FieldUtils.getFieldByName(workout.getClass(), fieldName);
+            try {
+                field.set(workout, entry.get(fieldName));
+                Map<String, Object> updatedMap = new HashMap<>();
+                updatedMap.putIfAbsent(getColumnByFieldName(fieldName), entry.get(fieldName));
+                workoutRepository.updateToDB(id, updatedMap);
+            } catch (IllegalAccessException | IllegalArgumentException | SQLException e) {
+                throw new EventException(e);
+            }
         }
     }
 
@@ -94,13 +119,38 @@ public class WorkoutService implements IWorkoutService {
 
     @Override
     public Workout findById(String id) throws NotFoundException {
-        for (Workout workout : workoutList) {
-            if (workout.getWorkoutId().equals(id)) {
-                return workout;
-            }
+        try {
+            return this.search(p -> p.getWorkoutId().equalsIgnoreCase(id));
+        } catch (NotFoundException e) {
+            throw new NotFoundException("Workout with ID: " + id + " not found.");
         }
-        throw new NotFoundException("Workout with ID: " + id + " not found.");
     }
 
+    public boolean existID(Workout workout) {
+        try {
+            findById(workout.getWorkoutId());
+            return true;
+        } catch (NotFoundException e) {
+            return false;
+        }
+    }
 
+    private String getColumnByFieldName(String fieldName) throws NotFoundException {
+        switch (fieldName) {
+            case "workoutId":
+                return "WorkoutID";
+            case "workoutName":
+                return "WorkoutName";
+            case "repetition":
+                return "Repetition";
+            case "sets":
+                return "Sets";
+            case "duration":
+                return "Duration";
+            case "courseId":
+                return "CourseID";
+            default:
+                throw new NotFoundException("Not found any field for: " + fieldName);
+        }
+    }
 }

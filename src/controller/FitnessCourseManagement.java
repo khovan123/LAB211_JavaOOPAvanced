@@ -1,19 +1,34 @@
 package controller;
 
 import exception.*;
+import jdk.jfr.Event;
+import model.Coach;
+import model.PracticalDay;
+import model.User;
+import model.Workout;
 import repository.*;
 import service.*;
+import utils.FieldUtils;
+import utils.GlobalUtils;
+import utils.ObjectUtils;
 import view.Menu;
+
+import java.util.Map;
 
 public class FitnessCourseManagement extends Menu<String> {
 
     static String title = "FITNESS COURSE\nHOME";
     static String[] menuOptions = {
-        "Admin",
-        "Coach",
-        "User",
-        "Exit"
+            "Admin",
+            "Coach",
+            "User",
+            "Exit"
     };
+
+    private final UserService userService;
+    private final CoachService coachService;
+    private final PracticalDayService practicalDayService;
+    private final WorkoutService workoutService;
 
     public FitnessCourseManagement() {
         this(title, menuOptions);
@@ -21,6 +36,10 @@ public class FitnessCourseManagement extends Menu<String> {
 
     public FitnessCourseManagement(String title, String[] menuOptions) {
         super(title, menuOptions);
+        userService = new UserService();
+        coachService = new CoachService();
+        practicalDayService = new PracticalDayService();
+        workoutService = new WorkoutService();
     }
 
     @Override
@@ -62,10 +81,10 @@ public class FitnessCourseManagement extends Menu<String> {
 
     public void runAdminMenu() {
         String[] adminMenuOptions = {
-            "User Management",
-            "Coach Management",
-            "Course Combo Management",
-            "Return home"
+                "User Management",
+                "Coach Management",
+                "Course Combo Management",
+                "Return home"
         };
         Menu<String> adminMenu = new Menu("HOME >> ADMIN", adminMenuOptions) {
             @Override
@@ -93,13 +112,13 @@ public class FitnessCourseManagement extends Menu<String> {
     //before run CoachMenu, request enter ID
     public void runCoachMenu() {
         String[] coachMenuOptions = {
-            "Personal information",
-            "Show all courses",
-            "Show all member in courses",
-            "Create new course",
-            "Update personal infromation",
-            "Update course",
-            "Return home"
+                "Personal information",
+                "Show all courses",
+                "Show all member in courses",
+                "Create new course",
+                "Update personal infromation",
+                "Update course",
+                "Return home"
         };
         Menu<String> coachMenu = new Menu("HOME >> COACH", coachMenuOptions) {
             @Override
@@ -135,13 +154,13 @@ public class FitnessCourseManagement extends Menu<String> {
     //before run UserMenu, request enter ID
     public void runUserMenu() {
         String[] userMenuOptions = {
-            "Personal information",
-            "Show all courses which joined",
-            "Show all progresses",
-            "Register course",
-            "Update personal information",
-            "Update schedule",
-            "Return home"
+                "Personal information",
+                "Show all courses which joined",
+                "Show all progresses",
+                "Register course",
+                "Update personal information",
+                "Update schedule",
+                "Return home"
         };
         Menu<String> userMenu = new Menu("HOME >> USER", userMenuOptions) {
             @Override
@@ -175,23 +194,32 @@ public class FitnessCourseManagement extends Menu<String> {
     }
 //----------------------------------------------------------end main menu--------------------------------------------------------
 
-//----------------------------------------------------------start admin menu-----------------------------------------------------
+    //----------------------------------------------------------start admin menu-----------------------------------------------------
     public void runUserManagementMenu() {
         String admin_UserOptions[] = {
-            "Show all users",
-            "Create new user",
-            "Update user",
-            "Return admin menu"
+                "Show all users",
+                "Create new user",
+                "Update user",
+                "Return admin menu"
         };
         Menu<String> admin_UserMenu = new Menu("HOME >> ADMIN >> USER", admin_UserOptions) {
             @Override
             public void execute(int selection) {
                 switch (selection) {
                     case 1 -> {
-
+                        try {
+                            userService.display();
+                        } catch (EmptyDataException e) {
+                            System.err.println(e);
+                        }
                     }
                     case 2 -> {
-
+                        try {
+                            User user = new User();
+                            userService.add(user);
+                        } catch (EventException | InvalidDataException e) {
+                            System.err.println(e);
+                        }
                     }
                     case 3 -> {
 
@@ -208,20 +236,30 @@ public class FitnessCourseManagement extends Menu<String> {
 
     public void runCoachManagementMenu() {
         String admin_CoachMenuOptions[] = {
-            "Display all coach",
-            "Create new coach",
-            "Update coach",
-            "Return admin menu"
+                "Display all coach",
+                "Create new coach",
+                "Update coach",
+                "Return admin menu"
         };
         Menu<String> admin_CoachMenu = new Menu("HOME >> ADMIN >> COACH", admin_CoachMenuOptions) {
             @Override
             public void execute(int selection) {
                 switch (selection) {
                     case 1 -> {
-
+                        try {
+                            Coach coach = new Coach();
+                            coachService.display();
+                        } catch (EmptyDataException e){
+                            System.err.println(e);
+                        }
                     }
                     case 2 -> {
-
+                        try {
+                            Coach coach = new Coach();
+                            coachService.add(coach);
+                        } catch (EventException | InvalidDataException e) {
+                            System.err.println(e);
+                        }
                     }
                     case 3 -> {
 
@@ -238,11 +276,11 @@ public class FitnessCourseManagement extends Menu<String> {
 
     public void runCourseComboManagementMenu() {
         String courseComboMenuOptions[] = {
-            "Show all combo",
-            "Create new combo",
-            "Update combo",
-            "Update combo for course",
-            "Return admin menu"
+                "Show all combo",
+                "Create new combo",
+                "Update combo",
+                "Update combo for course",
+                "Return admin menu"
         };
         Menu<String> courseComboMenu = new Menu("HOME >> ADMIN >> COURSE COMBO", courseComboMenuOptions) {
             @Override
@@ -269,7 +307,7 @@ public class FitnessCourseManagement extends Menu<String> {
         continueExecution = true;
     }
 
-//----------------------------------------------------------end admin menu-----------------------------------------------------
+    //----------------------------------------------------------end admin menu-----------------------------------------------------
 //----------------------------------------------------------start coach menu---------------------------------------------------
 //----------------------------------------------------------end coach menu-----------------------------------------------------
 //----------------------------------------------------------start user menu----------------------------------------------------
@@ -277,6 +315,104 @@ public class FitnessCourseManagement extends Menu<String> {
     public static void main(String[] args) {
         FitnessCourseManagement fitnessCourseManagement = new FitnessCourseManagement();
         fitnessCourseManagement.run();
+    }
+
+    public void updateOrDeletePracticalDayFromConsoleCustomize() {
+        if (practicalDayService.getPractialDayTreeSet().isEmpty()) {
+            System.out.println("Please create new practical day ^^");
+            return;
+        }
+        while (true) {
+            try {
+                String id = GlobalUtils.getValue("Enter id for update: ", "Cannot leave blank");
+                PracticalDay practicalDay;
+                if (!ObjectUtils.validID(id)) {
+                    System.out.println("Id must be in correct form.");
+                } else if ((practicalDay = practicalDayService.findById(id)) != null) {
+                    System.out.println(practicalDay.getInfo());
+                    String[] editMenuOptions = FieldUtils.getEditOptions(practicalDay.getClass());
+                    for (int i = 0; i < editMenuOptions.length; i++) {
+                        System.out.println((i + 1) + ". " + editMenuOptions[i]);
+                    }
+                    while (true) {
+                        int selection = GlobalUtils.getInteger("Enter selection: ", "Please enter a valid option!");
+                        if (selection == editMenuOptions.length - 1) {
+                            try {
+                                practicalDayService.delete(practicalDay.getPracticalDayId());
+                                System.out.println("Delete successfully");
+                            } catch (EventException | NotFoundException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            return;
+                        } else if (selection == editMenuOptions.length) {
+                            return;
+                        }
+                        while (true) {
+                            try {
+                                String newValue = GlobalUtils.getValue("Enter new value: ", "Can not be blank");
+                                Map<String, Object> fieldUpdateMap = FieldUtils.getFieldValueByName(practicalDay, editMenuOptions[selection - 1], newValue);
+                                practicalDayService.update(id, fieldUpdateMap);
+                                System.out.println("Update successfully");
+                                break;
+                            } catch (Exception ex) {
+                                System.out.println(ex.getMessage());
+                            }
+                        }
+                    }
+                }
+            } catch (NotFoundException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
+    }
+
+    public void updateOrDeleteWorkoutFromConsoleCustomize() {
+        if (workoutService.getWorkoutList().isEmpty()) {
+            System.out.println("Please create new workout ^^");
+            return;
+        }
+        while (true) {
+            try {
+                String id = GlobalUtils.getValue("Enter id for update: ", "Cannot leave blank");
+                Workout workout;
+                if (!ObjectUtils.validID(id)) {
+                    System.out.println("Id must be in correct form.");
+                } else if ((workout = workoutService.findById(id)) != null) {
+                    System.out.println(workout.getInfo());
+                    String[] editMenuOptions = FieldUtils.getEditOptions(workout.getClass());
+                    for (int i = 0; i < editMenuOptions.length; i++) {
+                        System.out.println((i + 1) + ". " + editMenuOptions[i]);
+                    }
+                    while (true) {
+                        int selection = GlobalUtils.getInteger("Enter selection: ", "Please enter a valid option!");
+                        if (selection == editMenuOptions.length - 1) {
+                            try {
+                                workoutService.delete(workout.getWorkoutId());
+                                System.out.println("Delete successfully");
+                            } catch (EventException | NotFoundException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            return;
+                        } else if (selection == editMenuOptions.length) {
+                            return;
+                        }
+                        while (true) {
+                            try {
+                                String newValue = GlobalUtils.getValue("Enter new value: ", "Can not be blank");
+                                Map<String, Object> fieldUpdateMap = FieldUtils.getFieldValueByName(workout, editMenuOptions[selection - 1], newValue);
+                                workoutService.update(id, fieldUpdateMap);
+                                System.out.println("Update successfully");
+                                break;
+                            } catch (Exception ex) {
+                                System.out.println(ex.getMessage());
+                            }
+                        }
+                    }
+                }
+            } catch (NotFoundException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
     }
 
 }
