@@ -7,7 +7,7 @@ import repository.interfaces.ISampleCoachRepository;
 
 public class SampleCoachRepository implements ISampleCoachRepository {
 
-    public static final String PersonID_Column = "PersonID";
+    public static final String PersonID_Column = "CoachID";
     public static final String FullName_Column = "FullName";
     public static final String DoB_Column = "DOB";
     public static final String Phone_Column = "Phone";
@@ -16,6 +16,17 @@ public class SampleCoachRepository implements ISampleCoachRepository {
     private static final List<String> PERSONMODELCOLUMN = new ArrayList<>(Arrays.asList(PersonID_Column, FullName_Column, DoB_Column, Phone_Column, Boolean.toString(Active_Column)));
     private static final List<String> COACHMODELCOLUMN = new ArrayList<>(Arrays.asList(PersonID_Column, Certificate_Column));
     private Connection conn = SQLServerConnection.getConnection();
+
+    public static void main(String[] args) {
+        SampleCoachRepository sampleCoachRepository = new SampleCoachRepository();
+        try {
+            for (String row : sampleCoachRepository.getMany()) {
+                System.out.println(row);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
 
     @Override
     public List<Coach> readData() {
@@ -51,7 +62,7 @@ public class SampleCoachRepository implements ISampleCoachRepository {
         try {
             StringBuilder row = new StringBuilder();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT p.PersonID, p.FullName, p.DoB, p.Phone, c.Certificate  FROM PersonModel p JOIN CoachModel c ON p.PersonID = c.PersonID WHERE p.Active = 1");
+            ResultSet rs = stmt.executeQuery("SELECT c.CoachID, p.FullName, p.DoB, p.Phone, c.Certificate  FROM PersonModel p JOIN CoachModel c ON p.PersonID = c.CoachID WHERE p.Active = 1");
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
             while (rs.next()) {

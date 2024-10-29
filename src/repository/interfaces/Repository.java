@@ -6,7 +6,7 @@ import java.util.Map;
 
 public interface Repository<T, C> {
 
-    C readData();
+    C readData() throws SQLException;
 
     void insertToDB(T entry) throws SQLException;
 
