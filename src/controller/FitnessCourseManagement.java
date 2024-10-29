@@ -1,10 +1,13 @@
 package controller;
 
+import exception.*;
+import repository.*;
+import service.*;
 import view.Menu;
 
 public class FitnessCourseManagement extends Menu<String> {
 
-    static String title = "FITNESS COURSE";
+    static String title = "FITNESS COURSE\nHOME";
     static String[] menuOptions = {
         "Admin",
         "Coach",
@@ -27,105 +30,253 @@ public class FitnessCourseManagement extends Menu<String> {
                 this.runAdminMenu();
             }
             case 2 -> {
-                this.runCoachMenu();
+                try {
+                    vetifyCoach("1");
+                    this.runCoachMenu();
+                } catch (VetifyFailedException e) {
+                    System.err.println(e.getMessage());
+                }
             }
             case 3 -> {
-                this.runUserMenu();
+                try {
+                    vetifyUser("1");
+                    this.runUserMenu();
+                } catch (VetifyFailedException e) {
+                    System.err.println(e.getMessage());
+                }
             }
             case 4 -> {
                 exitMenu();
             }
         }
     }
+
+    public void vetifyCoach(String coachID) throws VetifyFailedException {
+
+    }
+
+    public void vetifyUser(String userID) throws VetifyFailedException {
+
+    }
 //----------------------------------------------------------start main menu-----------------------------------------------------
+
     public void runAdminMenu() {
         String[] adminMenuOptions = {
             "User Management",
             "Coach Management",
-            "Course Management",
-            "User Progress Management",
-            "Return main menu"
+            "Course Combo Management",
+            "Return home"
         };
+        Menu<String> adminMenu = new Menu("HOME >> ADMIN", adminMenuOptions) {
+            @Override
+            public void execute(int selection) {
+                switch (selection) {
+                    case 1 -> {
+
+                    }
+                    case 2 -> {
+
+                    }
+                    case 3 -> {
+
+                    }
+                    case 4 -> {
+                        exitMenu();
+                    }
+                }
+            }
+        };
+        adminMenu.exitMenu();
+        continueExecution = true;
     }
 
+    //before run CoachMenu, request enter ID
     public void runCoachMenu() {
         String[] coachMenuOptions = {
-            "Display personal information",
-            "Display all your course",
-            "Display all member",
+            "Personal information",
+            "Show all courses",
+            "Show all member in courses",
             "Create new course",
-            "Create new member",
-            "Edit your infromation",
-            "Edit course",
-            "Edit member",
-            "Exit"
+            "Update personal infromation",
+            "Update course",
+            "Return home"
         };
+        Menu<String> coachMenu = new Menu("HOME >> COACH", coachMenuOptions) {
+            @Override
+            public void execute(int selection) {
+                switch (selection) {
+                    case 1 -> {
+
+                    }
+                    case 2 -> {
+
+                    }
+                    case 3 -> {
+
+                    }
+                    case 4 -> {
+                    }
+                    case 5 -> {
+
+                    }
+                    case 6 -> {
+
+                    }
+                    case 7 -> {
+                        exitMenu();
+                    }
+                }
+            }
+        };
+        coachMenu.exitMenu();
+        continueExecution = true;
     }
 
+    //before run UserMenu, request enter ID
     public void runUserMenu() {
         String[] userMenuOptions = {
-            "Display personal information",
-            "Display all your course",
-            "Display all your progress in course",
-            "Buy course",
-            "Edit your information",
-            "Edit schedule in course",
-            "Exit"
+            "Personal information",
+            "Show all courses which joined",
+            "Show all progresses",
+            "Register course",
+            "Update personal information",
+            "Update schedule",
+            "Return home"
         };
+        Menu<String> userMenu = new Menu("HOME >> USER", userMenuOptions) {
+            @Override
+            public void execute(int selection) {
+                switch (selection) {
+                    case 1 -> {
+
+                    }
+                    case 2 -> {
+
+                    }
+                    case 3 -> {
+
+                    }
+                    case 4 -> {
+                    }
+                    case 5 -> {
+
+                    }
+                    case 6 -> {
+
+                    }
+                    case 7 -> {
+                        exitMenu();
+                    }
+                }
+            }
+        };
+        userMenu.exitMenu();
+        continueExecution = true;
     }
 //----------------------------------------------------------end main menu--------------------------------------------------------
 
 //----------------------------------------------------------start admin menu-----------------------------------------------------
-    
     public void runUserManagementMenu() {
-        String userMenuOptions[] = {
-            "Display all user",
+        String admin_UserOptions[] = {
+            "Show all users",
             "Create new user",
-            "Edit user",
-            "Return main menu"
+            "Update user",
+            "Return admin menu"
         };
+        Menu<String> admin_UserMenu = new Menu("HOME >> ADMIN >> USER", admin_UserOptions) {
+            @Override
+            public void execute(int selection) {
+                switch (selection) {
+                    case 1 -> {
+
+                    }
+                    case 2 -> {
+
+                    }
+                    case 3 -> {
+
+                    }
+                    case 4 -> {
+                        exitMenu();
+                    }
+                }
+            }
+        };
+        admin_UserMenu.exitMenu();
+        continueExecution = true;
     }
 
     public void runCoachManagementMenu() {
-        String coachMenuOptions[] = {
+        String admin_CoachMenuOptions[] = {
             "Display all coach",
             "Create new coach",
-            "Edit coach",
-            "Return main menu"
+            "Update coach",
+            "Return admin menu"
         };
+        Menu<String> admin_CoachMenu = new Menu("HOME >> ADMIN >> COACH", admin_CoachMenuOptions) {
+            @Override
+            public void execute(int selection) {
+                switch (selection) {
+                    case 1 -> {
+
+                    }
+                    case 2 -> {
+
+                    }
+                    case 3 -> {
+
+                    }
+                    case 4 -> {
+                        exitMenu();
+                    }
+                }
+            }
+        };
+        admin_CoachMenu.exitMenu();
+        continueExecution = true;
     }
 
-    public void runCourseManagementMenu() {
-        String courseMenuOptions[] = {
-            "Display all course",
-            "Create new course",
-            "Edit course",
-            "Return main menu"
+    public void runCourseComboManagementMenu() {
+        String courseComboMenuOptions[] = {
+            "Show all combo",
+            "Create new combo",
+            "Update combo",
+            "Update combo for course",
+            "Return admin menu"
         };
+        Menu<String> courseComboMenu = new Menu("HOME >> ADMIN >> COURSE COMBO", courseComboMenuOptions) {
+            @Override
+            public void execute(int selection) {
+                switch (selection) {
+                    case 1 -> {
+
+                    }
+                    case 2 -> {
+
+                    }
+                    case 3 -> {
+
+                    }
+                    case 4 -> {
+                    }
+                    case 5 -> {
+                        exitMenu();
+                    }
+                }
+            }
+        };
+        courseComboMenu.exitMenu();
+        continueExecution = true;
     }
 
-    public void runUserProgressManagementMenu() {
-        String userProgressMenuOptions[] = {
-            "Display all user progress",
-            "Edit user progress",
-            "Create user progress", //mean help user purchase course
-            "Return main menu"
-        };
-    }
 //----------------------------------------------------------end admin menu-----------------------------------------------------
-    
 //----------------------------------------------------------start coach menu---------------------------------------------------
-    
 //----------------------------------------------------------end coach menu-----------------------------------------------------
-    
 //----------------------------------------------------------start user menu----------------------------------------------------
-    
 //----------------------------------------------------------end user menu------------------------------------------------------
-    
     public static void main(String[] args) {
         FitnessCourseManagement fitnessCourseManagement = new FitnessCourseManagement();
         fitnessCourseManagement.run();
-
     }
 
 }
