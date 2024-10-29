@@ -5,7 +5,6 @@ import model.CourseCombo;
 import repository.CourseComboRepository;
 
 import service.interfaces.ICourseComboService;
-import utils.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,12 +58,10 @@ public class CourseComboService implements ICourseComboService {
     @Override
     public void delete(String id) throws EventException, NotFoundException {
         try {
-            CourseCombo courseCombo = findById(id);
-            if (courseCombo == null) {
+            if (findById(id) == null) {
                 throw new NotFoundException("-> Course With ID - " + id + " - Not Found.");
             }
-            courseComboList.remove(courseCombo);
-            System.out.println("-> Course With ID - " + id + " - Removed Successfully");
+            courseComboList.remove(findById(id));
         } catch (Exception e) {
             throw new EventException("-> Error While Deleting Course With ID - " + id + " - " + e.getMessage());
         }
@@ -80,7 +77,6 @@ public class CourseComboService implements ICourseComboService {
         try {
             existingCombo.setComboName(courseCombo.getComboName());
             existingCombo.setSales(String.valueOf(courseCombo.getSales()));
-            System.out.println("-> Update Course Combo - " + courseCombo.getComboId() + " - Successfully");
         } catch (Exception e) {
             throw new EventException("-> Error While Updating Course Combo With ID - " + courseCombo.getComboId() + " - " + e.getMessage());
         }

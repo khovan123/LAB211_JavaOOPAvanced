@@ -62,8 +62,11 @@ public class RegistedCourseService implements IRegistedCourseService {
         if (findById(id) == null) {
             throw new NotFoundException("-> Registed Course with ID - " + id + " - Not Found.");
         }
-        registeredCourseList.remove(findById(id));
-        System.out.println("-> Registed Course With ID - " + id + " - Removed Successfully");
+        try {
+            registeredCourseList.remove(findById(id));
+        } catch (Exception e) {
+            throw new EventException("-> Error While Deleting Course With ID - " + id + " - " + e.getMessage());
+        }
     }
 
     @Override
@@ -77,7 +80,6 @@ public class RegistedCourseService implements IRegistedCourseService {
             existRegisteredCourse.setRegisteredCourseID(String.valueOf(registeredCourse.getFinishRegisteredDate()));
             existRegisteredCourse.setCourseID(registeredCourse.getCourseID());
             existRegisteredCourse.setUserID(registeredCourse.getUserID());
-            System.out.println("-> Updated Registed Course - " + registeredCourse.getRegisteredCourseID() + " - Successfully");
         } catch (Exception e) {
             throw new EventException("-> Error While Updating Registed Course With ID - " + registeredCourse.getRegisteredCourseID() + " - " + e.getMessage());
         }

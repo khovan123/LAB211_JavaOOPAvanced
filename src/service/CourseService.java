@@ -65,7 +65,6 @@ public class CourseService implements ICourseService {
         }
         try {
             courseList.remove(findById(id));
-            System.out.println("-> Course With ID - " + id + " - Removed Successfully");
         } catch (Exception e) {
             throw new EventException("-> Error While Deleting Course With ID - " + id + " - " + e.getMessage());
         }
@@ -83,7 +82,6 @@ public class CourseService implements ICourseService {
             existCourse.setPrice(String.valueOf(course.getPrice()));
             existCourse.setComboID(course.getComboID());
             existCourse.setCoachId(course.getCoachId());
-            System.out.println("-> Update Course - " + course.getCourseId() + " - Successfully");
         } catch (Exception e) {
             throw new EventException("-> Error While Updating Course With ID - " + course.getCourseId() + " - " + e.getMessage());
         }
