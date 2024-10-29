@@ -95,7 +95,7 @@ public class CourseComboRepository implements ICourseComboRepository {
         List<String> list = new ArrayList<>();
         try {
             StringBuilder row = new StringBuilder();
-            Statement stmt = conn.createStatement();
+            Statement stmt = connectToSQLServer().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT cb.ComboId, cb.ComboName, cb.Sale FROM CourseComboModel cb");
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();

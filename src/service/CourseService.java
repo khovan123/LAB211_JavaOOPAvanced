@@ -39,11 +39,7 @@ public class CourseService implements ICourseService {
     }
 
     public void readFromDatabase() {
-        try {
-            courseList.addAll(courseRepository.readFile());
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
+        courseList.addAll(courseRepository.readData());
     }
 
     @Override

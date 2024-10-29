@@ -27,7 +27,7 @@ public class CourseComboService implements ICourseComboService {
 
     public void readFromDataBase() {
         try {
-            courseComboList.add((CourseCombo) courseComboRepository.readFile());
+            courseComboList.add((CourseCombo) courseComboRepository.readData());
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }

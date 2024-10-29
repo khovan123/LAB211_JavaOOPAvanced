@@ -5,59 +5,45 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/f7596f98-7592-4b63-a635-b020c74fc9ac.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/controller/FitnessCourseManagement$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/controller/FitnessCourseManagement.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/exception/InvalidDataException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/Coach.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/Course.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/CourseCombo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/Nutrition.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/PracticalDay.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/RegisteredCourse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/Schedule.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/Workout.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/CourseComboRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/CourseRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/RegistedCourseRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/WorkoutRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/ICourseComboRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/ICourseRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/IRegistedCourseRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/IWorkoutRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/Repository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/CourseComboService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/CourseService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/PracticalDayService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/RegistedCourseService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/WorkoutService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/ICourseComboService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/ICourseService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/IPracticalDayService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/IRegistedCourseService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/IWorkoutService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/Service.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/controller/FitnessCourseManagement.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/exception/InvalidDataException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/Coach.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/Course.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/CoursePacket.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/Nutrition.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/PracticalDay.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/Schedule.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/User.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/UserProgress.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/Workout.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/model/main/Course.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/CoachRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/CourseRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/CourseSegmentRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/PracticalDayRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/ScheduleRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/UserProgressRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/UserRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/WorkoutRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/ICoachRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/ICoursePacketRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/ICourseRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/ICourseSegmentRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/IPracticalDayRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/IScheduleRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/IUserProgressRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/IUserRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/IWorkoutRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/repository/interfaces/Repository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/CoachService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/PracticalDayService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/ScheduleService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/UserProgressService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/UserService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/WorkoutService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/ICoachService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/ICoursePacketService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/IPracticalDayService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/IScheduleService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/IUserProgressService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/IUserService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/IWorkoutService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/service/interfaces/Service.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/utils/GlobalUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LAB211_JavaOOPAvanced/utils/ObjectUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/FitnessCourseManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/FitnessCourseManagement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/repository/CourseComboRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/CourseComboRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/CourseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/RegistedCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/RegistedCourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/CourseComboService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CourseComboService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/CourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CourseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/RegistedCourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/RegistedCourseService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,7 +163,7 @@
       <workItem from="1730166525354" duration="738000" />
       <workItem from="1730169107778" duration="1831000" />
       <workItem from="1730170966422" duration="5807000" />
-      <workItem from="1730198331790" duration="2709000" />
+      <workItem from="1730198331790" duration="6647000" />
     </task>
     <servers />
   </component>

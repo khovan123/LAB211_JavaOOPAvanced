@@ -29,7 +29,7 @@ public class RegistedCourseService implements IRegistedCourseService {
 
     public void readFromDataBase() {
         try {
-            registeredCourseList.addAll(registedCourseRepository.readFile());
+            registeredCourseList.addAll(registedCourseRepository.readData());
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
