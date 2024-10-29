@@ -56,19 +56,11 @@ public class RegisteredCourse {
     }
 
     public void setRegisteredDate(String registeredDate) throws InvalidDataException {
-        try {
-            this.registeredDate = GlobalUtils.getDate(registeredDate);
-        } catch (ParseException e) {
-            throw new InvalidDataException("-> Registered Date must be in dd/MM/yyyy format.");
-        }
+        this.registeredDate = GlobalUtils.getDate(registeredDate);
     }
 
     public void setFinishRegisteredDate(String finishRegisteredDate) throws InvalidDataException {
-        try {
-            this.finishRegisteredDate = GlobalUtils.getDate(finishRegisteredDate);
-        } catch (ParseException e) {
-            throw new InvalidDataException("-> Finish Registered Date must be in dd/MM/yyyy format.");
-        }
+        this.finishRegisteredDate = GlobalUtils.getDate(finishRegisteredDate);
     }
 
     public void setCourseID(String courseID) {
