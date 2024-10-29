@@ -42,17 +42,17 @@ public class FitnessCourseManagement extends Menu<String> {
             }
             case 2 -> {
                 try {
-                    vetifyCoach("1");
+                    verifyCoach("1");
                     this.runCoachMenu();
-                } catch (VetifyFailedException e) {
+                } catch (VerifyFailedException e) {
                     System.err.println(e.getMessage());
                 }
             }
             case 3 -> {
                 try {
-                    vetifyUser("1");
+                    verifyUser("1");
                     this.runUserMenu();
-                } catch (VetifyFailedException e) {
+                } catch (VerifyFailedException e) {
                     System.err.println(e.getMessage());
                 }
             }
@@ -62,11 +62,11 @@ public class FitnessCourseManagement extends Menu<String> {
         }
     }
 
-    public void vetifyCoach(String coachID) throws VetifyFailedException {
+    public void verifyCoach(String coachID) throws VerifyFailedException {
 
     }
 
-    public void vetifyUser(String userID) throws VetifyFailedException {
+    public void verifyUser(String userID) throws VerifyFailedException {
 
     }
 //----------------------------------------------------------start main menu-----------------------------------------------------
