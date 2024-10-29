@@ -52,7 +52,49 @@ public class GlobalUtils {
         try {
             return sdf.parse(dateString);
         } catch (ParseException e) {
-            throw new InvalidDataException("Invalid date format. Expected format: dd/MM/yyyy");
+            throw new InvalidDataException("Invalid date format. Expected format: yyyy-MM-dd");
+        }
+    }
+
+    public static boolean booleanParse(String string) throws InvalidDataException {
+        try {
+            return Boolean.parseBoolean(string);
+        } catch (Exception e) {
+            throw new InvalidDataException(e);
+        }
+    }
+
+    public static boolean validText(String text) {
+        return text.matches("^[a-zA-Z\\s\\-&]+$");
+    }
+
+    public static boolean validName(String name) {
+        return name.matches("^[A-Z][a-z]*( [A-Z][a-z]*)*$");
+    }
+
+    public static boolean validDoB(Date dob) {
+        return new Date().compareTo(dob) > 0;
+    }
+
+    public static boolean validPhone(String phone) {
+        return phone.matches("0[0-9]{9}");
+    }
+
+    public static String convertToString(Object obj) {
+        if (obj == null) {
+            throw new IllegalArgumentException("Object cannot be null");
+        }
+        if (obj instanceof Integer
+                || obj instanceof Long
+                || obj instanceof Double
+                || obj instanceof Float
+                || obj instanceof Boolean
+                || obj instanceof Byte
+                || obj instanceof Short
+                || obj instanceof Character) {
+            return obj.toString();
+        } else {
+            throw new IllegalArgumentException("Unsupported object type: " + obj.getClass().getName());
         }
     }
 
@@ -63,8 +105,8 @@ public class GlobalUtils {
      *
      * @param inputPrompt The message to display when asking for input.
      * @param errorPrompt The message to display when the input is invalid.
-     * @param validator   A predicate that defines the validation logic for the
-     *                    input.
+     * @param validator A predicate that defines the validation logic for the
+     * input.
      * @return The validated input string that meets the validation criteria.
      */
     public static String getValidatedInput(String inputPrompt, String errorPrompt, Predicate<String> validator) {
