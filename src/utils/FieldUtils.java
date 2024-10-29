@@ -54,7 +54,7 @@ public class FieldUtils {
 
     public static Object convertValue(Object value, Class<?> targetType) throws ParseException, InvalidDataException {
         if (targetType == Date.class && value instanceof String) {
-            return GlobalUtils.getDate((String) value);
+            return GlobalUtils.dateParse((String) value);
         } else if ((targetType == Double.class || targetType == double.class) && value instanceof String) {
             return Double.valueOf((String) value);
         } else if ((targetType == Integer.class || targetType == int.class) && value instanceof String) {
