@@ -1,12 +1,14 @@
 package service;
 
 import exception.*;
+import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Predicate;
 import model.User;
 import repository.UserRepository;
 import service.interfaces.IUserService;
+import utils.FieldUtils;
 
 public class UserService implements IUserService {
 
@@ -54,17 +56,46 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void add(User entry) throws EventException, InvalidDataException {
-    }
-
-    @Override
     public void delete(String id) throws EventException, NotFoundException {
         this.users.remove(this.findById(id));
     }
 
     @Override
     public void update(String id, Map<String, Object> entry) throws EventException, NotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (String fieldName : entry.keySet()) {
+            User user = findById(id);
+            Field field = FieldUtils.getFieldByName(user.getClass(), fieldName);
+            try {
+                Map<String, Object> updatedMap = new HashMap<>();
+                updatedMap.putIfAbsent(getColumnByFieldName(fieldName), entry.get(fieldName));
+                userRepository.updateToDB(id, updatedMap);
+                field.set(user, entry.get(fieldName));
+            } catch (IllegalAccessException | IllegalArgumentException | SQLException e) {
+                throw new EventException(e);
+            }
+        }
+    }
+
+    private String getColumnByFieldName(String fieldName) throws NotFoundException {
+        if (fieldName.equalsIgnoreCase("personId")) {
+            return UserRepository.PersonID_Column;
+        }
+        if (fieldName.equalsIgnoreCase("fullName")) {
+            return UserRepository.FullName_Column;
+        }
+        if (fieldName.equalsIgnoreCase("DoB")) {
+            return UserRepository.DoB_Column;
+        }
+        if (fieldName.equalsIgnoreCase("phone")) {
+            return UserRepository.Phone_Column;
+        }
+        if (fieldName.equalsIgnoreCase("addventor")) {
+            return UserRepository.Addventor_Column;
+        }
+        if (fieldName.equalsIgnoreCase("active")) {
+            return UserRepository.Active_Column;
+        }
+        throw new NotFoundException("Not found any field");
     }
 
     @Override
