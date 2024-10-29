@@ -1,41 +1,54 @@
 package model;
 
+import exception.IOException;
 import exception.InvalidDataException;
+
+import java.util.TreeSet;
+
 import service.ScheduleService;
+import utils.ObjectUtils;
 
 public class UserProgress {
 
-    private String coursePacketId;
-    private ScheduleService scheduleService;
+    private String userProgressId;
+    private String registedCourseID;
+
+    public UserProgress(String userProgressId, String registedCourseID) throws InvalidDataException {
+        this.userProgressId = userProgressId;
+        this.registedCourseID = registedCourseID;
+        this.runValidate();
+    }
 
     public UserProgress() {
-        this.scheduleService = new ScheduleService();
+        
     }
 
-    public UserProgress(String coursePacketId) {
-        this.coursePacketId = coursePacketId;
-        this.scheduleService = new ScheduleService();
+    public String getUserProgressId() {
+        return userProgressId;
     }
 
-    public String getUserId() {
-        return coursePacketId;
+    public void setUserProgressId(String userProgressId) {
+        this.userProgressId = userProgressId;
     }
 
-    public void setUserId(String coursePacketId) {
-        this.coursePacketId = coursePacketId;
+    public String getRegistedCourseID() {
+        return registedCourseID;
     }
 
-    public ScheduleService getScheduleService() {
-        return scheduleService;
+    public void setRegistedCourseID(String registedCourseID) {
+        this.registedCourseID = registedCourseID;
     }
 
     public String getInfo() {
-        return String.format("");
+        return String.format("%s\t%s", userProgressId, registedCourseID);
     }
 
     public void runValidate() throws InvalidDataException {
-        if (coursePacketId == null || coursePacketId.isEmpty()) {
-            throw new InvalidDataException("Course Packet ID cannot be null or empty.");
+        if (!ObjectUtils.validCodeUserProgress(userProgressId)){
+            throw new InvalidDataException("UserProgress ID must be UPYYY with YYY are numbers");
+        }
+        if (!ObjectUtils.validCodeRegistedCourse(registedCourseID)){
+            throw new InvalidDataException("RegistedCourse ID must be RCYYY with YYY are numbers");
         }
     }
 }
