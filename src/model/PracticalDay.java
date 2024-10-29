@@ -54,7 +54,7 @@ public class PracticalDay implements Comparator<PracticalDay> {
     }
 
     public String getInfo() {
-        return String.format("| %-10s | %-15s | %-10s |", getPracticalDayId(), GlobalUtils.getDateString(getPracticeDate()), getScheduleId());
+        return String.format("%s\t%s\t%s", getPracticalDayId(), GlobalUtils.getDateString(getPracticeDate()), getScheduleId());
     }
 
     public void runValidate () throws InvalidDataException {

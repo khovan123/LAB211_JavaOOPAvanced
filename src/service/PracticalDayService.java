@@ -32,15 +32,22 @@ public class PracticalDayService implements IPracticalDayService {
         readFromDatabase();
     }
 
-    public TreeSet<PracticalDay> getPractialDayTreeSet(){
+    public TreeSet<PracticalDay> getPractialDayTreeSet() {
         return practicalDayTreeSet;
     }
 
     public void readFromDatabase() {
         try {
-            practicalDayTreeSet.addAll(practicalDayRepository.readData());
+            TreeSet<PracticalDay> practicalDaysFromDB = practicalDayRepository.readData();
+            for (PracticalDay practicalDay : practicalDaysFromDB) {
+                try {
+                    this.add(practicalDay);
+                } catch (EventException e) {
+//                    System.err.println("Error adding Practical Day from database: " + e.getMessage());
+                }
+            }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
         }
     }
 
@@ -48,10 +55,10 @@ public class PracticalDayService implements IPracticalDayService {
     public void display() throws EmptyDataException {
         if (practicalDayTreeSet.isEmpty()) {
             throw new EmptyDataException("No practice day found!!!");
-        } else {
-            for (PracticalDay practicalDay : practicalDayTreeSet) {
-                System.out.println(practicalDay.getInfo());
-            }
+        }
+        System.out.println("PracticalID\tPracticeDate\tScheduleID");
+        for (PracticalDay practicalDay : practicalDayTreeSet) {
+            System.out.println(practicalDay.getInfo());
         }
     }
 
@@ -65,18 +72,17 @@ public class PracticalDayService implements IPracticalDayService {
                 throw new EventException(practiceDay.getPracticalDayId() + " already exist.");
             }
         } catch (Exception e) {
-            throw new EventException("Failed to add Practical Day: " + e.getMessage());
+            throw new EventException("Failed to add Practical Day");
         }
     }
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
         try {
-            PracticalDay practicalDay = this.findById(id);
-            practicalDayTreeSet.remove(practicalDay);
+            practicalDayTreeSet.remove(findById(id));
             practicalDayRepository.deleteToDB(id);
         } catch (Exception e) {
-            throw new EventException("An error occurred while deleting Practical Day with ID: " + id + ". " + e.getMessage());
+            throw new EventException("An error occurred while deleting Practical Day with ID: " + id + ". ");
         }
     }
 

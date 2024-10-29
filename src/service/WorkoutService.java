@@ -7,15 +7,12 @@ import exception.NotFoundException;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import model.PracticalDay;
 import repository.PracticalDayRepository;
 import service.interfaces.IWorkoutService;
 
-import java.util.Map;
 import java.util.function.Predicate;
 
 import model.Workout;
@@ -39,15 +36,22 @@ public class WorkoutService implements IWorkoutService {
         readFromDatabase();
     }
 
-    public List<Workout> getWorkoutList(){
+    public List<Workout> getWorkoutList() {
         return workoutList;
     }
 
     public void readFromDatabase() {
         try {
-            workoutList.addAll(workoutRepository.readData());
+            List<Workout> workoutFormDB = workoutRepository.readData();
+            for (Workout workout : workoutFormDB) {
+                try {
+                    this.add(workout);
+                } catch (EventException e) {
+//                    System.err.println("Error adding Workout from database: " + e.getMessage());
+                }
+            }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
         }
     }
 
@@ -55,39 +59,39 @@ public class WorkoutService implements IWorkoutService {
     public void display() throws EmptyDataException {
         if (workoutList.isEmpty()) {
             throw new EmptyDataException("No workout found!!!");
-        } else {
-            for (Workout workout : workoutList) {
-                System.out.println(workout.getInfo());
-            }
+        }
+        System.out.println("WorkoutID\tWorkoutName\tRepetition\tSets\tDuration\tCourseId");
+        for (Workout workout : workoutList) {
+            System.out.println(workout.getInfo());
         }
     }
 
     @Override
     public void add(Workout workout) throws EventException {
         try {
-            if(!existID(workout)){
+            if (!existID(workout)) {
 
-            workoutList.add(workout);
-            workoutRepository.insertToDB(workout);
+                workoutList.add(workout);
+                workoutRepository.insertToDB(workout);
             } else {
                 throw new EventException(workout.getWorkoutId() + " already exist.");
             }
         } catch (Exception e) {
-            throw new EventException("Failed to add Workout: " + e.getMessage());
+            throw new EventException("Failed to add Workout");
         }
     }
 
     @Override
     public void delete(String id) throws EventException, NotFoundException {
         try {
-            Workout workout = this.findById(id);
-            workoutList.remove(workout);
+            workoutList.remove(findById(id));
             workoutRepository.deleteToDB(id);
         } catch (Exception e) {
-            throw new EventException("An error occurred while deleting Workout with ID: " + id + ". " + e.getMessage());
+            throw new EventException("An error occurred while deleting Workout with ID: " + id + ". ");
         }
     }
 
+    @Override
     public void update(String id, Map<String, Object> entry) throws NotFoundException, EventException {
         Workout workout = findById(id);
         for (String fieldName : entry.keySet()) {

@@ -49,7 +49,7 @@ public class Nutrition {
     }
 
     public String getInfo() {
-        return String.format("| %-10s | %-8f | %-10s |", getNutritionId(), getCalories(), getPracticalDayId());
+        return String.format("%s\t%f\t%s", getNutritionId(), getCalories(), getPracticalDayId());
     }
 
     public void runValidate() throws InvalidDataException {

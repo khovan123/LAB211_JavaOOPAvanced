@@ -11,6 +11,8 @@ import model.Workout;
 import repository.interfaces.IWorkoutRepository;
 import java.sql.*;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WorkoutRepository implements IWorkoutRepository {
 
@@ -23,11 +25,36 @@ public class WorkoutRepository implements IWorkoutRepository {
     public static final String Duration_Column = "Duration";
     public static final String CourseID_Column = "CourseID";
 
+    public static void main(String[] args) {
+        WorkoutRepository workoutRepository = new WorkoutRepository();
+        String workoutID = "WK001"; // ID cần kiểm tra
+
+        // Cập nhật các giá trị cần thiết
+        Map<String, String> updatedEntries = new HashMap<>();
+        updatedEntries.put(WorkoutRepository.WorkoutName_Column, "Leg Day Updated");
+        updatedEntries.put(WorkoutRepository.Repetition_Column, "15");
+        updatedEntries.put(WorkoutRepository.Sets_Column, "4");
+        updatedEntries.put(WorkoutRepository.Duration_Column, "60");
+        updatedEntries.put(WorkoutRepository.CourseID_Column, "CS002");
+
+        try {
+            // Thực hiện cập nhật
+            workoutRepository.updateOne(workoutID, updatedEntries);
+            System.out.println("Update successful!");
+
+            // Lấy lại thông tin của bản ghi vừa được cập nhật
+            String row = workoutRepository.getOne(workoutID);
+            System.out.println("Workout Details: " + row);
+        } catch (SQLException ex) {
+            Logger.getLogger(WorkoutRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     @Override
     public List<Workout> readData() throws SQLException {
         List<Workout> workoutList = new ArrayList<>();
         try {
-            for (String row : getMany()){
+            for (String row : getMany()) {
                 try {
                     String[] data = row.split(",");
                     Workout workout = new Workout(data[0], data[1], data[2], data[3], data[4], data[5]);
@@ -35,7 +62,7 @@ public class WorkoutRepository implements IWorkoutRepository {
                 } catch (Exception e) {
                 }
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e);
         }
         return workoutList;
@@ -102,6 +129,33 @@ public class WorkoutRepository implements IWorkoutRepository {
             throw new SQLException(e);
         }
     }
+
+    public String getOne(String workoutID) throws SQLException {
+        String query = "SELECT WorkoutID, WorkoutName, Repetition, Sets, Duration, CourseID FROM WorkoutModel WHERE WorkoutID = ?";
+        StringBuilder result = new StringBuilder();
+
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, workoutID);
+            try (ResultSet rs = ps.executeQuery()) {
+                ResultSetMetaData metaData = rs.getMetaData();
+                int columnCount = metaData.getColumnCount();
+
+                // Nếu tìm thấy bản ghi
+                if (rs.next()) {
+                    for (int i = 1; i <= columnCount; i++) {
+                        result.append(rs.getString(i)).append(i < columnCount ? ", " : "");
+                    }
+                } else {
+                    throw new SQLException("No Workout found with ID: " + workoutID);
+                }
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Failed to retrieve Workout: " + e.getMessage());
+        }
+
+        return result.toString();
+    }
+
     @Override
     public void insertOne(Map<String, String> entries) throws SQLException {
         String query = "INSERT INTO WorkoutModel (WorkoutID, WorkoutName, Repetition, Sets, Duration, CourseID) VALUES (?, ?, ?, ?, ?, ?)";

@@ -75,7 +75,7 @@ public class Workout {
     }
 
     public String getInfo() {
-        return String.format("| %-10s | %-10s | %-5d | %-5d | %-5d | %-10s", getWorkoutId(), getWorkoutName(), getRepetition(), getSets(), getDuration(), getCourseId());
+        return String.format("%s\t%s\t%d\t%d\t%d\t%s", getWorkoutId(), getWorkoutName(), getRepetition(), getSets(), getDuration(), getCourseId());
     }
 
     public void runValidate() throws InvalidDataException {
