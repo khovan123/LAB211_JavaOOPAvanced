@@ -7,12 +7,11 @@
     <list default="true" id="5b48b4dc-c1ce-482d-9a07-fe05c09b4d23" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/FitnessCourseManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/FitnessCourseManagement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Nutrition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Nutrition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/PracticalDay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/PracticalDay.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Workout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Workout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/PracticalDayRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/PracticalDayRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/WorkoutRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/WorkoutRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/PracticalDayService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/PracticalDayService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/WorkoutService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/WorkoutService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/ObjectUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/ObjectUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,18 +29,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "khang",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "E:/FPT/Semester_III/LAB211/ResortManagement",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "terminal"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;khang&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/FPT/Semester_III/LAB211/ResortManagement&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration default="true" type="ShConfigurationType">
       <option name="SCRIPT_TEXT" value="" />

@@ -75,15 +75,12 @@ public class PracticalDayRepository implements IPracticalDayRepository {
     }
 
     @Override
-    public void updateToDB(String id, Map<String, Object> entry) throws SQLException {
-        Map<String, String> entries = new HashMap<>();
-        if (entry.containsKey(PracticeDate_Column)) {
-            entries.put(PracticeDate_Column, GlobalUtils.getDateString((Date) entry.get(PracticeDate_Column)));
-        }
-        if (entry.containsKey(ScheduleID_Column)) {
-            entries.put(ScheduleID_Column, (String) entry.get(ScheduleID_Column));
-        }
-        updateOne(id, entries);
+    public void updateToDB(String id, Map<String, Object> practicalDay) throws SQLException {
+        Map<String, String> practicalDayMap = new HashMap<>();
+       for(String column : practicalDayMap.keySet()){
+           practicalDayMap.putIfAbsent(column,GlobalUtils.convertToString(practicalDay.get(column)));
+       }
+        updateOne(id, practicalDayMap);
     }
 
     @Override
