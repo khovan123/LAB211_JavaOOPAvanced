@@ -4,6 +4,7 @@ import exception.IOException;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import model.Workout;
@@ -15,38 +16,73 @@ public class WorkoutRepository implements IWorkoutRepository {
 
     private static List<Workout> workoutList = new ArrayList<>();
     private Connection conn = SQLServerConnection.getConnection();
+    public static final String WorkoutID_Column = "WorkoutID";
+    public static final String WorkoutName_Column = "WorkoutName";
+    public static final String Repetition_Column = "Repetition";
+    public static final String Sets_Column = "Sets";
+    public static final String Duration_Column = "Duration";
+    public static final String CourseID_Column = "CourseID";
 
     @Override
-    public List<Workout> readFile() throws IOException {
+    public List<Workout> readData() throws SQLException {
         List<Workout> workoutList = new ArrayList<>();
-        File file = new File(path);
-        if (!file.exists()) {
-            throw new IOException("File not found at path: " + path);
-        }
-
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            String line;
-            while ((line = br.readLine()) != null) {
+        try {
+            for (String row : getMany()){
                 try {
-                    String[] data = line.split(",");
+                    String[] data = row.split(",");
                     Workout workout = new Workout(data[0], data[1], data[2], data[3], data[4], data[5]);
                     workoutList.add(workout);
                 } catch (Exception e) {
-                    throw new IOException("Add failed (" + e.getMessage() + ")");
                 }
             }
-        } catch (java.io.IOException e) {
-            throw new IOException("Read file failed!!! (" + e.getMessage() + ")");
+        } catch (SQLException e){
+            throw new SQLException(e);
         }
         return workoutList;
     }
 
     @Override
-    public void writeFile(List<Workout> workoutList) throws IOException {
-        System.out.println("Not yet supported!!!");
+    public void insertToDB(Workout workout) throws SQLException {
+        Map<String, String> entries = new HashMap<>();
+        entries.put(WorkoutID_Column, workout.getWorkoutId());
+        entries.put(WorkoutName_Column, workout.getWorkoutName());
+        entries.put(Repetition_Column, String.valueOf(workout.getRepetition()));
+        entries.put(Sets_Column, String.valueOf(workout.getSets()));
+        entries.put(Duration_Column, String.valueOf(workout.getDuration()));
+        entries.put(CourseID_Column, workout.getCourseId());
+
+        insertOne(entries);
     }
 
-    public List<String> getData() throws SQLException {
+    @Override
+    public void updateToDB(String workoutID, Map<String, Object> entry) throws SQLException {
+        Map<String, String> entries = new HashMap<>();
+        if (entry.containsKey(WorkoutName_Column)) {
+            entries.put(WorkoutName_Column, (String) entry.get(WorkoutName_Column));
+        }
+        if (entry.containsKey(Repetition_Column)) {
+            entries.put(Repetition_Column, String.valueOf(entry.get(Repetition_Column)));
+        }
+        if (entry.containsKey(Sets_Column)) {
+            entries.put(Sets_Column, String.valueOf(entry.get(Sets_Column)));
+        }
+        if (entry.containsKey(Duration_Column)) {
+            entries.put(Duration_Column, String.valueOf(entry.get(Duration_Column)));
+        }
+        if (entry.containsKey(CourseID_Column)) {
+            entries.put(CourseID_Column, (String) entry.get(CourseID_Column));
+        }
+
+        updateOne(workoutID, entries);
+    }
+
+    @Override
+    public void deleteToDB(String workoutID) throws SQLException {
+        deleteOne(workoutID);
+    }
+
+    @Override
+    public List<String> getMany() throws SQLException {
         List<String> list = new ArrayList<>();
         try {
             StringBuilder row = new StringBuilder();
@@ -66,8 +102,8 @@ public class WorkoutRepository implements IWorkoutRepository {
             throw new SQLException(e);
         }
     }
-
-    public void insert(Map<String, String> entries) throws SQLException {
+    @Override
+    public void insertOne(Map<String, String> entries) throws SQLException {
         String query = "INSERT INTO WorkoutModel (WorkoutID, WorkoutName, Repetition, Sets, Duration, CourseID) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
@@ -83,7 +119,8 @@ public class WorkoutRepository implements IWorkoutRepository {
         }
     }
 
-    public void update(String workoutID, Map<String, String> entries) throws SQLException {
+    @Override
+    public void updateOne(String workoutID, Map<String, String> entries) throws SQLException {
         String query = "UPDATE WorkoutModel SET WorkoutName = ?, Repetition = ?, Sets = ?, Duration = ?, CourseID = ? WHERE WorkoutID = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
@@ -99,7 +136,8 @@ public class WorkoutRepository implements IWorkoutRepository {
         }
     }
 
-    public void delete(String workoutID) throws SQLException {
+    @Override
+    public void deleteOne(String workoutID) throws SQLException {
         String query = "DELETE FROM WorkoutModel WHERE WorkoutID = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
