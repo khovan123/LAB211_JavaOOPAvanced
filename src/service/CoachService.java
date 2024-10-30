@@ -20,6 +20,10 @@ public class CoachService implements ICoachService {
         this.coaches = new ArrayList<>();
     }
 
+    public boolean isEmpty() {
+        return this.coaches.isEmpty();
+    }
+
     public void readFromDatabase() {
         try {
             for (Coach coach : coachRepository.readData()) {
