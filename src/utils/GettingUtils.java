@@ -40,7 +40,23 @@ public class GettingUtils {
         try {
             System.out.print(label);
             String string = sc.nextLine().trim().replace("\n", "");
-            return Double.parseDouble(string) > 0 ? Double.parseDouble(string) : getInteger(label, message);
+            return Double.parseDouble(string) > 0 ? Double.parseDouble(string) : getDouble(label, message);
+        } catch (NumberFormatException e) {
+            System.out.println(message);
+            return getDouble(label, message);
+        }
+    }
+    
+    public static double getSales(String label, String message) {
+        try {
+            System.out.print(label);
+            String string = sc.nextLine().trim().replace("\n", "");
+            double num = Double.parseDouble(string);
+            if(num>0.0 && num<1.0){
+                return num;
+            }
+            System.out.println(message);
+            return getSales(label, message);
         } catch (NumberFormatException e) {
             System.out.println(message);
             return getDouble(label, message);
