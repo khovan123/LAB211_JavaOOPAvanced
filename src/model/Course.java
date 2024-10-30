@@ -67,7 +67,7 @@ public class Course {
         return workoutService;
     }
 
-    public double getAmount(CourseCombo courseCombo)  {
+    public double getAmount(CourseCombo courseCombo) {
         return price - (price * courseCombo.getSales());
     }
 
@@ -78,11 +78,7 @@ public class Course {
         );
     }
 
-
-    public void setCourseId(String courseId) throws InvalidDataException {
-        if (!ObjectUtils.validCourseID(courseId)) {
-            throw new InvalidDataException("-> Course ID Must Follow Format CSyyyy.");
-        }
+    public void setCourseId(String courseId) {
         this.courseId = courseId;
     }
 
@@ -101,7 +97,9 @@ public class Course {
     public void setGenerateDate(String generateDate) throws InvalidDataException {
         try {
             this.generateDate = GlobalUtils.dateParse(generateDate);
-            if (this.generateDate == null) throw new ParseException("", 0);
+            if (this.generateDate == null) {
+                throw new ParseException("", 0);
+            }
         } catch (ParseException e) {
             throw new InvalidDataException("-> Generate Date Must Be In Format dd/MM/yyyy.");
         }
@@ -110,16 +108,15 @@ public class Course {
     public void setPrice(String price) throws InvalidDataException {
         try {
             this.price = Double.parseDouble(price);
-            if (this.price <= 0) throw new NumberFormatException();
+            if (this.price <= 0) {
+                throw new NumberFormatException();
+            }
         } catch (NumberFormatException e) {
             throw new InvalidDataException("-> Price Must Be A Positive Number.");
         }
     }
 
-    public void setComboID(String comboID) throws InvalidDataException {
-        if (!ObjectUtils.valideCourseComboID(comboID)) {
-            throw new InvalidDataException("-> Combo ID Must Follow Format CByyyy.");
-        }
+    public void setComboID(String comboID) {
         this.comboID = comboID;
     }
 
