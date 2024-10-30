@@ -1,6 +1,7 @@
 package controller;
 
 import exception.*;
+import jdk.jfr.Event;
 import model.Coach;
 import model.PracticalDay;
 import model.User;
@@ -14,15 +15,16 @@ import utils.ObjectUtils;
 import view.Menu;
 
 import java.util.Map;
+import utils.GettingUtils;
 
 public class FitnessCourseManagement extends Menu<String> {
 
     static String title = "FITNESS COURSE\nHOME";
     static String[] menuOptions = {
-            "Admin",
-            "Coach",
-            "User",
-            "Exit"
+        "Admin",
+        "Coach",
+        "User",
+        "Exit"
     };
 
     private final UserService userService;
@@ -101,17 +103,17 @@ public class FitnessCourseManagement extends Menu<String> {
 
     public void runAdminMenu() {
         String[] adminMenuOptions = {
-                "User Management",
-                "Coach Management",
-                "Course Combo Management",
-                "Return home"
+            "User Management",
+            "Coach Management",
+            "Course Combo Management",
+            "Return home"
         };
         Menu<String> adminMenu = new Menu("HOME >> ADMIN", adminMenuOptions) {
             @Override
             public void execute(int selection) {
                 switch (selection) {
                     case 1 -> {
-                        
+
                     }
                     case 2 -> {
 
@@ -132,13 +134,13 @@ public class FitnessCourseManagement extends Menu<String> {
     //before run CoachMenu, request enter ID
     public void runCoachMenu() {
         String[] coachMenuOptions = {
-                "Personal information",
-                "Show all courses",
-                "Show all member in courses",
-                "Create new course",
-                "Update personal infromation",
-                "Update course",
-                "Return home"
+            "Personal information",
+            "Show all courses",
+            "Show all member in courses",
+            "Create new course",
+            "Update personal infromation",
+            "Update course",
+            "Return home"
         };
         Menu<String> coachMenu = new Menu("HOME >> COACH", coachMenuOptions) {
             @Override
@@ -174,13 +176,13 @@ public class FitnessCourseManagement extends Menu<String> {
     //before run UserMenu, request enter ID
     public void runUserMenu() {
         String[] userMenuOptions = {
-                "Personal information",
-                "Show all courses which joined",
-                "Show all progresses",
-                "Register course",
-                "Update personal information",
-                "Update schedule",
-                "Return home"
+            "Personal information",
+            "Show all courses which joined",
+            "Show all progresses",
+            "Register course",
+            "Update personal information",
+            "Update schedule",
+            "Return home"
         };
         Menu<String> userMenu = new Menu("HOME >> USER", userMenuOptions) {
             @Override
@@ -217,10 +219,10 @@ public class FitnessCourseManagement extends Menu<String> {
     //----------------------------------------------------------start admin menu-----------------------------------------------------
     public void runUserManagementMenu() {
         String admin_UserOptions[] = {
-                "Show all users",
-                "Create new user",
-                "Update user",
-                "Return admin menu"
+            "Show all users",
+            "Create new user",
+            "Update user",
+            "Return admin menu"
         };
         Menu<String> admin_UserMenu = new Menu("HOME >> ADMIN >> USER", admin_UserOptions) {
             @Override
@@ -235,9 +237,11 @@ public class FitnessCourseManagement extends Menu<String> {
                     }
                     case 2 -> {
                         try {
+                            System.out.println("Create new user");
+                            String userID = GettingUtils.getID("Enter user ID: ", "ID must be UXXXX", "U[0-9]{4}");
+                            String fullName = GettingUtils.getName("Enter full name: ", "Full Name must be letters");
                             User user = new User();
-                            userService.add(user);
-                        } catch (EventException | InvalidDataException e) {
+                        } catch (Exception e) {
                             System.err.println(e);
                         }
                     }
@@ -256,10 +260,10 @@ public class FitnessCourseManagement extends Menu<String> {
 
     public void runCoachManagementMenu() {
         String admin_CoachMenuOptions[] = {
-                "Display all coach",
-                "Create new coach",
-                "Update coach",
-                "Return admin menu"
+            "Display all coach",
+            "Create new coach",
+            "Update coach",
+            "Return admin menu"
         };
         Menu<String> admin_CoachMenu = new Menu("HOME >> ADMIN >> COACH", admin_CoachMenuOptions) {
             @Override
@@ -296,11 +300,11 @@ public class FitnessCourseManagement extends Menu<String> {
 
     public void runCourseComboManagementMenu() {
         String courseComboMenuOptions[] = {
-                "Show all combo",
-                "Create new combo",
-                "Update combo",
-                "Update combo for course",
-                "Return admin menu"
+            "Show all combo",
+            "Create new combo",
+            "Update combo",
+            "Update combo for course",
+            "Return admin menu"
         };
         Menu<String> courseComboMenu = new Menu("HOME >> ADMIN >> COURSE COMBO", courseComboMenuOptions) {
             @Override
