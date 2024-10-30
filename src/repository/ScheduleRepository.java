@@ -34,18 +34,18 @@ public class ScheduleRepository implements IScheduleRepository {
 
     }
 
-    public static void main(String[] args) {
-        ScheduleRepository scheduleRepository = new ScheduleRepository();
-        String scheduleID = "SD001";
-        Map<String, String> updatedEntries = new HashMap<>();
-        updatedEntries.put(ScheduleRepository.UserProgressID_Column, "UP001");
-        try {
-            scheduleRepository.updateOne(scheduleID, updatedEntries);
-            System.out.println("Update successful!");
-        } catch (SQLException ex) {
-            Logger.getLogger(UserProgressRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//    public static void main(String[] args) {
+//        ScheduleRepository scheduleRepository = new ScheduleRepository();
+//        String scheduleID = "SD001";
+//        Map<String, String> updatedEntries = new HashMap<>();
+//        updatedEntries.put(ScheduleRepository.UserProgressID_Column, "UP001");
+//        try {
+//            scheduleRepository.updateOne(scheduleID, updatedEntries);
+//            System.out.println("Update successful!");
+//        } catch (SQLException ex) {
+//            Logger.getLogger(UserProgressRepository.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
 
     @Override
     public List<Schedule> readData() {

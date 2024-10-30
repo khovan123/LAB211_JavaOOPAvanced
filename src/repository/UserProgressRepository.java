@@ -32,18 +32,18 @@ public class UserProgressRepository implements IUserProgressRepository {
 
     }
 
-    public static void main(String[] args) {
-        UserProgressRepository userProgressRepository = new UserProgressRepository();
-        String userProgressID = "UP001";
-        Map<String, String> updatedEntries = new HashMap<>();
-        updatedEntries.put(UserProgressRepository.RegistedCourseID_Column, "RC001");
-        try {
-            userProgressRepository.updateOne(userProgressID, updatedEntries);
-            System.out.println("Update successful!");
-        } catch (SQLException ex) {
-            Logger.getLogger(UserProgressRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//    public static void main(String[] args) {
+//        UserProgressRepository userProgressRepository = new UserProgressRepository();
+//        String userProgressID = "UP001";
+//        Map<String, String> updatedEntries = new HashMap<>();
+//        updatedEntries.put(UserProgressRepository.RegistedCourseID_Column, "RC001");
+//        try {
+//            userProgressRepository.updateOne(userProgressID, updatedEntries);
+//            System.out.println("Update successful!");
+//        } catch (SQLException ex) {
+//            Logger.getLogger(UserProgressRepository.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
 
     @Override
     public List<UserProgress> readData() {
