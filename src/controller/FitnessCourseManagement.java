@@ -304,15 +304,32 @@ public class FitnessCourseManagement extends Menu<String> {
                     case 2 -> {
                         try {
                             System.out.println("Create new user");
-                            String userID = GettingUtils.getID("Enter user ID: ", "ID must be UXXXX", "U[0-9]{4}");
+                            String userID;
+                            while (true) {
+                                userID = GettingUtils.getID("Enter user ID: ", "ID must be UXXXX", "U[0-9]{4}");
+                                if (!userService.existed(userID)) {
+                                    break;
+                                } else {
+                                    System.err.println("User with ID: " + userID + " was existed");
+                                }
+
+                            }
                             String fullName = GettingUtils.getName("Enter full name: ", "Full Name must be letters");
-                            User user = new User();
-                        } catch (Exception e) {
+                            String DoB = GlobalUtils.dateFormat(GettingUtils.getDate("Enter Date of Birth: ", "Date of birth must be yyyy-MM-dd"));
+                            String phone = GettingUtils.getPhone("Enter phone number: ", "Phone number must be start with 0 and have 10 digits");
+                            String addventor = Boolean.toString(GettingUtils.getBoolean("Enter target with weight gain or weight lost (true/false): ", "Target must be true or false"));
+                            User user = new User(userID, fullName, DoB, phone, addventor);
+                            try {
+                                userService.add(user);
+                            } catch (EventException | InvalidDataException e) {
+                                System.err.println(e.getMessage());
+                            }
+                        } catch (InvalidDataException e) {
                             System.err.println(e);
                         }
                     }
                     case 3 -> {
-
+                        updateOrDeleteUserFromConsoleCustomize();
                     }
                     case 4 -> {
                         exitMenu();
@@ -322,6 +339,53 @@ public class FitnessCourseManagement extends Menu<String> {
         };
         admin_UserMenu.exitMenu();
         continueExecution = true;
+    }
+
+    public void updateOrDeleteUserFromConsoleCustomize() {
+        if (userService.isEmpty()) {
+            System.out.println("Please create new user ^^");
+            return;
+        }
+        while (true) {
+            try {
+                String id = GettingUtils.getID("Enter ID for update: ", "User ID must be CXXXX", "U[0-9]{4}");
+                User user;
+                if ((user = userService.findById(id)) != null) {
+                    System.out.println(user.getInfo());
+                    String[] editMenuOptions = FieldUtils.getEditOptions(user.getClass());
+                    for (int i = 0; i < editMenuOptions.length; i++) {
+                        System.out.println((i + 1) + ". " + editMenuOptions[i]);
+                    }
+                    while (true) {
+                        int selection = GettingUtils.getInteger("Enter selection: ", "Invalid option!");
+                        if (selection == editMenuOptions.length - 1) {
+                            try {
+                                userService.delete(id);
+                                System.out.println("Delete successfully");
+                            } catch (EventException | NotFoundException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            return;
+                        } else if (selection == editMenuOptions.length) {
+                            return;
+                        }
+                        while (true) {
+                            try {
+                                String newValue = GlobalUtils.getValue("Enter new value: ", "Invalid value!");
+                                Map<String, Object> fieldUpdateMap = FieldUtils.getFieldValueByName(user, editMenuOptions[selection - 1], newValue);
+                                userService.update(id, fieldUpdateMap);
+                                System.out.println("Update successfully");
+                                break;
+                            } catch (Exception ex) {
+                                System.err.println(ex.getMessage());
+                            }
+                        }
+                    }
+                }
+            } catch (NotFoundException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
     }
 
     public void runCoachManagementMenu() {
