@@ -35,6 +35,10 @@ public class UserService implements IUserService {
 
     }
 
+    public boolean isEmpty() {
+        return this.users.isEmpty();
+    }
+
     @Override
     public void display() throws EmptyDataException {
         if (users.isEmpty()) {

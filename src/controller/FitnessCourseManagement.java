@@ -23,16 +23,17 @@ import java.util.Date;
 import java.util.List;
 
 public class FitnessCourseManagement extends Menu<String> {
+
     private CourseService courseService;
     private CourseComboService courseComboService;
     private RegistedCourseService registedCourseService;
 
     static String title = "FITNESS COURSE\nHOME";
     static String[] menuOptions = {
-            "Admin",
-            "Coach",
-            "User",
-            "Exit"
+        "Admin",
+        "Coach",
+        "User",
+        "Exit"
     };
 
     private final UserService userService;
@@ -111,23 +112,23 @@ public class FitnessCourseManagement extends Menu<String> {
 
     public void runAdminMenu() {
         String[] adminMenuOptions = {
-                "User Management",
-                "Coach Management",
-                "Course Combo Management",
-                "Return home"
+            "User Management",
+            "Coach Management",
+            "Course Combo Management",
+            "Return home"
         };
         Menu<String> adminMenu = new Menu("HOME >> ADMIN", adminMenuOptions) {
             @Override
             public void execute(int selection) {
                 switch (selection) {
                     case 1 -> {
-
+                        runUserManagementMenu();
                     }
                     case 2 -> {
-
+                        runCoachManagementMenu();
                     }
                     case 3 -> {
-
+                        runCourseComboManagementMenu();
                     }
                     case 4 -> {
                         exitMenu();
@@ -142,13 +143,13 @@ public class FitnessCourseManagement extends Menu<String> {
     //before run CoachMenu, request enter ID
     public void runCoachMenu() {
         String[] coachMenuOptions = {
-                "Personal information",
-                "Show all courses",
-                "Show all member in courses",
-                "Create new course",
-                "Update personal infromation",
-                "Update course",
-                "Return home"
+            "Personal information",
+            "Show all courses",
+            "Show all member in courses",
+            "Create new course",
+            "Update personal infromation",
+            "Update course",
+            "Return home"
         };
         Menu<String> coachMenu = new Menu("HOME >> COACH", coachMenuOptions) {
             @Override
@@ -242,13 +243,13 @@ public class FitnessCourseManagement extends Menu<String> {
     //before run UserMenu, request enter ID
     public void runUserMenu() {
         String[] userMenuOptions = {
-                "Personal information",
-                "Show all courses which joined",
-                "Show all progresses",
-                "Register course",
-                "Update personal information",
-                "Update schedule",
-                "Return home"
+            "Personal information",
+            "Show all courses which joined",
+            "Show all progresses",
+            "Register course",
+            "Update personal information",
+            "Update schedule",
+            "Return home"
         };
         Menu<String> userMenu = new Menu("HOME >> USER", userMenuOptions) {
             @Override
@@ -285,10 +286,10 @@ public class FitnessCourseManagement extends Menu<String> {
     //----------------------------------------------------------start admin menu-----------------------------------------------------
     public void runUserManagementMenu() {
         String admin_UserOptions[] = {
-                "Show all users",
-                "Create new user",
-                "Update user",
-                "Return admin menu"
+            "Show all users",
+            "Create new user",
+            "Update user",
+            "Return admin menu"
         };
         Menu<String> admin_UserMenu = new Menu("HOME >> ADMIN >> USER", admin_UserOptions) {
             @Override
@@ -390,10 +391,10 @@ public class FitnessCourseManagement extends Menu<String> {
 
     public void runCoachManagementMenu() {
         String admin_CoachMenuOptions[] = {
-                "Display all coach",
-                "Create new coach",
-                "Update coach",
-                "Return admin menu"
+            "Display all coach",
+            "Create new coach",
+            "Update coach",
+            "Return admin menu"
         };
         Menu<String> admin_CoachMenu = new Menu("HOME >> ADMIN >> COACH", admin_CoachMenuOptions) {
             @Override
@@ -430,11 +431,11 @@ public class FitnessCourseManagement extends Menu<String> {
 
     public void runCourseComboManagementMenu() {
         String courseComboMenuOptions[] = {
-                "Show all combo",
-                "Create new combo",
-                "Update combo",
-                "Update combo for course",
-                "Return admin menu"
+            "Show all combo",
+            "Create new combo",
+            "Update combo",
+            "Update combo for course",
+            "Return admin menu"
         };
         Menu<String> courseComboMenu = new Menu("HOME >> ADMIN >> COURSE COMBO", courseComboMenuOptions) {
             @Override
@@ -606,6 +607,7 @@ public class FitnessCourseManagement extends Menu<String> {
             }
         }
     }
+
     //----------------------------------------------------------end admin menu-----------------------------------------------------
 //----------------------------------------------------------start coach menu---------------------------------------------------
 //----------------------------------------------------------end coach menu-----------------------------------------------------
