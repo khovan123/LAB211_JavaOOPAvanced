@@ -8,7 +8,7 @@ public class SQLServerConnection {
 
     private static Connection connectToSQLServer() {
         var user = "minh";
-        var password = "Minh@1807";
+        var password = "Minh@123";
         var url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=FitnessCourse;encrypt=true;trustServerCertificate=true;zeroDateTimeBehavior=CONVERT_TO_NULL";
         Connection conn = null;
         try {
