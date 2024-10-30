@@ -85,8 +85,8 @@ public class GlobalUtils {
      *
      * @param inputPrompt The message to display when asking for input.
      * @param errorPrompt The message to display when the input is invalid.
-     * @param validator   A predicate that defines the validation logic for the
-     *                    input.
+     * @param validator A predicate that defines the validation logic for the
+     * input.
      * @return The validated input string that meets the validation criteria.
      */
     public static String getValidatedInput(String inputPrompt, String errorPrompt, Predicate<String> validator) {
@@ -100,6 +100,14 @@ public class GlobalUtils {
             }
         } while (!validator.test(input));
         return input;
+    }
+
+    public static boolean validDateNow(Date date) {
+        Date currentDate = new Date();
+        if (currentDate.getYear() == date.getYear() && currentDate.getMonth() == date.getMonth() && currentDate.getDay() == date.getDay()) {
+            return true;
+        }
+        return date.compareTo(new Date()) >= 0;
     }
 
 }

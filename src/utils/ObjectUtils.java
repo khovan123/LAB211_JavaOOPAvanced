@@ -2,6 +2,8 @@ package utils;
 
 import exception.InvalidDataException;
 
+import java.util.Date;
+
 public class ObjectUtils {
 
     public static boolean validCoachID(String id) {
@@ -24,6 +26,7 @@ public class ObjectUtils {
         return code.matches("^SD[0-9]{3}");
     }
 
+
     public static boolean validCodeWorkout(String code) {
         return code.matches("^WK[0-9]{3}");
     }
@@ -43,13 +46,53 @@ public class ObjectUtils {
             return false;
         }
     }
-
     public static boolean validCodeUserProgress(String code) {
         return code.matches("^UP[0-9]{3}");
     }
-
     public static boolean validCodeRegistedCourse(String code) {
         return code.matches("^RC[0-9]{3}");
+    }
+
+    public static boolean validCourseID(String code) {
+        return code.matches("^CS\\d*$");
+    }
+
+    public static boolean validCoursePrice(String coursePrice) {
+        try {
+            return Double.parseDouble(coursePrice) > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public static boolean valideCourseComboID(String code) {
+        return code.matches("^CB\\d*$");
+    }
+
+    public static boolean validCourseComboSale(String sale) {
+        try {
+            return Double.parseDouble(sale) > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public static boolean validCourseRegistedID(String code) {
+        return code.matches("^RC\\d*$");
+    }
+
+
+    public static boolean isRegisteredDateBeforeFinishDate(Date registeredDate, Date finishRegisteredDate) {
+        return registeredDate.before(finishRegisteredDate);
+    }
+
+    public static boolean checkSales(String sales) {
+        try {
+            double saleValue = Double.parseDouble(sales);
+            return saleValue >= 0 && saleValue <= 1;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
 }

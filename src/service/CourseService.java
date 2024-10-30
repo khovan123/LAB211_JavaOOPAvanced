@@ -1,0 +1,174 @@
+package service;
+
+import exception.*;
+import model.Course;
+import model.Workout;
+import repository.CourseRepository;
+import service.interfaces.ICourseService;
+import utils.FieldUtils;
+import utils.GettingUtils;
+import utils.GlobalUtils;
+import utils.ObjectUtils;
+
+import java.lang.reflect.Field;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
+
+public class CourseService implements ICourseService {
+
+    private final CourseRepository courseRepository = new CourseRepository();
+    private final List<Course> courseList;
+
+    public CourseService() {
+        courseList = new ArrayList<>();
+        readFromDatabase();
+    }
+
+    public List<Course> getCourseList(){
+        return courseList;
+    }
+
+    public CourseService(List<Course> courseList) {
+        this.courseList = courseList;
+        readFromDatabase();
+    }
+
+    @Override
+    public void display() throws EmptyDataException {
+        if (courseList.isEmpty()) {
+            throw new EmptyDataException("-> Course List Is Empty.");
+        }
+        System.out.println("CourseID\tCourseName\tAddventor\tGenerateDate\tPrice\tComboID\tCoachID\tWorkoutService");
+        for (Course course : courseList) {
+            course.getInfo();
+        }
+
+    }
+
+    public void readFromDatabase() {
+        try {
+            courseList.addAll(courseRepository.readData());
+        } catch (SQLException e) {
+            // Handle exception if necessary
+        }
+    }
+
+    @Override
+    public void add(Course course) throws EventException {
+        if (existsID(course)) {
+            throw new EventException("-> Course With ID - " + course.getCourseId() + " - Already Exist");
+        }
+        try {
+            courseList.add(course);
+        } catch (Exception e) {
+            throw new EventException("-> Error Occurred While Adding Course");
+        }
+    }
+
+    @Override
+    public void delete(String id) throws EventException, NotFoundException {
+        if (findById(id) == null) {
+            throw new NotFoundException("-> Course With ID - " + id + " - Not Found!");
+        }
+        try {
+            courseList.remove(findById(id));
+        } catch (Exception e) {
+            throw new EventException("-> Error While Deleting Course With ID - " + id);
+        }
+    }
+
+    public void update(Course course) throws EventException, NotFoundException {
+        Course existCourse = findById(course.getCourseId());
+        if (existCourse == null) {
+            throw new NotFoundException("-> Course with ID - " + course.getCourseId() + " - Not Found.");
+        }
+        try {
+            existCourse.setCourseName(course.getCourseName());
+            existCourse.setGenerateDate(String.valueOf(course.getGenerateDate()));
+            existCourse.setPrice(String.valueOf(course.getPrice()));
+            existCourse.setComboID(course.getComboID());
+            existCourse.setCoachId(course.getCoachId());
+        } catch (Exception e) {
+            throw new EventException("-> Error While Updating Course With ID - " + course.getCourseId());
+        }
+    }
+
+    private String getColumnByFieldName(String fieldName) throws NotFoundException {
+        return switch (fieldName.toLowerCase()) {
+            case "coursename" -> CourseRepository.CourseName_Column;
+            case "addventor" -> String.valueOf(CourseRepository.Addventor_Column);
+            case "generatedate" -> CourseRepository.GenerateDate_Column;
+            case "price" -> CourseRepository.Price_Column;
+            case "coachid" -> CourseRepository.CoachID_Column;
+            default -> throw new NotFoundException("Not found any field for name: " + fieldName);
+        };
+    }
+
+    public void update(String id, Map<String, Object> entry) throws EventException, NotFoundException {
+        Course existingCourse = findById(id);
+        if (existingCourse == null) {
+            throw new NotFoundException("-> Course with ID - " + id + " - Not Found.");
+        }
+
+        for (String fieldName : entry.keySet()) {
+            Field field = FieldUtils.getFieldByName(existingCourse.getClass(), fieldName);
+            try {
+                field.set(existingCourse, entry.get(fieldName));
+                Map<String, Object> updatedMap = new HashMap<>();
+                updatedMap.put(fieldName, entry.get(fieldName));
+                courseRepository.updateToDB(id, updatedMap);
+            } catch (IllegalAccessException | IllegalArgumentException | SQLException e) {
+                throw new EventException("-> Error While Updating Course");
+            }
+        }
+    }
+
+
+
+    @Override
+    public Course search(Predicate<Course> p) throws NotFoundException {
+        for (Course course : courseList) {
+            if (p.test(course)) {
+                return course;
+            }
+        }
+        throw new NotFoundException("-> No Course found matching the criteria.");
+    }
+
+    @Override
+    public Course findById(String id) throws NotFoundException {
+        return search(course -> course.getCourseId().equalsIgnoreCase(id));
+    }
+
+    public boolean existsID(Course course) {
+        try {
+            return findById(course.getCourseId()) != null;
+        } catch (NotFoundException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public void addWorkout(Workout workout) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void updateWorkout(Workout workout) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void deleteWorkout(Workout workout) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Workout searchWorkout(Predicate<Workout> p) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+}
