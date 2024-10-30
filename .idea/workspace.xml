@@ -5,28 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="565ff75d-5f81-422e-8f17-5de5e7175224" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/FitnessCourseManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/FitnessCourseManagement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/PracticalDay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/PracticalDay.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/CoursePacketRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/CoursePacketRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/CourseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/CourseSegmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/CourseSegmentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/PracticalDayRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/PracticalDayRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/CoursePacketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CoursePacketService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/CourseSegmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CourseSegmentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/SampleCoachService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/GlobalUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/GlobalUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/ObjectUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/ObjectUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="2o8OGZMFGk9DrVKB0mXdcdemAa4" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.PracticalDayRepository.executor": "Run",
-    "git-widget-placeholder": "khang"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "duyen",
+    "kotlin-language-version-configured": "true"
   }
 }]]></component>
   <component name="RunManager">
@@ -49,7 +52,15 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="565ff75d-5f81-422e-8f17-5de5e7175224" name="Changes" comment="" />
+      <created>1730247641781</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1730247641781</updated>
+    </task>
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

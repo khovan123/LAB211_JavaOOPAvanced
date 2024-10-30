@@ -10,11 +10,11 @@ import utils.ObjectUtils;
 
 public class UserProgress {
 
-    private String userProgressId;
+    private String userProgressID;
     private String registedCourseID;
 
-    public UserProgress(String userProgressId, String registedCourseID) throws InvalidDataException {
-        this.userProgressId = userProgressId;
+    public UserProgress(String userProgressID, String registedCourseID) throws InvalidDataException {
+        this.userProgressID = userProgressID;
         this.registedCourseID = registedCourseID;
         this.runValidate();
     }
@@ -23,12 +23,12 @@ public class UserProgress {
         
     }
 
-    public String getUserProgressId() {
-        return userProgressId;
+    public String getUserProgressID() {
+        return userProgressID;
     }
 
-    public void setUserProgressId(String userProgressId) {
-        this.userProgressId = userProgressId;
+    public void setUserProgressID(String userProgressID) {
+        this.userProgressID = userProgressID;
     }
 
     public String getRegistedCourseID() {
@@ -40,11 +40,11 @@ public class UserProgress {
     }
 
     public String getInfo() {
-        return String.format("%s\t%s", userProgressId, registedCourseID);
+        return String.format("%s\t%s", userProgressID, registedCourseID);
     }
 
     public void runValidate() throws InvalidDataException {
-        if (!ObjectUtils.validCodeUserProgress(userProgressId)){
+        if (!ObjectUtils.validCodeUserProgress(userProgressID)){
             throw new InvalidDataException("UserProgress ID must be UPYYY with YYY are numbers");
         }
         if (!ObjectUtils.validCodeRegistedCourse(registedCourseID)){
