@@ -30,7 +30,6 @@ public class CourseComboRepository implements ICourseComboRepository {
         }
     }
 
-
     @Override
     public List<CourseCombo> readData() throws SQLException {
         List<CourseCombo> processData = new ArrayList<>();
