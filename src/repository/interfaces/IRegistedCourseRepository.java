@@ -1,8 +1,8 @@
 package repository.interfaces;
 
-import model.RegisteredCourse;
+import model.RegistedCourse;
 
 import java.util.List;
 
-public interface IRegistedCourseRepository extends Repository<RegisteredCourse, List<RegisteredCourse>>{
+public interface IRegistedCourseRepository extends Repository<RegistedCourse, List<RegistedCourse>>{
 }

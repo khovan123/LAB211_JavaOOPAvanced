@@ -5,27 +5,35 @@ import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Predicate;
+import model.RegistedCourse;
 import model.User;
 import repository.UserRepository;
 import service.interfaces.IUserService;
 import utils.FieldUtils;
+import utils.GlobalUtils;
+import view.Printer;
 
 public class UserService implements IUserService {
 
     private UserRepository userRepository = new UserRepository();
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
+    private RegistedCourseService registedCourseService;
+    private UserProgressService userProgressService;
 
-    public UserService() {
-        this.userRepository = new UserRepository();
-        this.users = new ArrayList<>();
+    public UserService(RegistedCourseService registedCourseService, UserProgressService userProgressService) {
+        this.registedCourseService = registedCourseService;
+        this.userProgressService = userProgressService;
+        this.readFromDatabase();
     }
 
     public void readFromDatabase() {
         try {
             for (User user : userRepository.readData()) {
                 try {
-                    this.add(user);
-                } catch (EventException | InvalidDataException e) {
+                    if (!this.existed(user.getPersonId())) {
+                        this.users.add(user);
+                    }
+                } catch (Exception e) {
 
                 }
             }
@@ -33,6 +41,10 @@ public class UserService implements IUserService {
 
         }
 
+    }
+
+    public int size() {
+        return this.users.size();
     }
 
     public boolean isEmpty() {
@@ -44,32 +56,44 @@ public class UserService implements IUserService {
         if (users.isEmpty()) {
             throw new EmptyDataException("List of user is empty");
         }
-        System.out.println("User ID\tFull Name\tDoB\tPhone\tTarget");
+        List<String> list = new ArrayList<>();
         for (User user : users) {
-            System.out.println(user.getInfo());
+            list.add(user.getInfo());
         }
+        Printer.printTable("List Of User", "User", list);
     }
 
     @Override
     public void add(User user) throws EventException, InvalidDataException {
         if (!existed(user.getPersonId())) {
-            users.add(user);
+            try {
+                users.add(user);
+                this.userRepository.insertToDB(user);
+            } catch (SQLException e) {
+                throw new EventException(e);
+            }
         } else {
             throw new InvalidDataException("User with id: " + user.getPersonId() + " was existed");
         }
     }
 
     @Override
-    public void delete(String id) throws EventException, NotFoundException {
-        this.users.remove(this.findById(id));
+    public void delete(int id) throws EventException, NotFoundException {
+        try {
+            this.users.remove(this.findById(id));
+            this.userRepository.deleteToDB(id);
+        } catch (SQLException e) {
+            throw new EventException(e);
+        }
     }
 
     @Override
-    public void update(String id, Map<String, Object> entry) throws EventException, NotFoundException {
+    public void update(int id, Map<String, Object> entry) throws EventException, NotFoundException {
         for (String fieldName : entry.keySet()) {
             User user = findById(id);
             Field field = FieldUtils.getFieldByName(user.getClass(), fieldName);
             try {
+                field.setAccessible(true);
                 Map<String, Object> updatedMap = new HashMap<>();
                 updatedMap.putIfAbsent(getColumnByFieldName(fieldName), entry.get(fieldName));
                 userRepository.updateToDB(id, updatedMap);
@@ -113,15 +137,32 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User findById(String id) throws NotFoundException {
-        return this.search(p -> p.getPersonId().equalsIgnoreCase(id));
+    public User findById(int id) throws NotFoundException {
+        return this.search(p -> p.getPersonId() == (id));
     }
 
-    public boolean existed(String id) {
+    public boolean existed(int id) {
         try {
             return this.findById(id) != null;
         } catch (NotFoundException e) {
             return false;
         }
     }
+
+    public void displayJoinedCourse(int userID) throws EmptyDataException {
+        if (registedCourseService.searchRegistedCourseByUser(userID).isEmpty()) {
+            throw new EmptyDataException("User with id: " + userID + " did not join any course");
+        }
+        List<String> str = new ArrayList<>();
+        for (RegistedCourse registedCourse : registedCourseService.searchRegistedCourseByUser(userID)) {
+            userProgressService.setCompletedUserProgress(registedCourse.getRegisteredCourseID());
+            try {
+                str.add(registedCourse.getInfo() + " " + GlobalUtils.decimalFormat(userProgressService.search(p -> p.getRegistedCourseID() == registedCourse.getRegisteredCourseID()).getCompleted() * 100) + "%");
+            } catch (NotFoundException e) {
+
+            }
+        }
+        Printer.printTable("Your Course", "Course", str);
+    }
+
 }

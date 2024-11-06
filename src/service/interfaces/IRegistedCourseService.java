@@ -1,6 +1,6 @@
 package service.interfaces;
 
-import model.RegisteredCourse;
+import model.RegistedCourse;
 
-public interface IRegistedCourseService extends Service<RegisteredCourse>{
+public interface IRegistedCourseService extends Service<RegistedCourse>{
 }

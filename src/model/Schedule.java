@@ -1,56 +1,45 @@
 package model;
 
 import exception.InvalidDataException;
-
-import java.util.TreeSet;
-
-import service.PracticalDayService;
-import utils.ObjectUtils;
-
-import java.util.TreeSet;
+import java.text.ParseException;
 
 public class Schedule {
-    private String scheduleId;
-    private String userProgressId;
 
-    public Schedule(String scheduleId, String userProgressId) throws InvalidDataException {
-        this.scheduleId = scheduleId;
-        this.userProgressId = userProgressId;
+    private int scheduleId;
+    private int userProgressId;
+
+    public Schedule(String scheduleId, String userProgressId) throws InvalidDataException, ParseException {
+        this.setScheduleId(userProgressId);
+        this.setUserProgressId(userProgressId);
         this.runValidate();
     }
 
     public Schedule() {
-       
+
     }
 
-    public String getUserProgressId() {
+    public int getUserProgressId() {
         return userProgressId;
     }
 
-    public void setUserProgressId(String userProgressId) {
-        this.userProgressId = userProgressId;
+    public void setUserProgressId(String userProgressId)throws ParseException {
+        this.userProgressId = Integer.parseInt(userProgressId);
     }
 
-    public String getScheduleId() {
+    public int getScheduleId() {
         return userProgressId;
     }
 
-    public void setScheduleId(String userProgressId) {
-        this.userProgressId = userProgressId;
+    public void setScheduleId(String userProgressId) throws ParseException{
+        this.userProgressId = Integer.parseInt(userProgressId);
     }
-
 
     public String getInfo() {
-        return String.format("%s\t%s\t%s", scheduleId, userProgressId);
+        return String.format("%s\t%s", scheduleId, userProgressId);
     }
 
     public void runValidate() throws InvalidDataException {
-        if (!ObjectUtils.validCodeSchedule(scheduleId)){
-            throw new InvalidDataException("Schedule ID must be RCYYY with YYY are numbers");
-        }
-        if (!ObjectUtils.validCodeUserProgress(userProgressId)){
-            throw new InvalidDataException("UserProgress ID must be UPYYY with YYY are numbers");
-        }
+
     }
 
 }

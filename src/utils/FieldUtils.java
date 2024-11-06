@@ -1,42 +1,58 @@
-
 package utils;
 
 import exception.InvalidDataException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.text.ParseException;
 import java.util.*;
 
 public class FieldUtils {
 
-    private static Object[] merge(Object[] array1, Object[] array2) {
-        Object[] mergeObj = new Object[array1.length + array2.length];
-        System.arraycopy(array1, 0, mergeObj, 0, array1.length);
-        System.arraycopy(array2, 0, mergeObj, array1.length, array2.length);
-        return mergeObj;
+    private static String[] merge(String[] array1, String[] array2) {
+        String[] merged = new String[array1.length + array2.length];
+        System.arraycopy(array1, 0, merged, 0, array1.length);
+        System.arraycopy(array2, 0, merged, array1.length, array2.length);
+        return merged;
+    }
+
+    private static Field[] merge(Field[] array1, Field[] array2) {
+        Field[] merged = new Field[array1.length + array2.length];
+        System.arraycopy(array1, 0, merged, 0, array1.length);
+        System.arraycopy(array2, 0, merged, array1.length, array2.length);
+        return merged;
     }
 
     public static String[] getEditOptions(Class<?> clazz) {
-        Field[] fields = (Field[]) merge(clazz.getClass().getSuperclass().getDeclaredFields(), clazz.getClass().getDeclaredFields());
-        String subOptions[] = {
-            "Delete",
-            "Return to menu",};
-        String[] fieldsString = new String[fields.length];
-        for (int i = 0; i < fields.length; i++) {
-            fields[i].setAccessible(true);
-            fieldsString[i] = fields[i].getName();
+        Field[] fields = merge(clazz.getSuperclass().getDeclaredFields(), clazz.getDeclaredFields());
+
+        List<String> validFieldNames = new ArrayList<>();
+
+        for (Field field : fields) {
+            if (!field.isSynthetic() && !Modifier.isStatic(field.getModifiers())) {
+                validFieldNames.add(field.getName());
+            }
         }
-        String[] editMenuOptions = (String[]) merge(fieldsString, subOptions);
-        return editMenuOptions;
+
+        String[] subOptions = {"Delete", "Return to menu"};
+
+        List<String> options = new ArrayList<>(validFieldNames);
+        options.addAll(Arrays.asList(subOptions));
+
+        return options.toArray(new String[0]);
     }
 
     public static String[] getFields(Class<?> clazz) {
-        Field[] fields = (Field[]) merge(clazz.getClass().getSuperclass().getDeclaredFields(), clazz.getClass().getDeclaredFields());
-        String[] fieldsString = new String[fields.length];
-        for (int i = 0; i < fields.length; i++) {
-            fields[i].setAccessible(true);
-            fieldsString[i] = fields[i].getName();
+        Field[] fields = merge(clazz.getSuperclass().getDeclaredFields(), clazz.getDeclaredFields());
+
+        List<String> validFieldNames = new ArrayList<>();
+
+        for (Field field : fields) {
+            if (!field.isSynthetic() && !Modifier.isStatic(field.getModifiers())) {
+                validFieldNames.add(field.getName());
+            }
         }
-        return fieldsString;
+
+        return validFieldNames.toArray(new String[0]);
     }
 
     public static Field getFieldByName(Class<?> clazz, String fieldName) {
@@ -59,6 +75,8 @@ public class FieldUtils {
             return Double.valueOf((String) value);
         } else if ((targetType == Integer.class || targetType == int.class) && value instanceof String) {
             return Integer.valueOf((String) value);
+        } else if ((targetType == Boolean.class) || targetType == boolean.class && value instanceof String) {
+            return Boolean.valueOf((String) value);
         }
         return null;
     }

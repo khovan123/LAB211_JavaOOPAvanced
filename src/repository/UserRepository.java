@@ -2,6 +2,7 @@ package repository;
 
 import exception.InvalidDataException;
 import java.sql.*;
+import java.text.ParseException;
 import java.util.*;
 import model.User;
 import repository.interfaces.IUserRepository;
@@ -25,10 +26,10 @@ public class UserRepository implements IUserRepository {
         for (String row : getMany()) {
             String data[] = row.split(",");
             try {
-                User coach = new User(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), data[4].trim());
+                User coach = new User(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), data[4].trim().equalsIgnoreCase("1") ? "true" : "false", data[5].trim().equalsIgnoreCase("1") ? "true" : "false");
                 coaches.add(coach);
-            } catch (InvalidDataException | ArrayIndexOutOfBoundsException e) {
-
+            } catch (InvalidDataException | ParseException e) {
+                throw new SQLException(e);
             }
         }
         return coaches;
@@ -36,26 +37,27 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void insertToDB(User user) throws SQLException {
-        Map<String, String> userMap = new HashMap<>();
+        Map<String, Object> userMap = new HashMap<>();
         userMap.put(PersonID_Column, user.getPersonId());
         userMap.put(FullName_Column, user.getFullName());
         userMap.put(DoB_Column, GlobalUtils.dateFormat(user.getDoB()));
         userMap.put(Phone_Column, user.getPhone());
+//        userMap.put(Active_Column, GlobalUtils.convertToString(user.isActive()));
         userMap.put(Addventor_Column, Boolean.toString(user.isAddventor()));
         insertOne(userMap);
     }
 
     @Override
-    public void updateToDB(String id, Map<String, Object> user) throws SQLException {
-        Map<String, String> userMap = new HashMap<>();
+    public void updateToDB(int id, Map<String, Object> user) throws SQLException {
+        Map<String, Object> userMap = new HashMap<>();
         for (String column : user.keySet()) {
-            userMap.putIfAbsent(column, GlobalUtils.convertToString(user.get(column)));
+            userMap.putIfAbsent(column, (user.get(column)));
         }
         updateOne(id, userMap);
     }
 
     @Override
-    public void deleteToDB(String ID) throws SQLException {
+    public void deleteToDB(int ID) throws SQLException {
         deleteOne(ID);
     }
 
@@ -65,7 +67,7 @@ public class UserRepository implements IUserRepository {
         try {
             StringBuilder row = new StringBuilder();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT u.UserID, p.FullName, p.DoB, p.Phone, c.Certificate  FROM PersonModel p JOIN UserModel u ON p.PersonID = u.UserID WHERE p.Active = 1");
+            ResultSet rs = stmt.executeQuery("SELECT u.UserID, p.FullName, p.DoB, p.Phone, p.Active, u.Addventor FROM PersonModel p JOIN UserModel u ON p.PersonID = u.UserID WHERE p.Active = 1");
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
             while (rs.next()) {
@@ -82,59 +84,70 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public void insertOne(Map<String, String> entries) throws SQLException {
+    public void insertOne(Map<String, Object> entries) throws SQLException {
         String personQuery = "INSERT INTO PersonModel(X) VALUES(Y)";
         String userQuery = "INSERT INTO UserModel(X) VALUES(Y)";
         StringBuilder personModelColumn = new StringBuilder();
-        StringBuilder coachModelColumn = new StringBuilder();
+        StringBuilder userModelColumn = new StringBuilder();
         StringBuilder personModelValue = new StringBuilder();
-        StringBuilder coachModelValue = new StringBuilder();
+        StringBuilder userModelValue = new StringBuilder();
 
         for (String column : entries.keySet()) {
-            if (PERSONMODELCOLUMN.contains(column)) {
-                personModelColumn.append((personModelColumn.length() == 0 ? "" : ", ")).append(column);
-                personModelValue.append((personModelValue.length() == 0 ? "?" : ", ?"));
+            if (PERSONMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(PersonID_Column)) && (!column.equalsIgnoreCase(Active_Column))) {
+                if (personModelColumn.length() > 0) {
+                    personModelColumn.append(", ");
+                    personModelValue.append(", ");
+                }
+                personModelColumn.append(column);
+                personModelValue.append("?");
             }
             if (USERMODELCOLUMN.contains(column)) {
-                coachModelColumn.append((coachModelColumn.length() == 0 ? "" : ", ")).append(column);
-                coachModelValue.append((coachModelValue.length() == 0 ? "?" : ", ?"));
+                if (userModelColumn.length() > 0) {
+                    userModelColumn.append(", ");
+                    userModelValue.append(", ");
+                }
+                userModelColumn.append(column);
+                userModelValue.append("?");
             }
         }
 
-        personQuery = personQuery.replace("Y", personModelValue).replace("X", personModelColumn);
-        userQuery = userQuery.replace("Y", coachModelValue).replace("X", coachModelColumn);
+        personQuery = personQuery.replace("Y", personModelValue.toString()).replace("X", personModelColumn.toString());
+        userQuery = userQuery.replace("Y", userModelValue.toString()).replace("X", userModelColumn.toString());
 
-        try {
-            PreparedStatement personPS = conn.prepareStatement(personQuery);
-            PreparedStatement coachPS = conn.prepareStatement(userQuery);
-            int i = 1, j = 1;
+        try (PreparedStatement personPS = conn.prepareStatement(personQuery); PreparedStatement userPS = conn.prepareStatement(userQuery)) {
+            int i = 1;
             for (String column : entries.keySet()) {
-                if (PERSONMODELCOLUMN.contains(column)) {
-                    personPS.setString(i++, entries.get(column));
-                }
-                if (USERMODELCOLUMN.contains(column)) {
-                    coachPS.setString(j++, entries.get(column));
+                if (PERSONMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(PersonID_Column)) && (!column.equalsIgnoreCase(Active_Column))) {
+                    SQLServerConnection.setParamater(personPS, i++, entries.get(column));
                 }
             }
+
+            int j = 1;
+            for (String column : entries.keySet()) {
+                if (USERMODELCOLUMN.contains(column)) {
+                    SQLServerConnection.setParamater(userPS, j++, entries.get(column));
+                }
+            }
+
             personPS.executeUpdate();
-            coachPS.executeUpdate();
+            userPS.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException(e.getMessage());
+            throw new SQLException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void updateOne(String ID, Map<String, String> entries) throws SQLException {
-        String userQuery = "UPDATE CoachModel SET X WHERE PersonID = ?";
+    public void updateOne(int ID, Map<String, Object> entries) throws SQLException {
+        String userQuery = "UPDATE UserModel SET X WHERE UserID = ?";
         String personQuery = "UPDATE PersonModel SET X WHERE PersonID = ?";
         StringBuilder coachModelColumn = new StringBuilder();
         StringBuilder personModelColumn = new StringBuilder();
 
         for (String column : entries.keySet()) {
-            if (PERSONMODELCOLUMN.contains(column)) {
+            if (PERSONMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(PersonID_Column))) {
                 personModelColumn.append((personModelColumn.isEmpty() ? "" : ", ")).append(column).append(" = ?");
             }
-            if (USERMODELCOLUMN.contains(column)) {
+            if (USERMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(PersonID_Column))) {
                 coachModelColumn.append((coachModelColumn.isEmpty() ? "" : ", ")).append(column).append(" = ?");
             }
         }
@@ -145,23 +158,25 @@ public class UserRepository implements IUserRepository {
                 PreparedStatement coachPS = conn.prepareStatement(userQuery);
                 int i = 1;
                 for (String column : entries.keySet()) {
-                    if (USERMODELCOLUMN.contains(column)) {
-                        coachPS.setString(i++, entries.get(column));
+                    if (USERMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(PersonID_Column))) {
+                        SQLServerConnection.setParamater(coachPS, i++, entries.get(column));
+//                        coachPS.setString(i++, entries.get(column));
                     }
                 }
-                coachPS.setString(i, ID);
+                coachPS.setInt(i, ID);
                 coachPS.executeUpdate();
             }
             if (!personModelColumn.isEmpty()) {
                 PreparedStatement personPS = conn.prepareStatement(personQuery);
                 int i = 1;
                 for (String column : entries.keySet()) {
-                    if (PERSONMODELCOLUMN.contains(column)) {
-                        personPS.setString(i++, entries.get(column));
+                    if (PERSONMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(PersonID_Column))) {
+                        SQLServerConnection.setParamater(personPS, i++, entries.get(column));
+//                        personPS.setString(i++, entries.get(column));
                     }
 
                 }
-                personPS.setString(i, ID);
+                personPS.setInt(i, ID);
                 personPS.executeUpdate();
             }
 
@@ -171,11 +186,11 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public void deleteOne(String ID) throws SQLException {
+    public void deleteOne(int ID) throws SQLException {
         String personQuery = "UPDATE PersonModel SET Active = 0 WHERE PersonID = ?";
         try {
             PreparedStatement personPS = conn.prepareStatement(personQuery);
-            personPS.setString(1, ID);
+            personPS.setInt(1, ID);
             personPS.executeUpdate();
         } catch (SQLException e) {
             throw new SQLException(e);

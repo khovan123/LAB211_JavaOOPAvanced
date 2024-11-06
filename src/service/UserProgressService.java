@@ -1,82 +1,81 @@
 package service;
 
-import exception.EmptyDataException;
-import exception.EventException;
-import exception.IOException;
-import exception.NotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import exception.*;
+import java.util.*;
 import service.interfaces.IUserProgressService;
 import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.sql.SQLException;
 import model.UserProgress;
-import model.Workout;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import model.RegistedCourse;
 import repository.UserProgressRepository;
 import utils.FieldUtils;
 
 public class UserProgressService implements IUserProgressService {
 
-    List<UserProgress> userProgressList = new ArrayList<>();
-    UserProgressRepository userProgressRepository = new UserProgressRepository();
+    private List<UserProgress> userProgressList = new ArrayList<>();
+    private UserProgressRepository userProgressRepository = new UserProgressRepository();
+    private ScheduleService scheduleService;
+    private RegistedCourseService registedCourseService;
 
-    static {
-
+    public UserProgressService(RegistedCourseService registedCourseService, ScheduleService scheduleService) {
+        this.scheduleService = scheduleService;
+        this.registedCourseService = registedCourseService;
+        this.readFromDatabase();
     }
 
-    public UserProgressService() {
-        userProgressList = userProgressRepository.readData();
+    public void readFromDatabase() {
+        try {
+            for (UserProgress userProgress : userProgressRepository.readData()) {
+                try {
+                    if (!existID(userProgress.getUserProgressID())) {
+                        this.userProgressList.add(userProgress);
+                    }
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @Override
     public void display() throws EmptyDataException {
-        if (userProgressList.isEmpty()) {
+        if (this.userProgressList.isEmpty()) {
             throw new EmptyDataException("User Progress is empty.");
         }
         for (UserProgress userProgress : userProgressList) {
-            System.out.println(userProgress);
+            System.out.println(userProgress.getInfo());
         }
     }
 
     @Override
     public void add(UserProgress userProgress) throws EventException {
-        if (!existID(userProgress)) {
-            userProgressList.add(userProgress);
+        if (!existID(userProgress.getUserProgressID())) {
+            try {
+                userProgressList.add(userProgress);
+                userProgressRepository.insertToDB(userProgress);
+            } catch (SQLException e) {
+                throw new EventException(e);
+            }
         } else {
-            throw new EventException("ID: " + userProgress.getUserProgressID() + " existed.");
+            throw new EventException("User Progress with ID: " + userProgress.getUserProgressID() + " existed.");
         }
 
     }
 
     @Override
-    public void delete(String id) throws EventException, NotFoundException {
-        userProgressList.remove(findById(id));
+    public void delete(int id) throws EventException, NotFoundException {
+        try {
+            userProgressList.remove(findById(id));
+            userProgressRepository.deleteToDB(id);
+        } catch (SQLException e) {
+            throw new EventException(e);
+        }
     }
 
-//    @Override
-//    public void update(UserProgress userProgress) throws EventException, NotFoundException {
-//        boolean found = false;
-//        for (int i = 0; i < userProgressList.size(); i++) {
-//            if (userProgressList.get(i).getUserProgressId().equals(userProgress.getUserProgressId())) {
-//                userProgressList.set(i, userProgress);
-//
-//                try {
-//                    userProgressRepository.writeFile(userProgressList);
-//                } catch (IOException ex) {
-//                    System.out.println(ex.getMessage());
-//                }
-//                found = true;
-//                break;
-//            }
-//        }
-//        if (!found) {
-//            throw new NotFoundException("UserProgress not found with ID: " + userProgress.getUserId());
-//        }
-//    }
     @Override
     public UserProgress search(Predicate<UserProgress> p) throws NotFoundException {
         for (UserProgress up : userProgressList) {
@@ -88,32 +87,30 @@ public class UserProgressService implements IUserProgressService {
     }
 
     @Override
-    public UserProgress findById(String id) throws NotFoundException {
+    public UserProgress findById(int id) throws NotFoundException {
         try {
-            return this.search(p -> p.getUserProgressID().equals(id));
+            return this.search(p -> p.getUserProgressID() == (id));
         } catch (NotFoundException e) {
             throw new NotFoundException(e);
         }
     }
 
-    public boolean existID(UserProgress userProgress) {
+    public boolean existID(int userProgressId) {
         try {
-            if (findById(userProgress.getUserProgressID()) == null) {
-                return true;
-            }
+            return findById(userProgressId) != null;
         } catch (NotFoundException ex) {
-            System.out.println("Can not find " + userProgress);
+            return false;
         }
 
-        return false;
     }
 
     @Override
-    public void update(String id, Map<String, Object> entry) throws EventException, NotFoundException {
+    public void update(int id, Map<String, Object> entry) throws EventException, NotFoundException {
         for (String fieldName : entry.keySet()) {
             UserProgress userProgress = findById(id);
             Field field = FieldUtils.getFieldByName(userProgress.getClass(), fieldName);
             try {
+                field.setAccessible(true);
                 field.set(userProgress, entry.get(fieldName));
                 Map<String, Object> updatedMap = new HashMap<>();
                 updatedMap.putIfAbsent(getColumnByFieldName(fieldName), entry.get(fieldName));
@@ -126,13 +123,60 @@ public class UserProgressService implements IUserProgressService {
 
     private String getColumnByFieldName(String fieldName) throws NotFoundException {
         switch (fieldName) {
-            case "userProgressId":
+            case "userProgressId" -> {
                 return UserProgressRepository.UserProgressID_Column;
-            case "registedCourseId":
+            }
+            case "registedCourseId" -> {
                 return UserProgressRepository.RegistedCourseID_Column;
-            default:
+            }
+            default ->
                 throw new NotFoundException("Not found any field");
         }
+    }
+
+    public void setAllCompletedUserProgress() {
+        for (UserProgress userProgress : this.userProgressList) {
+            try {
+                this.setCompletedUserProgress(userProgress.getUserProgressID());
+            } catch (Exception e) {
+
+            }
+        }
+    }
+
+    public void setCompletedUserProgress(int registedCourseID) {
+        try {
+            int progressUserID = this.search(p -> p.getUserProgressID() == registedCourseID).getUserProgressID();
+            int scheduleID = scheduleService.search(p -> Integer.compare(p.getUserProgressId(), progressUserID) == 0).getScheduleId();
+            this.findById(progressUserID).setCompleted(scheduleService.getCompletedUserProgress(scheduleID));
+        } catch (EmptyDataException | NotFoundException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public double getCompletedUserProgress(int registedCourseID) {
+        try {
+            int progressUserID = this.search(p -> p.getUserProgressID() == registedCourseID).getUserProgressID();
+            int scheduleID = scheduleService.search(p -> Integer.compare(p.getUserProgressId(), progressUserID) == 0).getScheduleId();
+            this.findById(progressUserID).setCompleted(scheduleService.getCompletedUserProgress(scheduleID));
+            return scheduleService.getCompletedUserProgress(scheduleID);
+        } catch (EmptyDataException | NotFoundException e) {
+            System.err.println(e.getMessage());
+        }
+        return 0;
+    }
+
+    public void displayUserProgress(int userID) throws EmptyDataException {
+
+        for (RegistedCourse registedCourse : this.registedCourseService.searchRegistedCourseByUser(userID)) {
+            try {
+                UserProgress up = this.search(p -> Integer.compare(p.getRegistedCourseID(), registedCourse.getRegisteredCourseID()) == 0);
+                System.out.println(registedCourse.getRegistedCourse().getCourseName() + " " + up.getCompleted() * 100 + " %");
+            } catch (NotFoundException e) {
+
+            }
+        }
+
     }
 
 }
