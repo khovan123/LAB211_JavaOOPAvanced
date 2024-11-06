@@ -4,43 +4,49 @@ import exception.InvalidDataException;
 import java.sql.*;
 import java.text.ParseException;
 import java.util.*;
-import model.CourseCombo;
-import repository.interfaces.ICourseComboRepository;
+import model.Nutrition;
+import repository.interfaces.INutritionRepository;
+import utils.GlobalUtils;
 
-public class CourseComboRepository implements ICourseComboRepository {
+public class NutritionRepository implements INutritionRepository {
 
-    public static final String ComboID_Column = "ComboID";
-    public static final String ComboName_Column = "ComboName";
-    public static final String Sales_Column = "Sales";
-    private static final List<String> COURSECOMBOMODELCOLUMN = new ArrayList<>(Arrays.asList(ComboID_Column, ComboName_Column, Sales_Column));
+    public static final String NutritionID_Column = "NutritionID";
+    public static final String Calories_Column = "Caliries";
+    public static final String PracticalDayID_Column = "PracticalDayID";
+    private static final List<String> REGISTEDWORKOUTMODELCOLUMN = new ArrayList<>(Arrays.asList(NutritionID_Column, Calories_Column, PracticalDayID_Column));
     private final Connection conn = SQLServerConnection.getConnection();
 
     @Override
-    public List<CourseCombo> readData() throws SQLException {
-        List<CourseCombo> processData = new ArrayList<>();
+    public List<Nutrition> readData() throws SQLException {
+        List<Nutrition> list = new ArrayList<>();
         for (String row : getMany()) {
-            String[] col = row.split(",");
+            String data[] = row.split(",");
             try {
-                processData.add(new CourseCombo(col[0].trim(), col[1].trim(), col[2].trim()));
+                list.add(new Nutrition(data[0].trim(), data[1].trim(), data[2].trim()));
             } catch (InvalidDataException | ParseException e) {
                 throw new SQLException(e);
+
             }
         }
-        return processData;
+        return list;
     }
 
     @Override
-    public void insertToDB(CourseCombo entry) throws SQLException {
+    public void insertToDB(Nutrition entry) throws SQLException {
         Map<String, Object> entries = new HashMap<>();
-//        entries.put(ComboID_Column, entry.getComboId());
-        entries.put(ComboName_Column, entry.getComboName());
-        entries.put(Sales_Column, String.valueOf(entry.getSales()));
+//        entries.put(NutritionID_Column, entry.getNutritionId());
+        entries.put(Calories_Column, GlobalUtils.convertToString(entry.getCalories()));
+        entries.put(PracticalDayID_Column, entry.getPracticalDayId());
         insertOne(entries);
     }
 
     @Override
-    public void updateToDB(int id, Map<String, Object> entries) throws SQLException {
-        updateOne(id, entries);
+    public void updateToDB(int id, Map<String, Object> entry) throws SQLException {
+        Map<String, Object> coachMap = new HashMap<>();
+        for (String column : entry.keySet()) {
+            coachMap.putIfAbsent(column, GlobalUtils.convertToString(entry.get(column)));
+        }
+        updateOne(id, coachMap);
     }
 
     @Override
@@ -54,7 +60,7 @@ public class CourseComboRepository implements ICourseComboRepository {
         try {
             StringBuilder row = new StringBuilder();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT cb.ComboId, cb.ComboName, cb.Sales FROM CourseComboModel cb");
+            ResultSet rs = stmt.executeQuery("SELECT NutritionID, Calories, PracticalDayID FROM NutritionModel");
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
 
@@ -73,12 +79,11 @@ public class CourseComboRepository implements ICourseComboRepository {
 
     @Override
     public void insertOne(Map<String, Object> entries) throws SQLException {
-        String courseComboQuery = "INSERT INTO CourseComboModel(X) VALUES(Y)";
+        String courseComboQuery = "INSERT INTO NutritionModel(X) VALUES(Y)";
         StringBuilder modelColumn = new StringBuilder();
         StringBuilder modelValue = new StringBuilder();
-
         for (String column : entries.keySet()) {
-            if (COURSECOMBOMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(ComboID_Column))) {
+            if (REGISTEDWORKOUTMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(NutritionID_Column))) {
                 if (modelColumn.length() > 0) {
                     modelColumn.append(", ");
                     modelValue.append(", ");
@@ -93,7 +98,7 @@ public class CourseComboRepository implements ICourseComboRepository {
         try (PreparedStatement ps = conn.prepareStatement(courseComboQuery)) {
             int i = 1;
             for (String column : entries.keySet()) {
-                if (COURSECOMBOMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(ComboID_Column))) {
+                if (REGISTEDWORKOUTMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(NutritionID_Column))) {
                     SQLServerConnection.setParamater(ps, i++, entries.get(column));
                 }
             }
@@ -106,36 +111,33 @@ public class CourseComboRepository implements ICourseComboRepository {
 
     @Override
     public void updateOne(int ID, Map<String, Object> entries) throws SQLException {
-        String query = "UPDATE CourseComboModel SET X WHERE ComboID = ?";
+        String query = "UPDATE NutritionModel SET X WHERE NutritionID = ?";
         StringBuilder modelColumn = new StringBuilder();
 
         for (String column : entries.keySet()) {
-            if (COURSECOMBOMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(ComboID_Column))) {
+            if (REGISTEDWORKOUTMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(NutritionID_Column))) {
                 modelColumn.append((modelColumn.isEmpty() ? "" : ", ")).append(column).append(" = ?");
             }
         }
 
         query = query.replace("X", modelColumn.toString());
 
-        try {
-            PreparedStatement ps = conn.prepareStatement(query);
-            int i = 1;
-            for (String column : entries.keySet()) {
-                if (COURSECOMBOMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(ComboID_Column))) {
+        PreparedStatement ps = conn.prepareStatement(query);
+        int i = 1;
+        for (String column : entries.keySet()) {
+            if (REGISTEDWORKOUTMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(NutritionID_Column))) {
 //                    ps.setString(i++, entries.get(column));
-                    SQLServerConnection.setParamater(ps, i++, entries.get(column));
-                }
+                SQLServerConnection.setParamater(ps, i++, entries.get(column));
             }
-            ps.setInt(i, ID);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new SQLException(e);
         }
+        ps.setInt(i, ID);
+        ps.executeUpdate();
+
     }
 
     @Override
     public void deleteOne(int ID) throws SQLException {
-        String query = "DELETE FROM CourseComboModel WHERE ComboID = ?";
+        String query = "DELETE FROM NutritionModel WHERE NutritionID = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, ID);
@@ -144,4 +146,5 @@ public class CourseComboRepository implements ICourseComboRepository {
             throw new SQLException(e);
         }
     }
+
 }

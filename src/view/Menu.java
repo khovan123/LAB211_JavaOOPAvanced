@@ -20,12 +20,13 @@ public abstract class Menu<T> {
     }
 
     public void display() {
-        System.out.println("-------------------------");
-        System.out.println(title);
-        for (int i = 0; i < menuOptions.size(); i++) {
-            System.out.println(i + 1 + "." + menuOptions.get(i));
-        }
-        System.out.println("-------------------------");
+        Printer.printTable(title,"Option", menuOptions);
+//        System.out.println("-------------------------");
+//        System.out.println(title);
+//        for (int i = 0; i < menuOptions.size(); i++) {
+//            System.out.println(i + 1 + "." + menuOptions.get(i));
+//        }
+//        System.out.println("-------------------------");
     }
 
     public int getSelected() {

@@ -1,32 +1,31 @@
 package model;
 
-import exception.InvalidDataException;
+import exception.*;
+import java.text.ParseException;
+import java.util.*;
+import utils.*;
 
-import java.util.Comparator;
-import java.util.Date;
+public class PracticalDay implements Comparable<PracticalDay> {
 
-import utils.GlobalUtils;
-import utils.ObjectUtils;
-
-public class PracticalDay implements Comparator<PracticalDay> {
-
-    private String practicalDayId;
+    private int practicalDayId;
     private Date practiceDate;
-    private String scheduleId;
+    private boolean done;
+    private int scheduleId;
 
-    public PracticalDay(String practicalDayId, String practiceDate, String scheduleId) throws InvalidDataException {
-        this.practicalDayId = practicalDayId;
+    public PracticalDay(String practicalDayId, String practiceDate, String done, String scheduleId) throws InvalidDataException, ParseException {
+        this.setPracticalDayId(practicalDayId);
         this.setPracticeDate(practiceDate);
-        this.scheduleId = scheduleId;
+        this.setDone(done);
+        this.setScheduleId(scheduleId);
         this.runValidate();
     }
 
-    public String getPracticalDayId() {
+    public int getPracticalDayId() {
         return practicalDayId;
     }
 
-    public void setPracticalDayId(String practicalDayId) {
-        this.practicalDayId = practicalDayId;
+    public void setPracticalDayId(String practicalDayId) throws ParseException{
+        this.practicalDayId = Integer.parseInt(practicalDayId);
     }
 
     public Date getPracticeDate() {
@@ -37,33 +36,35 @@ public class PracticalDay implements Comparator<PracticalDay> {
         this.practiceDate = GlobalUtils.dateParse(practiceDate);
     }
 
-    public String getScheduleId() {
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(String done) throws InvalidDataException {
+        this.done = GlobalUtils.booleanParse(done);
+    }
+
+    public int getScheduleId() {
         return scheduleId;
     }
 
-    public void setScheduleId(String scheduleId) {
-        this.scheduleId = scheduleId;
+    public void setScheduleId(String scheduleId) throws ParseException {
+        this.scheduleId = Integer.parseInt(scheduleId);
     }
 
     @Override
-    public int compare(PracticalDay pd1, PracticalDay pd2) {
-        if(pd1.getPracticeDate() == null || pd2.getPracticeDate() == null){
+    public int compareTo(PracticalDay other) {
+        if (this.practiceDate == null || other.practiceDate == null) {
             throw new UnsupportedOperationException("Practice Date cannot be null");
         }
-        return pd1.getPracticeDate().compareTo(pd2.getPracticeDate());
+        return this.practiceDate.compareTo(other.practiceDate);
     }
 
     public String getInfo() {
-        return String.format("%s\t%s\t%s", getPracticalDayId(), GlobalUtils.dateFormat(getPracticeDate()), getScheduleId());
+        return String.format("%s\t%s\t%s", getPracticalDayId(), GlobalUtils.dateFormat(getPracticeDate()), (done?"Done":"Not yet"));
     }
 
-    public void runValidate () throws InvalidDataException {
-        if(!ObjectUtils.validCodePracticalDay(practicalDayId)){
-            throw new InvalidDataException("Practical ID must be PDYYY with YYY are numbers");
-        }
-        if(!ObjectUtils.validCodeSchedule(scheduleId)){
-            throw new InvalidDataException("Schedule ID must be SDYYY with YYY are numbers");
-        }
+    public void runValidate() throws InvalidDataException {
     }
 
 }

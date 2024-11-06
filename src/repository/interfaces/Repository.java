@@ -10,16 +10,16 @@ public interface Repository<T, C> {
 
     void insertToDB(T entry) throws SQLException;
 
-    void updateToDB(String id, Map<String, Object> entry) throws SQLException;
+    void updateToDB(int id, Map<String, Object> entry) throws SQLException;
 
-    void deleteToDB(String ID) throws SQLException;
+    void deleteToDB(int ID) throws SQLException;
 
     List<String> getMany() throws SQLException;
 
-    void insertOne(Map<String, String> entry) throws SQLException;
+    void insertOne(Map<String, Object> entry) throws SQLException;
 
-    void updateOne(String ID, Map<String, String> entry) throws SQLException;
+    void updateOne(int ID, Map<String, Object> entry) throws SQLException;
 
-    void deleteOne(String ID) throws SQLException;
+    void deleteOne(int ID) throws SQLException;
 
 }

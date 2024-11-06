@@ -1,90 +1,60 @@
 package repository;
 
-import exception.IOException;
-import java.io.*;
-import java.sql.*;
-import java.util.*;
-import java.util.Date;
-
 import exception.InvalidDataException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.*;
+import java.text.ParseException;
+import java.util.*;
 import model.PracticalDay;
 import repository.interfaces.IPracticalDayRepository;
 import utils.GlobalUtils;
 
 public class PracticalDayRepository implements IPracticalDayRepository {
 
-    private static TreeSet<PracticalDay> practicalDays = new TreeSet<>();
     private Connection conn = SQLServerConnection.getConnection();
     public static final String PracticalDayID_Column = "PracticalDayID";
     public static final String PracticeDate_Column = "PracticalDate";
+    public static final String PracticalDay_Status = "Done";
     public static final String ScheduleID_Column = "ScheduleID";
-
-    public TreeSet<PracticalDay> getPracticalDays() {
-        return practicalDays;
-    }
-
-    public static void main(String[] args) {
-        PracticalDayRepository practicalDayRepository = new PracticalDayRepository();
-        String practicalDayID = "PD001";
-        Map<String, String> updatedEntries = new HashMap<>();
-        updatedEntries.put(PracticalDayRepository.PracticeDate_Column, "2023-03-10");
-        updatedEntries.put(PracticalDayRepository.ScheduleID_Column, "SD002");
-        try {
-            practicalDayRepository.updateOne(practicalDayID, updatedEntries);
-            System.out.println("Update successful!");
-            String row = practicalDayRepository.getOne(practicalDayID);
-            System.out.println("Practical Day Details: " + row);
-        } catch (SQLException ex) {
-            Logger.getLogger(PracticalDayRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    public static final List<String> PRACTICALDAYMODELCOLUMN = new ArrayList<>(Arrays.asList(PracticalDayID_Column, PracticeDate_Column, PracticalDay_Status, ScheduleID_Column));
 
     @Override
     public TreeSet<PracticalDay> readData() throws SQLException {
         TreeSet<PracticalDay> practicalDaysFromFile = new TreeSet<>();
-        try {
-            for (String row : getMany()) {
-                try {
-                    String[] data = row.split(",");
+        for (String row : getMany()) {
+            try {
+                String[] data = row.split(",");
+                PracticalDay practicalDay = new PracticalDay(data[0].trim(), data[1].trim(), data[2].trim().equalsIgnoreCase("1") ? "true" : "false", data[3].trim());
+                practicalDay.runValidate();
+                practicalDaysFromFile.add(practicalDay);
+            } catch (InvalidDataException | ParseException e) {
+                throw new SQLException(e);
 
-                    String practicalDayID = data[0];
-                    String practiceDate = data[1];
-
-                    PracticalDay practicalDay = new PracticalDay(practicalDayID, practiceDate, data[2]);
-                    practicalDay.runValidate();
-                    practicalDaysFromFile.add(practicalDay);
-                } catch (Exception e) {
-                }
             }
-        } catch (SQLException e) {
-            throw new SQLException(e);
         }
-
         return practicalDaysFromFile;
     }
 
     @Override
     public void insertToDB(PracticalDay practicalDay) throws SQLException {
-        Map<String, String> entries = new HashMap<>();
-        entries.put(PracticalDayID_Column, practicalDay.getPracticalDayId());
+        Map<String, Object> entries = new HashMap<>();
+//        entries.put(PracticalDayID_Column, practicalDay.getPracticalDayId());
         entries.put(PracticeDate_Column, GlobalUtils.dateFormat(practicalDay.getPracticeDate()));
+        entries.put(PracticalDay_Status, Boolean.toString(practicalDay.isDone()));
         entries.put(ScheduleID_Column, practicalDay.getScheduleId());
         insertOne(entries);
     }
 
     @Override
-    public void updateToDB(String id, Map<String, Object> practicalDay) throws SQLException {
-        Map<String, String> practicalDayMap = new HashMap<>();
-       for(String column : practicalDayMap.keySet()){
-           practicalDayMap.putIfAbsent(column,GlobalUtils.convertToString(practicalDay.get(column)));
-       }
-        updateOne(id, practicalDayMap);
+    public void updateToDB(int id, Map<String, Object> practicalDayMap) throws SQLException {
+        Map<String, Object> map = new HashMap<>();
+        for (String column : practicalDayMap.keySet()) {
+            map.putIfAbsent(column, (practicalDayMap.get(column)));
+        }
+        updateOne(id, map);
     }
 
     @Override
-    public void deleteToDB(String ID) throws SQLException {
+    public void deleteToDB(int ID) throws SQLException {
         deleteOne(ID);
     }
 
@@ -94,7 +64,7 @@ public class PracticalDayRepository implements IPracticalDayRepository {
         try {
             StringBuilder row = new StringBuilder();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT PracticalDayID, PracticalDate, ScheduleID FROM PracticalDayModel");
+            ResultSet rs = stmt.executeQuery("SELECT PracticalDayID, PracticalDate, Done, ScheduleID FROM PracticalDayModel");
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
             while (rs.next()) {
@@ -109,67 +79,57 @@ public class PracticalDayRepository implements IPracticalDayRepository {
             throw new SQLException(e);
         }
     }
-    
-    public String getOne(String practicalDayID) throws SQLException {
-    String query = "SELECT PracticalDayID, PracticalDate, ScheduleID FROM PracticalDayModel WHERE PracticalDayID = ?";
-    StringBuilder result = new StringBuilder();
 
-    try (PreparedStatement ps = conn.prepareStatement(query)) {
-        ps.setString(1, practicalDayID);
-        try (ResultSet rs = ps.executeQuery()) {
-            ResultSetMetaData metaData = rs.getMetaData();
-            int columnCount = metaData.getColumnCount();
-            
-            // Nếu tìm thấy bản ghi
-            if (rs.next()) {
-                for (int i = 1; i <= columnCount; i++) {
-                    result.append(rs.getString(i)).append(i < columnCount ? ", " : "");
+    @Override
+    public void insertOne(Map<String, Object> entries) throws SQLException {
+        String query = "INSERT INTO PracticalDayModel (PracticalDayID, PracticalDate, Done, ScheduleID) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            int i = 1;
+            for (String column : entries.keySet()) {
+                if (PRACTICALDAYMODELCOLUMN.contains(column)) {
+                    SQLServerConnection.setParamater(ps, i++, entries.get(column));
                 }
-            } else {
-                throw new SQLException("No Practical Day found with ID: " + practicalDayID);
+            }
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    @Override
+    public void updateOne(int ID, Map<String, Object> entries) throws SQLException {
+        String query = "UPDATE PracticalDayModel SET X WHERE PracticalDayID = ?";
+        StringBuilder courseModelColumn = new StringBuilder();
+
+        for (String column : entries.keySet()) {
+            if (PRACTICALDAYMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(PracticalDayID_Column))) {
+                courseModelColumn.append((courseModelColumn.isEmpty() ? "" : ", ")).append(column).append(" = ?");
             }
         }
-    } catch (SQLException e) {
-        throw new SQLException("Failed to retrieve Practical Day: " + e.getMessage());
-    }
+        query = query.replace("X", courseModelColumn.toString());
 
-    return result.toString();
-}
-
-    @Override
-    public void insertOne(Map<String, String> entries) throws SQLException {
-        String query = "INSERT INTO PracticalDayModel (PracticalDayID, PracticalDate, ScheduleID) VALUES (?, ?, ?)";
-        try {
+        if (!courseModelColumn.isEmpty()) {
             PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, entries.get(PracticalDayID_Column));
-            ps.setString(2, entries.get(PracticeDate_Column));
-            ps.setString(3, entries.get(ScheduleID_Column));
+            int i = 1;
+            for (String column : entries.keySet()) {
+                if (PRACTICALDAYMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(PracticalDayID_Column))) {
+//                        coursePS.setString(i++, entries.get(column));
+                    SQLServerConnection.setParamater(ps, i++, entries.get(column));
+                }
+            }
+            ps.setInt(i, ID);
             ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new SQLException("Failed to insert PracticalDay: " + e.getMessage());
         }
     }
 
     @Override
-    public void updateOne(String ID, Map<String, String> entries) throws SQLException {
-        String query = "UPDATE PracticalDayModel SET PracticalDate = ?, ScheduleID = ? WHERE PracticalDayID = ?";
-        try {
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, entries.get(PracticeDate_Column));
-            ps.setString(2, entries.get(ScheduleID_Column));
-            ps.setString(3, ID);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new SQLException("Failed to update PracticalDay: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void deleteOne(String ID) throws SQLException {
+    public void deleteOne(int ID) throws SQLException {
         String query = "DELETE FROM PracticalDayModel WHERE PracticalDayID = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, ID);
+            ps.setInt(1, ID);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new SQLException("Failed to delete PracticalDay: " + e.getMessage());

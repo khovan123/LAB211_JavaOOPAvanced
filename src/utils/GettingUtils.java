@@ -35,6 +35,17 @@ public class GettingUtils {
             return getInteger(label, message);
         }
     }
+    
+    public static int getPositiveInteger(String label, String message) {
+        try {
+            System.out.print(label);
+            String string = sc.nextLine().trim().replace("\n", "");
+            return Integer.parseInt(string) >= 0 ? Integer.parseInt(string) : getInteger(label, message);
+        } catch (NumberFormatException e) {
+            System.out.println(message);
+            return getInteger(label, message);
+        }
+    }
 
     public static double getDouble(String label, String message) {
         try {
@@ -79,9 +90,9 @@ public class GettingUtils {
             System.out.print(label);
             String string = sc.nextLine().trim().replace("\n", "");
             Date date = sdf.parse(string);
-            if (date.compareTo(new Date()) < 0) {
+            if (date.compareTo(new Date()) <= 0) {
                 System.out.println(message);
-                return sdf.parse(string);
+                return getDateInFurute(label, message);
             }
             return date;
         } catch (ParseException e) {

@@ -13,12 +13,12 @@ public interface Service<T> {
 
     void add(T entry) throws EventException, InvalidDataException;
     
-    void delete(String id) throws EventException, NotFoundException;
+    void delete(int id) throws EventException, NotFoundException;
     
-    void update(String id, Map<String, Object> entry) throws EventException, NotFoundException;
+    void update(int id, Map<String, Object> entry) throws EventException, NotFoundException;
     
     T search(Predicate<T> p) throws NotFoundException;
     
-    T findById(String id) throws NotFoundException;
+    T findById(int id) throws NotFoundException;
 
 }

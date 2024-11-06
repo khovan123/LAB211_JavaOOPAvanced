@@ -1,44 +1,61 @@
 package service;
 
-import exception.EmptyDataException;
-import exception.EventException;
-import exception.InvalidDataException;
-import exception.NotFoundException;
-import model.RegisteredCourse;
+import exception.*;
+import model.RegistedCourse;
 import repository.RegistedCourseRepository;
 import service.interfaces.IRegistedCourseService;
 import utils.FieldUtils;
-import utils.GettingUtils;
-import utils.GlobalUtils;
-import utils.ObjectUtils;
-
 import java.lang.reflect.Field;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.util.*;
 import java.util.function.Predicate;
+import model.Course;
+import utils.GlobalUtils;
 
 public class RegistedCourseService implements IRegistedCourseService {
-    private final RegistedCourseRepository registedCourseRepository = new RegistedCourseRepository();
-    private final List<RegisteredCourse> registeredCourseList;
 
-    public RegistedCourseService() {
-        registeredCourseList = new ArrayList<>();
+    private final RegistedCourseRepository registedCourseRepository = new RegistedCourseRepository();
+    private final List<RegistedCourse> registeredCourseList = new ArrayList<>();
+    private CourseService courseService;
+
+    public RegistedCourseService(CourseService courseService) {
+        this.courseService = courseService;
         readFromDataBase();
     }
-
-    public List<RegisteredCourse> getRegisteredCourseList(){
-        return registeredCourseList;
+    
+    public int size(){
+        return this.registeredCourseList.size();
     }
 
     public void readFromDataBase() {
         try {
-            registeredCourseList.addAll(registedCourseRepository.readData());
-        } catch (Exception e) {
+            for (RegistedCourse registedCourse : registedCourseRepository.readData()) {
+                try {
+                    if (!existID(registedCourse.getRegisteredCourseID())) {
+                        Course course = new Course();
+                        registedCourse.setRegistedCourse(course);
+                        this.refeshRegistedCourse(registedCourse.getRegistedCourse(), courseService.findById(registedCourse.getCourseID()));
+                        this.registeredCourseList.add(registedCourse);
+                    }
+
+                } catch (InvalidDataException | NotFoundException | ParseException e) {
+                }
+            }
+        } catch (SQLException e) {
             // Handle exception if necessary
         }
+    }
+
+    private void refeshRegistedCourse(Course registedC, Course course) throws InvalidDataException, ParseException {
+        registedC.setAddventor(Boolean.toString(course.isAddventor()));
+        registedC.setCoachId(String.valueOf(course.getCoachId()));
+        registedC.setComboID(String.valueOf(course.getComboID()));
+        registedC.setCourseId(String.valueOf(course.getCourseId()));
+        registedC.setCourseName(course.getCourseName());
+        registedC.setPrice(String.valueOf(course.getPrice()));
+        registedC.setGenerateDate(GlobalUtils.dateFormat(course.getGenerateDate()));
+        registedC.setWorkoutService(course.getWorkoutService().getWorkoutList());
     }
 
     @Override
@@ -47,72 +64,64 @@ public class RegistedCourseService implements IRegistedCourseService {
             throw new EmptyDataException("-> No Registered Course Found");
         }
         System.out.println("registeredCourseID\tRegistedDate\tFinishRegistedDate\tCourseID\tUserID");
-        for (RegisteredCourse registeredCourse : registeredCourseList) {
+        for (RegistedCourse registeredCourse : registeredCourseList) {
             registeredCourse.getInfo();
         }
     }
 
     @Override
-    public void add(RegisteredCourse registeredCourse) throws EventException, InvalidDataException {
-        if (existID(registeredCourse)) {
-            throw new EventException("-> Registered Course With ID - " + registeredCourse.getRegisteredCourseID() + " - Already Exist");
+    public void add(RegistedCourse registeredCourse) throws EventException, InvalidDataException {
+        if (existID(registeredCourse.getRegisteredCourseID())) {
+            throw new EventException("Registered Course With ID :" + registeredCourse.getRegisteredCourseID() + " already existed");
         }
         try {
-            registedCourseRepository.insertToDB(registeredCourse);
-        } catch (Exception e) {
-            throw new EventException("-> Error While Adding Registered Course");
+            Course course = new Course();
+            registeredCourse.setRegistedCourse(course);
+            this.refeshRegistedCourse(registeredCourse.getRegistedCourse(), courseService.findById(registeredCourse.getCourseID()));
+            this.registeredCourseList.add(registeredCourse);
+            this.registedCourseRepository.insertToDB(registeredCourse);
+        } catch (SQLException | NotFoundException | ParseException e) {
+            throw new EventException(e.getMessage());
         }
     }
 
     @Override
-    public void delete(String id) throws EventException, NotFoundException {
-        if (findById(id) == null) {
-            throw new NotFoundException("-> Registered Course with ID - " + id + " - Not Found.");
-        }
+    public void delete(int id) throws EventException, NotFoundException {
         try {
+            this.registeredCourseList.remove(this.findById(id));
             registedCourseRepository.deleteToDB(id);
         } catch (SQLException e) {
-            throw new RuntimeException("-> Error While Deleting Registered Course");
-        }
-    }
-
-    public void update(RegisteredCourse registeredCourse) throws EventException, NotFoundException {
-        RegisteredCourse existRegisteredCourse = findById(registeredCourse.getRegisteredCourseID());
-        if (existRegisteredCourse == null) {
-            throw new NotFoundException("-> Registered Course with ID - " + registeredCourse.getRegisteredCourseID() + " - Not Found.");
-        }
-        try {
-            existRegisteredCourse.setRegisteredDate(String.valueOf(registeredCourse.getRegisteredDate()));
-            existRegisteredCourse.setRegisteredCourseID(String.valueOf(registeredCourse.getFinishRegisteredDate()));
-            existRegisteredCourse.setCourseID(registeredCourse.getCourseID());
-            existRegisteredCourse.setUserID(registeredCourse.getUserID());
-        } catch (Exception e) {
-            throw new EventException("-> Error While Updating Registered Course With ID - " + registeredCourse.getRegisteredCourseID());
+            throw new EventException(e);
         }
     }
 
     private String getColumnByFieldName(String fieldName) throws NotFoundException {
         return switch (fieldName.toLowerCase()) {
-            case "registereddate" -> RegistedCourseRepository.RegisteredDate_Column;
-            case "finishregistereddate" -> RegistedCourseRepository.FinishRegisteredDate_Column;
-            case "courseid" -> RegistedCourseRepository.CourseID_Column;
-            case "userid" -> RegistedCourseRepository.UserID_Column;
-            default -> throw new NotFoundException("Not found any field for name: " + fieldName);
+            case "registeredDate" ->
+                RegistedCourseRepository.RegisteredDate_Column;
+            case "finishRegisteredDate" ->
+                RegistedCourseRepository.FinishRegisteredDate_Column;
+            case "courseID" ->
+                RegistedCourseRepository.CourseID_Column;
+            case "userID" ->
+                RegistedCourseRepository.UserID_Column;
+            case "registeredCourseID" ->
+                RegistedCourseRepository.RegisteredCourseID_Column;
+            default ->
+                throw new NotFoundException("Not found any field for name: " + fieldName);
         };
     }
 
-    public void update(String id, Map<String, Object> entry) throws EventException, NotFoundException {
-        RegisteredCourse existingCourse = findById(id);
-        if (existingCourse == null) {
-            throw new NotFoundException("-> Course with ID - " + id + " - Not Found.");
-        }
-
+    @Override
+    public void update(int id, Map<String, Object> entry) throws EventException, NotFoundException {
+        RegistedCourse existingCourse = findById(id);
         for (String fieldName : entry.keySet()) {
             Field field = FieldUtils.getFieldByName(existingCourse.getClass(), fieldName);
             try {
+                field.setAccessible(true);
                 field.set(existingCourse, entry.get(fieldName));
                 Map<String, Object> updatedMap = new HashMap<>();
-                updatedMap.put(fieldName, entry.get(fieldName));
+                updatedMap.put(getColumnByFieldName(fieldName), entry.get(fieldName));
                 registedCourseRepository.updateToDB(id, updatedMap);
             } catch (IllegalAccessException | IllegalArgumentException | SQLException e) {
                 throw new EventException("-> Error While Updating Registered Course");
@@ -120,57 +129,9 @@ public class RegistedCourseService implements IRegistedCourseService {
         }
     }
 
-    public void updateOrDeleteCourseFromConsoleCustomize() {
-        if (registeredCourseList.isEmpty()) {
-            System.out.println("Please create new course ^^");
-            return;
-        }
-        while (true) {
-            try {
-                String id = GlobalUtils.getValue("Enter id for update: ", "Cannot be left blank");
-                RegisteredCourse registeredCourse;
-                if (!ObjectUtils.validCourseRegistedID(id)) {
-                    System.out.println("Id must be in correct form: CByyyy");
-                } else if ((registeredCourse = findById(id)) != null) {
-                    System.out.println(registeredCourse.getInfo());
-                    String[] editMenuOptions = FieldUtils.getEditOptions(registeredCourse.getClass());
-                    for (int i = 0; i < editMenuOptions.length; i++) {
-                        System.out.println((i + 1) + ". " + editMenuOptions[i]);
-                    }
-                    while (true) {
-                        int selection = GettingUtils.getInteger("Enter selection: ", "Please enter a valid option!");
-                        if (selection == editMenuOptions.length - 1) {
-                            try {
-                                delete(registeredCourse.getRegisteredCourseID());
-                            } catch (EventException e) {
-                                throw new RuntimeException(e);
-                            }
-                            System.out.println("Delete successfully");
-                            return;
-                        } else if (selection == editMenuOptions.length) {
-                            return;
-                        }
-                        while (true) {
-                            try {
-                                String newValue = GlobalUtils.getValue("Enter new value: ", "Cannot be blank");
-                                update(id, FieldUtils.getFieldValueByName(registeredCourse, editMenuOptions[selection - 1], newValue));
-                                System.out.println("Update successfully");
-                                break;
-                            } catch (Exception ex) {
-                                System.out.println("An error occurred.");
-                            }
-                        }
-                    }
-                }
-            } catch (NotFoundException ex) {
-                System.err.println(ex.getMessage());
-            }
-        }
-    }
-
     @Override
-    public RegisteredCourse search(Predicate<RegisteredCourse> p) throws NotFoundException {
-        for (RegisteredCourse registeredCourse : registeredCourseList) {
+    public RegistedCourse search(Predicate<RegistedCourse> p) throws NotFoundException {
+        for (RegistedCourse registeredCourse : registeredCourseList) {
             if (p.test(registeredCourse)) {
                 return registeredCourse;
             }
@@ -179,15 +140,43 @@ public class RegistedCourseService implements IRegistedCourseService {
     }
 
     @Override
-    public RegisteredCourse findById(String id) throws NotFoundException {
-        return search(course -> course.getRegisteredCourseID().equalsIgnoreCase(id));
+    public RegistedCourse findById(int id) throws NotFoundException {
+        return search(course -> course.getRegisteredCourseID() == (id));
     }
 
-    public boolean existID(RegisteredCourse registeredCourse) {
+    public boolean existID(int registeredCourseID) {
         try {
-            return findById(registeredCourse.getRegisteredCourseID()) != null;
+            return findById(registeredCourseID) != null;
         } catch (NotFoundException e) {
             return false;
         }
+    }
+
+    public List<RegistedCourse> searchRegistedCourseByCoach(int coachID) throws EmptyDataException {
+        List<RegistedCourse> coachMapRegistedCourse = new ArrayList<>();
+        for (RegistedCourse registedCourse : this.registeredCourseList) {
+
+            if (Integer.compare(registedCourse.getRegistedCourse().getCoachId(), coachID) == 0) {
+                System.out.println(coachID);
+                coachMapRegistedCourse.add(registedCourse);
+            }
+        }
+        if (coachMapRegistedCourse.isEmpty()) {
+            throw new EmptyDataException("Coach with ID " + coachID + " had not any course");
+        }
+        return coachMapRegistedCourse;
+    }
+
+    public List<RegistedCourse> searchRegistedCourseByUser(int userID) throws EmptyDataException {
+        List<RegistedCourse> userMapRegistedCourse = new ArrayList<>();
+        for (RegistedCourse registedCourse : this.registeredCourseList) {
+            if (Integer.compare(registedCourse.getUserID(), userID) == 0) {
+                userMapRegistedCourse.add(registedCourse);
+            }
+        }
+        if (userMapRegistedCourse.isEmpty()) {
+            throw new EmptyDataException("User with ID: " + userID + " did not join any course");
+        }
+        return userMapRegistedCourse;
     }
 }

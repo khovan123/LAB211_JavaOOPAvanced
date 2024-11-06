@@ -1,18 +1,15 @@
 package model;
 
 import exception.InvalidDataException;
+import java.text.ParseException;
 import utils.GlobalUtils;
-import utils.ObjectUtils;
 
 public class User extends Person {
 
     private boolean addventor;
 
-    public User() {
-    }
-
-    public User(String userId, String fullName, String DoB, String phone, String addventor) throws InvalidDataException {
-        super(userId, fullName, DoB, phone);
+    public User(String userId, String fullName, String DoB, String phone, String active, String addventor) throws InvalidDataException, ParseException {
+        super(userId, fullName, DoB, phone, active);
         this.setAddventor(addventor);
         runValidate();
     }
@@ -37,8 +34,6 @@ public class User extends Person {
     @Override
     public void runValidate() throws InvalidDataException {
         super.runValidate();
-        if (!ObjectUtils.validUserID(getPersonId())) {
-            throw new InvalidDataException("User ID must be UXXXX with XXXX are numbers");
-        }
+
     }
 }

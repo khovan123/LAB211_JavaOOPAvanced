@@ -1,65 +1,59 @@
 package model;
 
 import exception.InvalidDataException;
+import java.text.ParseException;
 import utils.ObjectUtils;
-
 
 public class Nutrition {
     
-    private String nutritionId;
+    private int nutritionId;
     private double calories;
-    private String practicalDayId;
-
+    private int practicalDayId;
+    
     public Nutrition() {
     }
-  
-    public Nutrition(String nutritionId, String calories) throws InvalidDataException {
-        this.nutritionId = nutritionId;
+    
+    public Nutrition(String nutritionId, String calories, String practicalDayId) throws InvalidDataException, ParseException {
+        this.setNutritionId(nutritionId);
         this.setCalories(calories);
+        this.setPracticalDayId(practicalDayId);
         this.runValidate();
     }
-
-    public String getNutritionId() {
+    
+    public int getNutritionId() {
         return nutritionId;
     }
-
-    public void setNutritionId(String practiceDayId) {
-        this.nutritionId = nutritionId;
+    
+    public void setNutritionId(String nutritionId)throws ParseException {
+        this.nutritionId = Integer.parseInt(nutritionId);
     }
-
+    
     public double getCalories() {
         return calories;
     }
-
-    public void setCalories(String calories) {
-        this.calories = Double.parseDouble(calories);
+    
+    public void setCalories(String calories) throws InvalidDataException {
+        try {
+            this.calories = Double.parseDouble(calories);
+        } catch (NumberFormatException e) {
+            throw new InvalidDataException("Calories must be a positive number");
+        }
     }
-
-    public String getPracticalDayId() {
+    
+    public int getPracticalDayId() {
         return practicalDayId;
     }
-
-    public void setPracticalDayId(String practicalDayId) {
-        this.practicalDayId = practicalDayId;
+    
+    public void setPracticalDayId(String practicalDayId) throws ParseException{
+        this.practicalDayId = Integer.parseInt(practicalDayId);
     }
-
-    @Override
-    public String toString() {
-        return String.format("%-15s | %-15.0s", nutritionId, calories);
-    }
-
+    
     public String getInfo() {
-        return String.format("%s\t%f\t%s", getNutritionId(), getCalories(), getPracticalDayId());
+        return String.format("%s", getCalories());
     }
-
+    
     public void runValidate() throws InvalidDataException {
-        if (!ObjectUtils.validCodeNutrition(nutritionId)){
-            throw new InvalidDataException("Nutrition ID must be NTYYY with YYY are numbers");
-        }
-        if(!ObjectUtils.validCodePracticalDay(practicalDayId)){
-            throw new InvalidDataException("Practical ID must be PDYYY with YYY are numbers");
-        }
-        if(!ObjectUtils.validDouble(String.valueOf(calories))){
+        if (!ObjectUtils.validDouble(String.valueOf(calories))) {
             throw new InvalidDataException("Calories must be a positive number");
         }
     }
