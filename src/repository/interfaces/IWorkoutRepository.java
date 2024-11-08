@@ -5,6 +5,4 @@ import model.Workout;
 
 public interface IWorkoutRepository extends Repository<Workout, List<Workout>> {
 
-    final String path = "";
-
 }

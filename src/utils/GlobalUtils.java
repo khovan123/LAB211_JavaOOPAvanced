@@ -1,17 +1,18 @@
 package utils;
 
 import exception.InvalidDataException;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Scanner;
-import java.util.function.Predicate;
+import java.text.*;
+import java.util.*;
 
 public class GlobalUtils {
 
     static Scanner sc = new Scanner(System.in);
     static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    static DecimalFormat df = new DecimalFormat("#");
+
+    public static String decimalFormat(double num) {
+        return df.format(num);
+    }
 
     public static String getValue(String label, String messageError) {
         try {
@@ -52,10 +53,6 @@ public class GlobalUtils {
         return name.matches("^[A-Z][a-z]*( [A-Z][a-z]*)*$");
     }
 
-    public static boolean validDoB(Date dob) {
-        return new Date().compareTo(dob) > 0;
-    }
-
     public static boolean validPhone(String phone) {
         return phone.matches("0[0-9]{9}");
     }
@@ -76,30 +73,6 @@ public class GlobalUtils {
         } else {
             throw new IllegalArgumentException("Unsupported object type: " + obj.getClass().getName());
         }
-    }
-
-    /**
-     * Prompts the user for input and validates it using a provided predicate.
-     * If the input is invalid, an error message is displayed. The user is
-     * repeatedly prompted until valid input is received.
-     *
-     * @param inputPrompt The message to display when asking for input.
-     * @param errorPrompt The message to display when the input is invalid.
-     * @param validator A predicate that defines the validation logic for the
-     * input.
-     * @return The validated input string that meets the validation criteria.
-     */
-    public static String getValidatedInput(String inputPrompt, String errorPrompt, Predicate<String> validator) {
-        String input;
-        do {
-            Scanner scanner = new Scanner(System.in);
-            System.out.print(inputPrompt);
-            input = scanner.nextLine();
-            if (!validator.test(input)) {
-                System.out.println(errorPrompt);
-            }
-        } while (!validator.test(input));
-        return input;
     }
 
     public static boolean validDateNow(Date date) {

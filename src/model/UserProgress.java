@@ -1,54 +1,54 @@
 package model;
 
-import exception.IOException;
 import exception.InvalidDataException;
-
-import java.util.TreeSet;
-
-import service.ScheduleService;
-import utils.ObjectUtils;
+import java.text.ParseException;
 
 public class UserProgress {
 
-    private String userProgressID;
-    private String registedCourseID;
+    private int userProgressID;
+    private double completed;
+    private int registedCourseID;
 
-    public UserProgress(String userProgressID, String registedCourseID) throws InvalidDataException {
-        this.userProgressID = userProgressID;
-        this.registedCourseID = registedCourseID;
+    public UserProgress(String userProgressID, String registedCourseID) throws InvalidDataException, ParseException {
+        this.setUserProgressID(userProgressID);
+        this.setRegistedCourseID(registedCourseID);
+        this.completed = 0.0;
         this.runValidate();
     }
 
     public UserProgress() {
-        
+
     }
 
-    public String getUserProgressID() {
+    public int getUserProgressID() {
         return userProgressID;
     }
 
-    public void setUserProgressID(String userProgressID) {
-        this.userProgressID = userProgressID;
+    public void setUserProgressID(String userProgressID)throws ParseException {
+        this.userProgressID = Integer.parseInt(userProgressID);
     }
 
-    public String getRegistedCourseID() {
+    public int getRegistedCourseID() {
         return registedCourseID;
     }
 
-    public void setRegistedCourseID(String registedCourseID) {
-        this.registedCourseID = registedCourseID;
+    public void setRegistedCourseID(String registedCourseID) throws ParseException{
+        this.registedCourseID = Integer.parseInt(registedCourseID);
+    }
+
+    public double getCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(double completed) {
+        this.completed = completed;
     }
 
     public String getInfo() {
-        return String.format("%s\t%s", userProgressID, registedCourseID);
+        return String.format("%s\t%s\t%f", userProgressID, registedCourseID, completed);
     }
 
     public void runValidate() throws InvalidDataException {
-        if (!ObjectUtils.validCodeUserProgress(userProgressID)){
-            throw new InvalidDataException("UserProgress ID must be UPYYY with YYY are numbers");
-        }
-        if (!ObjectUtils.validCodeRegistedCourse(registedCourseID)){
-            throw new InvalidDataException("RegistedCourse ID must be RCYYY with YYY are numbers");
-        }
+
     }
 }

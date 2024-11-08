@@ -1,24 +1,15 @@
 package repository;
 
-import exception.IOException;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
+import exception.InvalidDataException;
+import java.util.*;
 import model.Workout;
 import repository.interfaces.IWorkoutRepository;
 import utils.GlobalUtils;
-
 import java.sql.*;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.text.ParseException;
 
 public class WorkoutRepository implements IWorkoutRepository {
 
-    private static List<Workout> workoutList = new ArrayList<>();
     private Connection conn = SQLServerConnection.getConnection();
     public static final String WorkoutID_Column = "WorkoutID";
     public static final String WorkoutName_Column = "WorkoutName";
@@ -26,31 +17,7 @@ public class WorkoutRepository implements IWorkoutRepository {
     public static final String Sets_Column = "Sets";
     public static final String Duration_Column = "Duration";
     public static final String CourseID_Column = "CourseID";
-
-    public static void main(String[] args) {
-        WorkoutRepository workoutRepository = new WorkoutRepository();
-        String workoutID = "WK001"; // ID cần kiểm tra
-
-        // Cập nhật các giá trị cần thiết
-        Map<String, String> updatedEntries = new HashMap<>();
-        updatedEntries.put(WorkoutRepository.WorkoutName_Column, "Leg Day Updated");
-        updatedEntries.put(WorkoutRepository.Repetition_Column, "15");
-        updatedEntries.put(WorkoutRepository.Sets_Column, "4");
-        updatedEntries.put(WorkoutRepository.Duration_Column, "60");
-        updatedEntries.put(WorkoutRepository.CourseID_Column, "CS002");
-
-        try {
-            // Thực hiện cập nhật
-            workoutRepository.updateOne(workoutID, updatedEntries);
-            System.out.println("Update successful!");
-
-            // Lấy lại thông tin của bản ghi vừa được cập nhật
-            String row = workoutRepository.getOne(workoutID);
-            System.out.println("Workout Details: " + row);
-        } catch (SQLException ex) {
-            Logger.getLogger(WorkoutRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    public static final List<String> WORKOUTMODELCOLUMN = new ArrayList<>(Arrays.asList(WorkoutID_Column, WorkoutName_Column, Repetition_Column, Sets_Column, Duration_Column, CourseID_Column));
 
     @Override
     public List<Workout> readData() throws SQLException {
@@ -59,9 +26,10 @@ public class WorkoutRepository implements IWorkoutRepository {
             for (String row : getMany()) {
                 try {
                     String[] data = row.split(",");
-                    Workout workout = new Workout(data[0], data[1], data[2], data[3], data[4], data[5]);
+                    Workout workout = new Workout(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), data[4].trim(), data[5].trim());
                     workoutList.add(workout);
-                } catch (Exception e) {
+                } catch (InvalidDataException | ParseException e) {
+                    throw new SQLException(e);
                 }
             }
         } catch (SQLException e) {
@@ -72,8 +40,8 @@ public class WorkoutRepository implements IWorkoutRepository {
 
     @Override
     public void insertToDB(Workout workout) throws SQLException {
-        Map<String, String> entries = new HashMap<>();
-        entries.put(WorkoutID_Column, workout.getWorkoutId());
+        Map<String, Object> entries = new HashMap<>();
+//        entries.put(WorkoutID_Column, workout.getWorkoutId());
         entries.put(WorkoutName_Column, workout.getWorkoutName());
         entries.put(Repetition_Column, String.valueOf(workout.getRepetition()));
         entries.put(Sets_Column, String.valueOf(workout.getSets()));
@@ -84,16 +52,16 @@ public class WorkoutRepository implements IWorkoutRepository {
     }
 
     @Override
-    public void updateToDB(String workoutID, Map<String, Object> workout) throws SQLException {
-        Map<String, String> workoutMap = new HashMap<>();
-        for(String column: workoutMap.keySet()){
-            workoutMap.putIfAbsent(column, GlobalUtils.convertToString(workout.get(column)));
+    public void updateToDB(int workoutID, Map<String, Object> workout) throws SQLException {
+        Map<String, Object> workoutMap = new HashMap<>();
+        for (String column : workoutMap.keySet()) {
+            workoutMap.putIfAbsent(column, (workout.get(column)));
         }
         updateOne(workoutID, workoutMap);
     }
 
     @Override
-    public void deleteToDB(String workoutID) throws SQLException {
+    public void deleteToDB(int workoutID) throws SQLException {
         deleteOne(workoutID);
     }
 
@@ -119,72 +87,66 @@ public class WorkoutRepository implements IWorkoutRepository {
         }
     }
 
-    public String getOne(String workoutID) throws SQLException {
-        String query = "SELECT WorkoutID, WorkoutName, Repetition, Sets, Duration, CourseID FROM WorkoutModel WHERE WorkoutID = ?";
-        StringBuilder result = new StringBuilder();
+    @Override
+    public void insertOne(Map<String, Object> entries) throws SQLException {
+        String query = "INSERT INTO WorkoutModel (WorkoutID, WorkoutName, Repetition, Sets, Duration, CourseID) VALUES (?, ?, ?, ?, ?, ?)";
+
+        StringBuilder modelColumn = new StringBuilder();
+        StringBuilder modelValue = new StringBuilder();
+
+        for (String column : entries.keySet()) {
+            if (WORKOUTMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(WorkoutID_Column))) {
+                modelColumn.append((modelColumn.length() == 0 ? "" : ", ")).append(column);
+                modelValue.append((modelValue.length() == 0 ? "?" : ", ?"));
+            }
+        }
+
+        query = "INSERT INTO WorkoutModel (" + modelColumn.toString() + ") VALUES (" + modelValue.toString() + ")";
 
         try (PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setString(1, workoutID);
-            try (ResultSet rs = ps.executeQuery()) {
-                ResultSetMetaData metaData = rs.getMetaData();
-                int columnCount = metaData.getColumnCount();
-
-                // Nếu tìm thấy bản ghi
-                if (rs.next()) {
-                    for (int i = 1; i <= columnCount; i++) {
-                        result.append(rs.getString(i)).append(i < columnCount ? ", " : "");
-                    }
-                } else {
-                    throw new SQLException("No Workout found with ID: " + workoutID);
+            int i = 1;
+            for (String column : entries.keySet()) {
+                if (WORKOUTMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(WorkoutID_Column))) {
+                    SQLServerConnection.setParamater(ps, i++, entries.get(column));
                 }
             }
-        } catch (SQLException e) {
-            throw new SQLException("Failed to retrieve Workout: " + e.getMessage());
-        }
-
-        return result.toString();
-    }
-
-    @Override
-    public void insertOne(Map<String, String> entries) throws SQLException {
-        String query = "INSERT INTO WorkoutModel (WorkoutID, WorkoutName, Repetition, Sets, Duration, CourseID) VALUES (?, ?, ?, ?, ?, ?)";
-        try {
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, entries.get("WorkoutID"));
-            ps.setString(2, entries.get("WorkoutName"));
-            ps.setString(3, entries.get("Repetition"));
-            ps.setString(4, entries.get("Sets"));
-            ps.setString(5, entries.get("Duration"));
-            ps.setString(6, entries.get("CourseID"));
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("Failed to insert Workout: " + e.getMessage());
+            throw new SQLException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void updateOne(String workoutID, Map<String, String> entries) throws SQLException {
+    public void updateOne(int workoutID, Map<String, Object> entries) throws SQLException {
         String query = "UPDATE WorkoutModel SET WorkoutName = ?, Repetition = ?, Sets = ?, Duration = ?, CourseID = ? WHERE WorkoutID = ?";
-        try {
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, entries.get("WorkoutName"));
-            ps.setString(2, entries.get("Repetition"));
-            ps.setString(3, entries.get("Sets"));
-            ps.setString(4, entries.get("Duration"));
-            ps.setString(5, entries.get("CourseID"));
-            ps.setString(6, workoutID);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new SQLException("Failed to update Workout: " + e.getMessage());
+        StringBuilder modelColumn = new StringBuilder();
+
+        for (String column : entries.keySet()) {
+            if (WORKOUTMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(WorkoutID_Column))) {
+                modelColumn.append((modelColumn.isEmpty() ? "" : ", ")).append(column).append(" = ?");
+            }
         }
+
+        query = query.replace("X", modelColumn.toString());
+
+        PreparedStatement ps = conn.prepareStatement(query);
+        int i = 1;
+        for (String column : entries.keySet()) {
+            if (WORKOUTMODELCOLUMN.contains(column) && (!column.equalsIgnoreCase(WorkoutID_Column))) {
+//                    ps.setString(i++, entries.get(column));
+                SQLServerConnection.setParamater(ps, i++, entries.get(column));
+            }
+        }
+        ps.setInt(i, workoutID);
+        ps.executeUpdate();
     }
 
     @Override
-    public void deleteOne(String workoutID) throws SQLException {
+    public void deleteOne(int workoutID) throws SQLException {
         String query = "DELETE FROM WorkoutModel WHERE WorkoutID = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, workoutID);
+            ps.setInt(1, workoutID);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new SQLException("Failed to delete Workout: " + e.getMessage());

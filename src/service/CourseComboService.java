@@ -9,25 +9,28 @@ import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Predicate;
+import view.Printer;
 
 public class CourseComboService implements ICourseComboService {
 
     private final CourseComboRepository courseComboRepository = new CourseComboRepository();
-    private final List<CourseCombo> courseComboList;
+    private final List<CourseCombo> courseComboList = new ArrayList<>();
 
     public CourseComboService() {
-        courseComboList = new ArrayList<>();
-        readFromDataBase();
-    }
-
-    public CourseComboService(List<CourseCombo> courseComboList) {
-        this.courseComboList = courseComboList;
-        readFromDataBase();
+        this.readFromDataBase();
     }
 
     public void readFromDataBase() {
         try {
-            courseComboList.add((CourseCombo) courseComboRepository.readData());
+            for (CourseCombo courseCombo : courseComboRepository.readData()) {
+                try {
+                    if (!existID(courseCombo.getComboId())) {
+                        this.courseComboList.add(courseCombo);
+                    }
+                } catch (Exception e) {
+
+                }
+            }
         } catch (SQLException e) {
             // Handle exception if necessary
         }
@@ -36,84 +39,72 @@ public class CourseComboService implements ICourseComboService {
     public boolean isEmpty() {
         return this.courseComboList.isEmpty();
     }
+    
+    public int size(){
+        return this.courseComboList.size();
+    }
 
     @Override
     public void display() throws EmptyDataException {
         if (courseComboList.isEmpty()) {
             throw new EmptyDataException("-> No Course Combo Found");
         }
-        System.out.println("ComboID\tComboName\tSale");
+        List<String> list = new ArrayList<>();
         for (CourseCombo courseCombo : courseComboList) {
-            courseCombo.getInfo();
+            list.add(courseCombo.getInfo());
         }
+        Printer.printTable("List Of Course Combo", "Combo", list);
     }
 
     @Override
     public void add(CourseCombo courseCombo) throws EventException, InvalidDataException {
         if (existID(courseCombo.getComboId())) {
-            throw new EventException("-> Course Combo With ID - " + courseCombo.getComboId() + " - Already Exist");
+            throw new InvalidDataException("Course Combo With ID: " + courseCombo.getComboId() + " already existed");
         }
         try {
             courseComboList.add(courseCombo);
             courseComboRepository.insertToDB(courseCombo);
         } catch (SQLException e) {
-            throw new EventException("-> Error While Adding Course Combo");
+            throw new EventException(e);
         }
     }
 
     @Override
-    public void delete(String id) throws EventException, NotFoundException {
+    public void delete(int id) throws EventException, NotFoundException {
         try {
-            if (findById(id) == null) {
-                throw new NotFoundException("-> Course With ID - " + id + " - Not Found.");
-            }
             courseComboList.remove(findById(id));
             courseComboRepository.deleteToDB(id);
-        } catch (NotFoundException | SQLException e) {
-            throw new EventException("-> Error While Deleting Course With ID - " + id);
-        }
-    }
-
-    public void update(CourseCombo courseCombo) throws EventException, NotFoundException {
-        CourseCombo existingCombo = search(combo -> combo.getComboId().equalsIgnoreCase(courseCombo.getComboId()));
-        if (existingCombo == null) {
-            throw new NotFoundException("-> Course Combo with ID - " + courseCombo.getComboId() + " - Not Found.");
-        }
-        try {
-            existingCombo.setComboName(courseCombo.getComboName());
-            existingCombo.setSales(String.valueOf(courseCombo.getSales()));
-        } catch (InvalidDataException e) {
-            throw new EventException("-> Error While Updating Course Combo With ID - " + courseCombo.getComboId());
+        } catch (SQLException e) {
+            throw new EventException(e);
         }
     }
 
     private String getColumnByFieldName(String fieldName) throws NotFoundException {
         return switch (fieldName.toLowerCase()) {
-            case "combname" ->
+            case "comboName" ->
                 CourseComboRepository.ComboName_Column;
             case "sales" ->
                 CourseComboRepository.Sales_Column;
+            case "comboId" ->
+                CourseComboRepository.ComboID_Column;
             default ->
                 throw new NotFoundException("Not found any field");
         };
     }
 
     @Override
-    public void update(String id, Map<String, Object> entry) throws EventException, NotFoundException {
-        CourseCombo existingCombo = findById(id);
-        if (existingCombo == null) {
-            throw new NotFoundException("-> Course Combo with ID - " + id + " - Not Found.");
-        }
-
+    public void update(int id, Map<String, Object> entry) throws EventException, NotFoundException {
+        CourseCombo courseCombo = findById(id);
         for (String fieldName : entry.keySet()) {
-            Field field = FieldUtils.getFieldByName(existingCombo.getClass(), fieldName);
+            Field field = FieldUtils.getFieldByName(courseCombo.getClass(), fieldName);
             try {
-                field.set(existingCombo, entry.get(fieldName));
+                field.setAccessible(true);
                 Map<String, Object> updatedMap = new HashMap<>();
                 updatedMap.putIfAbsent(getColumnByFieldName(fieldName), entry.get(fieldName));
                 courseComboRepository.updateToDB(id, updatedMap);
+                field.set(courseCombo, entry.get(fieldName));
             } catch (IllegalAccessException | IllegalArgumentException | SQLException e) {
-                throw new EventException("-> Error While Updating Course Combo");
+                throw new EventException(e);
             }
         }
     }
@@ -129,11 +120,11 @@ public class CourseComboService implements ICourseComboService {
     }
 
     @Override
-    public CourseCombo findById(String id) throws NotFoundException {
-        return search(combo -> combo.getComboId().equalsIgnoreCase(id));
+    public CourseCombo findById(int id) throws NotFoundException {
+        return search(combo -> combo.getComboId() == (id));
     }
 
-    public boolean existID(String ID) {
+    public boolean existID(int ID) {
         try {
             return findById(ID) != null;
         } catch (NotFoundException e) {

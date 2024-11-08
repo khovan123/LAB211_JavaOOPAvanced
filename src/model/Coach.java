@@ -1,8 +1,8 @@
 package model;
 
 import exception.InvalidDataException;
+import java.text.ParseException;
 import utils.GlobalUtils;
-import utils.ObjectUtils;
 
 public class Coach extends Person {
 
@@ -11,8 +11,8 @@ public class Coach extends Person {
     public Coach() {
     }
 
-    public Coach(String coachId, String coachName, String DoB, String phone, String certificate) throws InvalidDataException {
-        super(coachId, coachName, DoB, phone);
+    public Coach(String coachId, String coachName, String DoB, String phone, String active, String certificate) throws InvalidDataException, ParseException {
+        super(coachId, coachName, DoB, phone, active);
         this.certificate = certificate;
         this.runValidate();
     }
@@ -33,10 +33,6 @@ public class Coach extends Person {
     @Override
     public void runValidate() throws InvalidDataException {
         super.runValidate();
-
-        if (!ObjectUtils.validCoachID(getPersonId())) {
-            throw new InvalidDataException("Coach ID must be CXXXX with XXXX are numbers");
-        }
 
         if (!GlobalUtils.validText(certificate)) {
             throw new InvalidDataException("Certificate must be letters");
