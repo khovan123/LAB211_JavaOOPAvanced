@@ -47,7 +47,7 @@ public class UserProgressService implements IUserProgressService {
         if (!existID(userProgress)) {
             userProgressList.add(userProgress);
         } else {
-            throw new EventException("ID: " + userProgress.getUserProgressId() + " existed.");
+            throw new EventException("ID: " + userProgress.getUserProgressID() + " existed.");
         }
 
     }
@@ -90,7 +90,7 @@ public class UserProgressService implements IUserProgressService {
     @Override
     public UserProgress findById(String id) throws NotFoundException {
         try {
-            return this.search(p -> p.getUserProgressId().equals(id));
+            return this.search(p -> p.getUserProgressID().equals(id));
         } catch (NotFoundException e) {
             throw new NotFoundException(e);
         }
@@ -98,7 +98,7 @@ public class UserProgressService implements IUserProgressService {
 
     public boolean existID(UserProgress userProgress) {
         try {
-            if (findById(userProgress.getUserProgressId()) == null) {
+            if (findById(userProgress.getUserProgressID()) == null) {
                 return true;
             }
         } catch (NotFoundException ex) {
@@ -128,7 +128,7 @@ public class UserProgressService implements IUserProgressService {
         switch (fieldName) {
             case "userProgressId":
                 return UserProgressRepository.UserProgressID_Column;
-            case "registedCourseID":
+            case "registedCourseId":
                 return UserProgressRepository.RegistedCourseID_Column;
             default:
                 throw new NotFoundException("Not found any field");

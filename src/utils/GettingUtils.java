@@ -40,7 +40,23 @@ public class GettingUtils {
         try {
             System.out.print(label);
             String string = sc.nextLine().trim().replace("\n", "");
-            return Double.parseDouble(string) > 0 ? Double.parseDouble(string) : getInteger(label, message);
+            return Double.parseDouble(string) > 0 ? Double.parseDouble(string) : getDouble(label, message);
+        } catch (NumberFormatException e) {
+            System.out.println(message);
+            return getDouble(label, message);
+        }
+    }
+    
+    public static double getSales(String label, String message) {
+        try {
+            System.out.print(label);
+            String string = sc.nextLine().trim().replace("\n", "");
+            double num = Double.parseDouble(string);
+            if(num>0.0 && num<1.0){
+                return num;
+            }
+            System.out.println(message);
+            return getSales(label, message);
         } catch (NumberFormatException e) {
             System.out.println(message);
             return getDouble(label, message);
@@ -57,13 +73,13 @@ public class GettingUtils {
             return getDate(label, message);
         }
     }
-    
+
     public static Date getDateInFurute(String label, String message) {
         try {
             System.out.print(label);
             String string = sc.nextLine().trim().replace("\n", "");
             Date date = sdf.parse(string);
-            if(date.compareTo(new Date())<0){
+            if (date.compareTo(new Date()) < 0) {
                 System.out.println(message);
                 return sdf.parse(string);
             }
@@ -71,6 +87,17 @@ public class GettingUtils {
         } catch (ParseException e) {
             System.out.println(message);
             return getDate(label, message);
+        }
+    }
+
+    public static boolean getBoolean(String label, String message) {
+        try {
+            System.out.print(label);
+            String string = sc.nextLine().trim().replace("\n", "");
+            return Boolean.parseBoolean(string);
+        } catch (NumberFormatException e) {
+            System.out.println(message);
+            return getBoolean(label, message);
         }
     }
 
@@ -109,6 +136,21 @@ public class GettingUtils {
             System.out.print(label);
             String string = sc.nextLine().trim().replace("\n", "");
             if (!string.matches("^[A-Z][a-z]*( [A-Z][a-z]*)*$")) {
+                System.out.println(message);
+                return getString(label, message);
+            }
+            return string;
+        } catch (Exception e) {
+            System.out.println(message);
+            return getString(label, message);
+        }
+    }
+
+    public static String getPhone(String label, String message) {
+        try {
+            System.out.print(label);
+            String string = sc.nextLine().trim().replace("\n", "");
+            if (!string.matches("0[0-9]{9}")) {
                 System.out.println(message);
                 return getString(label, message);
             }

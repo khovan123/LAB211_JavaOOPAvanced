@@ -23,16 +23,17 @@ import java.util.Date;
 import java.util.List;
 
 public class FitnessCourseManagement extends Menu<String> {
+
     private CourseService courseService;
     private CourseComboService courseComboService;
     private RegistedCourseService registedCourseService;
 
     static String title = "FITNESS COURSE\nHOME";
     static String[] menuOptions = {
-            "Admin",
-            "Coach",
-            "User",
-            "Exit"
+        "Admin",
+        "Coach",
+        "User",
+        "Exit"
     };
 
     private final UserService userService;
@@ -111,23 +112,23 @@ public class FitnessCourseManagement extends Menu<String> {
 
     public void runAdminMenu() {
         String[] adminMenuOptions = {
-                "User Management",
-                "Coach Management",
-                "Course Combo Management",
-                "Return home"
+            "User Management",
+            "Coach Management",
+            "Course Combo Management",
+            "Return home"
         };
         Menu<String> adminMenu = new Menu("HOME >> ADMIN", adminMenuOptions) {
             @Override
             public void execute(int selection) {
                 switch (selection) {
                     case 1 -> {
-
+                        runUserManagementMenu();
                     }
                     case 2 -> {
-
+                        runCoachManagementMenu();
                     }
                     case 3 -> {
-
+                        runCourseComboManagementMenu();
                     }
                     case 4 -> {
                         exitMenu();
@@ -142,13 +143,13 @@ public class FitnessCourseManagement extends Menu<String> {
     //before run CoachMenu, request enter ID
     public void runCoachMenu() {
         String[] coachMenuOptions = {
-                "Personal information",
-                "Show all courses",
-                "Show all member in courses",
-                "Create new course",
-                "Update personal infromation",
-                "Update course",
-                "Return home"
+            "Personal information",
+            "Show all courses",
+            "Show all member in courses",
+            "Create new course",
+            "Update personal infromation",
+            "Update course",
+            "Return home"
         };
         Menu<String> coachMenu = new Menu("HOME >> COACH", coachMenuOptions) {
             @Override
@@ -242,13 +243,13 @@ public class FitnessCourseManagement extends Menu<String> {
     //before run UserMenu, request enter ID
     public void runUserMenu() {
         String[] userMenuOptions = {
-                "Personal information",
-                "Show all courses which joined",
-                "Show all progresses",
-                "Register course",
-                "Update personal information",
-                "Update schedule",
-                "Return home"
+            "Personal information",
+            "Show all courses which joined",
+            "Show all progresses",
+            "Register course",
+            "Update personal information",
+            "Update schedule",
+            "Return home"
         };
         Menu<String> userMenu = new Menu("HOME >> USER", userMenuOptions) {
             @Override
@@ -285,10 +286,10 @@ public class FitnessCourseManagement extends Menu<String> {
     //----------------------------------------------------------start admin menu-----------------------------------------------------
     public void runUserManagementMenu() {
         String admin_UserOptions[] = {
-                "Show all users",
-                "Create new user",
-                "Update user",
-                "Return admin menu"
+            "Show all users",
+            "Create new user",
+            "Update user",
+            "Return admin menu"
         };
         Menu<String> admin_UserMenu = new Menu("HOME >> ADMIN >> USER", admin_UserOptions) {
             @Override
@@ -304,15 +305,32 @@ public class FitnessCourseManagement extends Menu<String> {
                     case 2 -> {
                         try {
                             System.out.println("Create new user");
-                            String userID = GettingUtils.getID("Enter user ID: ", "ID must be UXXXX", "U[0-9]{4}");
+                            String userID;
+                            while (true) {
+                                userID = GettingUtils.getID("Enter user ID: ", "ID must be UXXXX", "U[0-9]{4}");
+                                if (!userService.existed(userID)) {
+                                    break;
+                                } else {
+                                    System.err.println("User with ID: " + userID + " was existed");
+                                }
+
+                            }
                             String fullName = GettingUtils.getName("Enter full name: ", "Full Name must be letters");
-                            User user = new User();
-                        } catch (Exception e) {
+                            String DoB = GlobalUtils.dateFormat(GettingUtils.getDate("Enter Date of Birth: ", "Date of birth must be yyyy-MM-dd"));
+                            String phone = GettingUtils.getPhone("Enter phone number: ", "Phone number must be start with 0 and have 10 digits");
+                            String addventor = Boolean.toString(GettingUtils.getBoolean("Enter target with weight gain or weight lost (true/false): ", "Target must be true or false"));
+                            User user = new User(userID, fullName, DoB, phone, addventor);
+                            try {
+                                userService.add(user);
+                            } catch (EventException | InvalidDataException e) {
+                                System.err.println(e.getMessage());
+                            }
+                        } catch (InvalidDataException e) {
                             System.err.println(e);
                         }
                     }
                     case 3 -> {
-
+                        updateOrDeleteUserFromConsoleCustomize();
                     }
                     case 4 -> {
                         exitMenu();
@@ -324,12 +342,59 @@ public class FitnessCourseManagement extends Menu<String> {
         continueExecution = true;
     }
 
+    public void updateOrDeleteUserFromConsoleCustomize() {
+        if (userService.isEmpty()) {
+            System.out.println("Please create new user ^^");
+            return;
+        }
+        while (true) {
+            try {
+                String id = GettingUtils.getID("Enter ID for update: ", "User ID must be CXXXX", "U[0-9]{4}");
+                User user;
+                if ((user = userService.findById(id)) != null) {
+                    System.out.println(user.getInfo());
+                    String[] editMenuOptions = FieldUtils.getEditOptions(user.getClass());
+                    for (int i = 0; i < editMenuOptions.length; i++) {
+                        System.out.println((i + 1) + ". " + editMenuOptions[i]);
+                    }
+                    while (true) {
+                        int selection = GettingUtils.getInteger("Enter selection: ", "Invalid option!");
+                        if (selection == editMenuOptions.length - 1) {
+                            try {
+                                userService.delete(id);
+                                System.out.println("Delete successfully");
+                            } catch (EventException | NotFoundException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            return;
+                        } else if (selection == editMenuOptions.length) {
+                            return;
+                        }
+                        while (true) {
+                            try {
+                                String newValue = GlobalUtils.getValue("Enter new value: ", "Invalid value!");
+                                Map<String, Object> fieldUpdateMap = FieldUtils.getFieldValueByName(user, editMenuOptions[selection - 1], newValue);
+                                userService.update(id, fieldUpdateMap);
+                                System.out.println("Update successfully");
+                                break;
+                            } catch (Exception ex) {
+                                System.err.println(ex.getMessage());
+                            }
+                        }
+                    }
+                }
+            } catch (NotFoundException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
+    }
+
     public void runCoachManagementMenu() {
         String admin_CoachMenuOptions[] = {
-                "Display all coach",
-                "Create new coach",
-                "Update coach",
-                "Return admin menu"
+            "Display all coach",
+            "Create new coach",
+            "Update coach",
+            "Return admin menu"
         };
         Menu<String> admin_CoachMenu = new Menu("HOME >> ADMIN >> COACH", admin_CoachMenuOptions) {
             @Override
@@ -345,14 +410,33 @@ public class FitnessCourseManagement extends Menu<String> {
                     }
                     case 2 -> {
                         try {
-                            Coach coach = new Coach();
-                            coachService.add(coach);
-                        } catch (EventException | InvalidDataException e) {
+                            System.out.println("Create new coach");
+                            String coachID;
+                            while (true) {
+                                coachID = GettingUtils.getID("Enter coach ID: ", "ID must be CXXXX", "C[0-9]{4}");
+                                if (!coachService.existed(coachID)) {
+                                    break;
+                                } else {
+                                    System.err.println("Coach with ID: " + coachID + " was existed");
+                                }
+
+                            }
+                            String fullName = GettingUtils.getName("Enter full name: ", "Full Name must be letters");
+                            String DoB = GlobalUtils.dateFormat(GettingUtils.getDate("Enter Date of Birth: ", "Date of birth must be yyyy-MM-dd"));
+                            String phone = GettingUtils.getPhone("Enter phone number: ", "Phone number must be start with 0 and have 10 digits");
+                            String addventor = Boolean.toString(GettingUtils.getBoolean("Enter target with weight gain or weight lost (true/false): ", "Target must be true or false"));
+                            Coach coach = new Coach(coachID, fullName, DoB, phone, addventor);
+                            try {
+                                coachService.add(coach);
+                            } catch (EventException | InvalidDataException e) {
+                                System.err.println(e.getMessage());
+                            }
+                        } catch (InvalidDataException e) {
                             System.err.println(e);
                         }
                     }
                     case 3 -> {
-
+                        updateOrDeleteCoachFromConsoleCustomize();
                     }
                     case 4 -> {
                         exitMenu();
@@ -364,13 +448,60 @@ public class FitnessCourseManagement extends Menu<String> {
         continueExecution = true;
     }
 
+    public void updateOrDeleteCoachFromConsoleCustomize() {
+        if (coachService.isEmpty()) {
+            System.out.println("Please create new coach ^^");
+            return;
+        }
+        while (true) {
+            try {
+                String id = GettingUtils.getID("Enter ID for update: ", "Coach ID must be CXXXX", "C[0-9]{4}");
+                Coach coach;
+                if ((coach = coachService.findById(id)) != null) {
+                    System.out.println(coach.getInfo());
+                    String[] editMenuOptions = FieldUtils.getEditOptions(coach.getClass());
+                    for (int i = 0; i < editMenuOptions.length; i++) {
+                        System.out.println((i + 1) + ". " + editMenuOptions[i]);
+                    }
+                    while (true) {
+                        int selection = GettingUtils.getInteger("Enter selection: ", "Invalid option!");
+                        if (selection == editMenuOptions.length - 1) {
+                            try {
+                                coachService.delete(id);
+                                System.out.println("Delete successfully");
+                            } catch (EventException | NotFoundException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            return;
+                        } else if (selection == editMenuOptions.length) {
+                            return;
+                        }
+                        while (true) {
+                            try {
+                                String newValue = GlobalUtils.getValue("Enter new value: ", "Invalid value!");
+                                Map<String, Object> fieldUpdateMap = FieldUtils.getFieldValueByName(coach, editMenuOptions[selection - 1], newValue);
+                                coachService.update(id, fieldUpdateMap);
+                                System.out.println("Update successfully");
+                                break;
+                            } catch (Exception ex) {
+                                System.err.println(ex.getMessage());
+                            }
+                        }
+                    }
+                }
+            } catch (NotFoundException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
+    }
+
     public void runCourseComboManagementMenu() {
         String courseComboMenuOptions[] = {
-                "Show all combo",
-                "Create new combo",
-                "Update combo",
-                "Update combo for course",
-                "Return admin menu"
+            "Show all combo",
+            "Create new combo",
+            "Update combo",
+            "Update combo for course",
+            "Return admin menu"
         };
         Menu<String> courseComboMenu = new Menu("HOME >> ADMIN >> COURSE COMBO", courseComboMenuOptions) {
             @Override
@@ -390,7 +521,7 @@ public class FitnessCourseManagement extends Menu<String> {
                         updateOrDeleteCourseComboFromConsoleCustomize();
                     }
                     case 4 -> {
-                        createNewComboForCourseFromConsole();
+                        assignCourseCombo();
                     }
                     case 5 -> {
                         exitMenu();
@@ -403,29 +534,27 @@ public class FitnessCourseManagement extends Menu<String> {
     }
 
     public void updateOrDeleteCourseComboFromConsoleCustomize() {
-        if (courseComboService.getCourseComboList().isEmpty()) {
+        if (courseComboService.isEmpty()) {
             System.out.println("Please create new course combo ^^");
             return;
         }
         while (true) {
             try {
-                String id = GlobalUtils.getValue("Enter id for update: ", "Cannot be left blank");
+                String id = GettingUtils.getID("Enter ID for update: ", "Course Combo ID must be CBXXX", "CB[0-9]{3}");
                 CourseCombo courseCombo;
-                if (!ObjectUtils.valideCourseComboID(String.valueOf(id))) {
-                    System.out.println("Id must be correct form: CByyyy");
-                } else if ((courseCombo = courseComboService.findById(String.valueOf(id))) != null) {
+                if ((courseCombo = courseComboService.findById(id)) != null) {
                     System.out.println(courseCombo.getInfo());
                     String[] editMenuOptions = FieldUtils.getEditOptions(courseCombo.getClass());
                     for (int i = 0; i < editMenuOptions.length; i++) {
                         System.out.println((i + 1) + ". " + editMenuOptions[i]);
                     }
                     while (true) {
-                        int selection = GettingUtils.getInteger("Enter selection: ", "Please enter a valid option!");
+                        int selection = GettingUtils.getInteger("Enter selection: ", "Invalid option!");
                         if (selection == editMenuOptions.length - 1) {
                             try {
                                 courseComboService.delete(courseCombo.getComboId());
                             } catch (EventException e) {
-                                throw new RuntimeException(e);
+                                System.err.println(e.getMessage());
                             }
                             System.out.println("Delete successfully");
                             return;
@@ -434,12 +563,12 @@ public class FitnessCourseManagement extends Menu<String> {
                         }
                         while (true) {
                             try {
-                                String newValue = GlobalUtils.getValue("Enter new value: ", "Cannot be blank");
+                                String newValue = GettingUtils.getString("Enter new value: ", "Invalid value");
                                 courseComboService.update(id, FieldUtils.getFieldValueByName(courseCombo, editMenuOptions[selection - 1], newValue));
                                 System.out.println("Update successfully");
                                 break;
                             } catch (Exception ex) {
-                                System.out.println("An error occurred.");
+                                System.err.println(ex.getMessage());
                             }
                         }
                     }
@@ -451,47 +580,64 @@ public class FitnessCourseManagement extends Menu<String> {
     }
 
     private void createNewComboFromConsole() {
+        System.out.println("Create course combo");
+        String comboId;
         while (true) {
-            try {
-                System.out.println("Please enter combo data:");
-
-                String comboId = GlobalUtils.getValue("Combo ID: ", "Cannot be left blank");
-                String comboName = GlobalUtils.getValue("Combo Name: ", "Cannot be left blank");
-                String sales = GlobalUtils.getValue("Sales (percentage between 0 and 1): ", "Cannot be left blank");
-
-                CourseCombo courseCombo = new CourseCombo(comboId, comboName, sales);
-                courseCombo.runValidate();
-                courseComboService.add(courseCombo);
-                System.out.println("Combo added successfully.");
-            } catch (InvalidDataException e) {
-                System.err.println(e.getMessage());
-            } catch (Exception e) {
-                System.err.println("An error occurred. Please check your data.");
+            comboId = GettingUtils.getID("Enter course combo ID: ", "Course Combo ID must be CBXXX", "CB[0-9]{3}");
+            if (!courseComboService.existID(comboId)) {
+                break;
+            } else {
+                System.err.println("Course Combo with ID: " + comboId + " was exsited");
             }
         }
+        String comboName = GettingUtils.getName("Eneter course combo name: ", "Course combo name must be letters");
+        String sales = String.valueOf(GettingUtils.getSales("Etner Sales (percentage between 0 and 1): ", "Sales must be a positive number (0-1)"));
+        try {
+            CourseCombo courseCombo = new CourseCombo(comboId, comboName, sales);
+            courseComboService.add(courseCombo);
+            System.out.println("Combo added successfully.");
+        } catch (EventException | InvalidDataException e) {
+            System.err.println(e.getMessage());
+        }
+
     }
 
-    private void createNewComboForCourseFromConsole() {
+    private void assignCourseCombo() {
+        System.out.println("Assign Course Combo");
         try {
-            String courseId = GlobalUtils.getValue("Enter the Course ID to assign a new combo: ", "Course ID cannot be left blank");
-            Course course = courseService.findById(courseId);
-            if (course == null) {
-                System.err.println("Course not found with the given ID.");
-            }
-            String comboId = GlobalUtils.getValue("Enter Combo ID: ", "Combo ID cannot be left blank");
-            String comboName = GlobalUtils.getValue("Enter Combo Name: ", "Combo name cannot be left blank");
-            String sales = GlobalUtils.getValue("Enter Sales percentage (0 - 1): ", "Sales percentage cannot be left blank");
+            courseComboService.display();
+            while (true) {
+                String courseComboId = GettingUtils.getID("Enter course combo ID which assign: ", "Course combo ID must be CBXXX", "CB[0-9]{3}");
+                if (courseComboService.existID(courseComboId)) {
+                    courseService.display();
+                    while (true) {
+                        String courseId = GettingUtils.getID("Enter course ID to assign a new combo: ", "Course ID must be CXXXX", "C[0-9]{4}");
+                        try {
+                            Course course = courseService.findById(courseId);
+                            course.setComboID(courseComboId);
+                            System.err.println("Assign sucessfully");
+                            String conn = GettingUtils.getString("Continue ? Y/N: ", "Must be Y/N");
+                            if (conn.toUpperCase().equalsIgnoreCase("Y")) {
 
-            CourseCombo newCombo = new CourseCombo(comboId, comboName, sales);
-            newCombo.runValidate();
-            courseComboService.add(newCombo);
-            course.setComboID(comboId);
-            courseService.update(course);
-            System.out.println("New combo created and assigned to course successfully.");
-        } catch (InvalidDataException e) {
-            System.err.println("Data validation failed: " + e.getMessage());
-        } catch (Exception e) {
-            System.err.println("An error occurred while creating a new combo for the course: " + e.getMessage());
+                            } else {
+                                break;
+                            }
+                        } catch (NotFoundException e) {
+                            System.err.println(e.getMessage());
+                        }
+                    }
+                    String conn = GettingUtils.getString("Continue ? Y/N: ", "Must be Y/N");
+                    if (conn.toUpperCase().equalsIgnoreCase("Y")) {
+                    } else {
+                        break;
+                    }
+                } else {
+                    System.err.println("Course Combo with ID: " + courseComboId + " was not existed");
+                }
+            }
+
+        } catch (EmptyDataException e) {
+            System.err.println(e.getMessage());
         }
     }
 
@@ -542,6 +688,7 @@ public class FitnessCourseManagement extends Menu<String> {
             }
         }
     }
+
     //----------------------------------------------------------end admin menu-----------------------------------------------------
 //----------------------------------------------------------start coach menu---------------------------------------------------
 //----------------------------------------------------------end coach menu-----------------------------------------------------
