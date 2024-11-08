@@ -1,10 +1,13 @@
-#Fitness Course
+# Fitness Course
 
 ## 1. Research
 
 https://sites.google.com/view/phan-mem-quan-ly-phong-gym/
+
 https://hosco.com.vn/phan-mem-quan-ly-phong-tap-gym-master
+
 https://ems-vietnam.vn/
+
 https://levelfyc.com/
 
 ## 2. Github
@@ -17,5 +20,5 @@ https://fpt-team-kr7v4uhs.atlassian.net/jira/software/projects/SCRUM/boards/1/ba
 
 ## 4. Platform
 
-Netbeans 21
-SQL Server 22
+- Netbeans 21
+- SQL Server 22
